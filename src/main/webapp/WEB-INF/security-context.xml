@@ -16,6 +16,7 @@
 	<http entry-point-ref="restAuthenticationEntryPoint">
 		<intercept-url pattern="/api/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/api/*" access="ROLE_USER" />
+		<intercept-url pattern="/dist/*" access="ROLE_USER" />
 		<form-login authentication-success-handler-ref="mySuccessHandler" />
 
 		<logout />
