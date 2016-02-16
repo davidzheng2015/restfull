@@ -9,7 +9,7 @@ public class Menu implements Serializable {
 	 */
 	private static final long serialVersionUID = -7249381922332307459L;
 	private Integer id;
-	private Integer pId;
+	private Integer pid;
 	private String name;
 	private String url;
 	private Integer orderNo;
@@ -21,11 +21,11 @@ public class Menu implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getpId() {
-		return pId;
+	public Integer getPId() {
+		return pid;
 	}
-	public void setpId(Integer pId) {
-		this.pId = pId;
+	public void setPid(Integer pId) {
+		this.pid = pId;
 	}
 	public String getName() {
 		return name;
