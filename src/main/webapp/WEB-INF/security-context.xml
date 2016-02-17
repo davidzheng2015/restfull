@@ -12,6 +12,7 @@
 
 	<beans:import resource="dataSource-context.xml" />
 	<context:component-scan base-package="com.gdky.restfull" />
+	<context:component-scan base-package="gov.gdgs.zs" />
 
 	<http entry-point-ref="restAuthenticationEntryPoint">
 		<intercept-url pattern="/api/admin/**" access="ROLE_ADMIN" />
@@ -26,18 +27,18 @@
 		class="com.gdky.restfull.security.MySavedRequestAwareAuthenticationSuccessHandler" />
 
 	<authentication-manager alias="authenticationManager">
-		<!-- <authentication-provider>
+		<authentication-provider>
 			<user-service>
 				<user name="temporary" password="temporary" authorities="ROLE_ADMIN" />
 				<user name="user" password="user" authorities="ROLE_USER" />
 			</user-service>
 		</authentication-provider>
- 		-->
-		<authentication-provider>
+		
+		<!--<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource"
 				users-by-username-query="select username,password, yxbz enabled from fw_user where username =?"
 				authorities-by-username-query="select  u.username, r.name role from fw_user u,fw_role r,fw_userrole ur where u.id = ur.userid and r.id = ur.roleid and u.username=?  " />
-		</authentication-provider>
+		</authentication-provider>  -->
 	</authentication-manager>
 
 </beans:beans>
