@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -44,4 +45,10 @@ public class GeneralController {
         System.out.println(user.getName() + " " + user.getAge());  
         return new HashMap<String, String>().put("success", "true");  
     } 
+    
+    public static void main(String[] args) throws Exception{
+    	  String str = "143";
+      String rs  =	DigestUtils.shaHex(str);
+      System.out.println(rs);
+    }
 }  
