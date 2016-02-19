@@ -45,6 +45,12 @@ public class SWSCXController {
 	        return "jsontournamenttemplate";  
 	    }  
 	 
+		@RequestMapping(value="/modelautobind", method = {RequestMethod.POST})
+		public String modelAutoBind(Model model){
+			model.addAttribute("accountmodel", swsDao.testJDBC());
+			return "jsontournamenttemplate";
+		}
+		
 	 private String getUUID() {
 			String s = UUID.randomUUID().toString();
 			//去掉“_”符号
