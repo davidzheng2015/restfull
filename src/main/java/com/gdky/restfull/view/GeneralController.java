@@ -44,4 +44,8 @@ public class GeneralController {
         System.out.println(user.getName() + " " + user.getAge());  
         return new HashMap<String, String>().put("success", "true");  
     } 
+    
+    
+    
+
 }  
