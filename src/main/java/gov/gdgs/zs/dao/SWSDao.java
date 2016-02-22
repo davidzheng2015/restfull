@@ -30,6 +30,7 @@ public class SWSDao {
 		public Menu mapRow(ResultSet rs, int arg1) throws SQLException {
 	
 			ZsSwsxxSwsxx swsxx = new ZsSwsxxSwsxx();
+			
 			swsxx.setId(rs.getString("ID"));
 			swsxx.setJgmc(rs.getString("JGMC"));
 			swsxx.setFddbr(rs.getString("FDDBR"));
