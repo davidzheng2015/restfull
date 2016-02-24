@@ -5,7 +5,9 @@ import gov.gdgs.zs.entity.AccountModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -21,12 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.view.TournamentContent;
 
-@Controller
+@RestController
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
 
-	 @RequestMapping("/api/jsontest")  
+	 @RequestMapping("/api/jsontes/**")  
 	    public String getJSON(Model model) {  
 //	    	UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
 //	    		    .getAuthentication()
@@ -40,7 +42,6 @@ public class SWSCXController {
 	        model.addAttribute("status", 0);  
 			model.addAttribute("Data", swsDao.testJDBC());
 	        model.addAttribute("SWSXX", swsDao.getAllSwsxx()); 
-	        model.addAttribute("UUID", this.getUUID()); 
 	        
 	        return "jsontournamenttemplate";  
 	    }  
@@ -51,12 +52,23 @@ public class SWSCXController {
 			return "jsontournamenttemplate";
 		}
 		
-	 private String getUUID() {
-			String s = UUID.randomUUID().toString();
-			//去掉“_”符号
-			return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18)
-					+ s.substring(19, 23) + s.substring(24,31);
-			
-		}
-	 
+	/* @RequestMapping("/api/swscx")  
+	    public String swscx(Model model) {  
+		 model.addAttribute("Data", swsDao.swscx());
+		 return "jsontournamenttemplate"; 
+	 }*/
+		
+	 @RequestMapping("/api/swscx/*")  
+	 public Map<String,Object> swscx(HttpServletRequest request) {  
+		 Map<String,Object> sb = new HashMap<>();
+		 Map<String,Object> meta = new HashMap<>();
+		 int pn = Integer.parseInt(request.getRequestURL().substring(41,43));
+		 int ps = 20;
+		 meta.put("pageNum",pn);
+		 meta.put("pageSize",ps);
+		 sb.put("Page",meta);
+		 sb.put("Data", swsDao.swscx(pn,ps));
+		 return sb;
+		 
+	 }
 }
