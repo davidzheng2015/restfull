@@ -2,6 +2,7 @@ package gov.gdgs.zs.dao;
 
 import gov.gdgs.zs.untils.Pager;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,17 @@ public class SWSDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<Map<String,Object>> testJDBC (){
-		String sql = "select * from zs_swsxx";
+		String sql = "select * from zs_jg";
 		return this.jdbcTemplate.queryForList(sql);
 		
 	}
-	
-	public List<Map<String,Object>> swscx(int pn,int ps){
+	/**
+	 * 
+	 * @param pn
+	 * @param ps
+	 * @return 事务所分页查询
+	 */
+	public Map<String,Object> swscx(int pn,int ps){
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT ");
 		sb.append("    a.ID,");
@@ -45,7 +51,10 @@ public class SWSDao {
 		sb.append("	AND a.ID = d.ZSJG_ID");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
 		Pager<Map<String, Object>> pager = Pager.create(ls, ps);
-		return pager.getPagedList(pn);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", pager.getPagedList(pn));
+		ob.put("pagesize", ls.size());
+		return ob;
 	}
 
 }
