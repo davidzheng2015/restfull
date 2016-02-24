@@ -1,27 +1,15 @@
 package gov.gdgs.zs.controllers;
 
 import gov.gdgs.zs.dao.SWSDao;
-import gov.gdgs.zs.entity.AccountModel;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.gdky.restfull.view.TournamentContent;
 
 @RestController
 public class SWSCXController {
@@ -41,7 +29,6 @@ public class SWSCXController {
 //	        model.addAttribute("items", tournamentList);  
 	        model.addAttribute("status", 0);  
 			model.addAttribute("Data", swsDao.testJDBC());
-	        model.addAttribute("SWSXX", swsDao.getAllSwsxx()); 
 	        
 	        return "jsontournamenttemplate";  
 	    }  
