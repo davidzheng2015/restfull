@@ -9,7 +9,7 @@
 		<param-name>webAppRootKey</param-name>
 		<param-value>maven.example.root</param-value>
 	</context-param>
-<context-param>  
+    <context-param>  
         <param-name>contextConfigLocation</param-name>  
         <param-value>/WEB-INF/security-context.xml</param-value>  
     </context-param>  
