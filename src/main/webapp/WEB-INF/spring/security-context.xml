@@ -6,17 +6,15 @@
       http://www.springframework.org/schema/security 
       http://www.springframework.org/schema/security/spring-security.xsd
       http://www.springframework.org/schema/context   
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd   
+      http://www.springframework.org/schema/context/spring-context.xsd   
       http://www.springframework.org/schema/beans 
-      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+      http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<beans:import resource="dataSource-context.xml" />
-	<context:component-scan base-package="com.gdky.restfull" />
-	<context:component-scan base-package="gov.gdgs.zs" />
 
 	<http entry-point-ref="restAuthenticationEntryPoint">
-		<intercept-url pattern="/api/admin/**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/api/*" access="ROLE_USER" />
+		<intercept-url pattern="/api/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/api/*" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/dist/*" access="ROLE_USER" />
 		<form-login authentication-success-handler-ref="mySuccessHandler" />
 
