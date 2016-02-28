@@ -1,4 +1,4 @@
-package gov.gdgs.zs.services;
+package gov.gdgs.zs.service;
 
 public class CommonService {
 
