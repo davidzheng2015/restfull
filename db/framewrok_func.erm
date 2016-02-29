@@ -40,8 +40,8 @@
 		<use_bezier_curve>false</use_bezier_curve>
 		<suspend_validator>false</suspend_validator>
 		<export_setting>
-			<category_name_to_export></category_name_to_export>
-			<ddl_output></ddl_output>
+			<category_name_to_export>All</category_name_to_export>
+			<ddl_output>C:\Users\ming\Documents\framewrok_func.sql</ddl_output>
 			<excel_output></excel_output>
 			<excel_template></excel_template>
 			<image_output></image_output>
@@ -64,9 +64,9 @@
 			<drop_view>true</drop_view>
 			<inline_column_comment>true</inline_column_comment>
 			<inline_table_comment>true</inline_table_comment>
-			<comment_value_description>true</comment_value_description>
+			<comment_value_description>false</comment_value_description>
 			<comment_value_logical_name>false</comment_value_logical_name>
-			<comment_value_logical_name_description>false</comment_value_logical_name_description>
+			<comment_value_logical_name_description>true</comment_value_logical_name_description>
 			<comment_replace_line_feed>false</comment_replace_line_feed>
 			<comment_replace_string></comment_replace_string>
 			<export_java_setting>
@@ -110,7 +110,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-01-20 17:05:42</creation_date>
-			<updated_date>2016-02-29 00:18:27</updated_date>
+			<updated_date>2016-02-29 17:11:01</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -218,7 +218,7 @@
 			<binary>false</binary>
 			<args></args>
 			<description></description>
-			<logical_name>路径</logical_name>
+			<logical_name>链接</logical_name>
 			<physical_name>HREF</physical_name>
 			<type>varchar(n)</type>
 		</word>
@@ -699,7 +699,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>11</word_id>
+					<word_id>5</word_id>
 					<id>0</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -965,7 +965,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>6</word_id>
+					<word_id>7</word_id>
 					<id>7</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1066,7 +1066,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>12</word_id>
+					<word_id>8</word_id>
 					<id>9</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1167,7 +1167,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>9</word_id>
+					<word_id>6</word_id>
 					<id>11</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1293,7 +1293,7 @@
 			</color>
 			<connections>
 			</connections>
-			<physical_name>FW_PRIVILEGE</physical_name>
+			<physical_name>FW_MENU_ROLE</physical_name>
 			<logical_name>权限表</logical_name>
 			<description></description>
 			<constraint></constraint>
@@ -1301,7 +1301,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>8</word_id>
+					<word_id>9</word_id>
 					<id>14</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1435,7 +1435,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>7</word_id>
+					<word_id>12</word_id>
 					<id>17</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1868,7 +1868,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>5</word_id>
+					<word_id>11</word_id>
 					<id>28</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
