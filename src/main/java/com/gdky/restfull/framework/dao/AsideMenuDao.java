@@ -11,15 +11,15 @@ import org.springframework.stereotype.Repository;
 import com.gdky.restfull.framework.entity.AsideMenu;
 
 @Repository
-public class AsideMenuDao<AsideMenuDao> implements IAsideMenuDao {
+public class AsideMenuDao<AsideMenuDao> extends BaseJdbcDao implements IAsideMenuDao {
 	
-	@Resource(name ="jdbcTemplate")
-	private JdbcTemplate jt;
+//	@Resource(name ="jdbcTemplate")
+//	private JdbcTemplate jt;
 	
 	@Override
 	public List<AsideMenu> getAsideMenu() {
 		String sql  = "select * from fw_menu";
-		List<AsideMenu> ls = jt.query(sql,new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
+		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
 	}
 
