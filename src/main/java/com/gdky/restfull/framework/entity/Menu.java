@@ -11,10 +11,10 @@ public class Menu implements Serializable {
 	private Integer id;
 	private Integer pid;
 	private String name;
-	private String url;
+	private String href;
 	private Integer orderNo;
 	private String path;
-	private String visible;
+	private String visble;
 	public Integer getId() {
 		return id;
 	}
@@ -33,11 +33,11 @@ public class Menu implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getUrl() {
-		return url;
+	public String getHref() {
+		return href;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setHref(String href) {
+		this.href = href;
 	}
 	public Integer getOrderNo() {
 		return orderNo;
@@ -51,11 +51,11 @@ public class Menu implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public String getVisible() {
-		return visible;
+	public String getVisble() {
+		return visble;
 	}
-	public void setVisible(String visible) {
-		this.visible = visible;
+	public void setVisble(String visble) {
+		this.visble = visble;
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.gdky.restfull.api;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.Constants;
-import com.gdky.restfull.framework.service.CommonService;
+import com.gdky.restfull.framework.entity.AsideMenu;
+import com.gdky.restfull.framework.service.ICommonService;
 
 
 @RestController
@@ -16,10 +19,10 @@ import com.gdky.restfull.framework.service.CommonService;
 public class MenuController {
 	
 	@Resource
-	private CommonService commonService;
+	private ICommonService commonService;
 	
-	@RequestMapping(value = "/asidemenu/", method = RequestMethod.GET)
-	public  AsideMenu getAsideMenu() {
+	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
+	public  List<AsideMenu> getAsideMenu() {
 		return commonService.getAsideMenu();
 	}
 
