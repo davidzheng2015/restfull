@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,13 +21,16 @@ public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
 
-		@RequestMapping(value="/modelautobind", method = {RequestMethod.POST})
-		public String modelAutoBind(Model model,HttpServletRequest request ){
-			 Object s = request.getParameterValues("page");
-			 @SuppressWarnings("unused")
-			Object l = request.getParameterValues("lll");
-			 s.toString().hashCode();
+		@RequestMapping(value="/modelautobind", method = {RequestMethod.GET})
+		@ResponseBody
+		public String modelAutoBind(Model model,HttpServletRequest request ,@PathVariable(value="name") String jgid,@PathVariable(value="age") String sss){
+//			 Object s = request.getParameterValues("page");
+//			Object l = request.getParameterValues("lll");
+//			 s.toString().hashCode();
+			
 			model.addAttribute("accountmodel", swsDao.testJDBC());
+			model.addAttribute("111", jgid);
+			model.addAttribute("22", sss);
 			return "jsontournamenttemplate";
 		}
 		
@@ -38,22 +42,30 @@ public class SWSCXController {
 		
 	 @RequestMapping(value="/api/jgs", method = {RequestMethod.GET})  
 	 public Map<String,Object> swscx(HttpServletRequest request ) { 
-		 int pn =0;
-		 try {
-			    int b = Integer.valueOf(request.getParameterValues("pagenum").toString()).intValue();
-			    pn=b;
-			} catch (NumberFormatException e) {
-			    e.printStackTrace();
-			}
 		 Map<String,Object> sb = new HashMap<>();
-		 Map<String,Object> meta = new HashMap<>();
-		 int ps = 20;
-		 meta.put("pageNum",pn);
-		 meta.put("pageSize",ps);
-		 meta.put("pageTotal",swsDao.swscx(pn,ps).get("totalsize"));
-		 meta.put("pageAll",swsDao.swscx(pn,ps).get("pagesize"));
-		 sb.put("Page",meta);
-		 sb.put("Data", swsDao.swscx(pn,ps).get("data"));
+		 try {
+			 if(request.getParameterValues("pagenum")[0]!=null&&!request.getParameterValues("pagenum")[0].equals("0")){
+				 if(request.getParameterValues("pagesize")[0]!=null&&!request.getParameterValues("pagesize")[0].equals("0")){
+					Map<String,Object> qury = new HashMap<>();
+					qury.put("pn", request.getParameterValues("pagenum")[0]);
+					qury.put("ps", request.getParameterValues("pagesize")[0]);
+//					Object y =request.getParameterValues("qury");
+// 					String q =java.net.URLDecoder.decode(request.getParameterValues("qury")[0].toString(),"UTF-8");
+//					qury.put("qury", q);
+					int pn =Integer.parseInt(qury.get("pn").toString());
+					int ps =Integer.parseInt(qury.get("ps").toString());
+					Map<String,Object> meta = new HashMap<>();
+					meta.put("pageNum",pn);
+					meta.put("pageSize",ps);
+					meta.put("pageTotal",swsDao.swscx(pn,ps).get("totalsize"));
+					meta.put("pageAll",swsDao.swscx(pn,ps).get("pagesize"));
+					sb.put("Page",meta);
+					sb.put("Data", swsDao.swscx(pn,ps).get("data"));
+				 }
+			 }
+		} catch (Exception e) {
+			sb.put("Data", swsDao.swscx().get("data"));
+		}
 		 return sb;
 		 
 	 }
@@ -75,4 +87,22 @@ public class SWSCXController {
 		 } 
 		 return sb;
 	 }
+	 
+	  public class User {  
+	        private String name;  
+	        private String age;  
+	      
+	        public String getName(){
+	        	return name;
+	        }
+	        public void setName(String name){
+	        	 this.name=name;
+	        }
+      	public String getAge(){
+	        		return age;
+	        }
+      	public void setAge(String age){
+      		this.age = age;
+      	}
+	    }  
 }
