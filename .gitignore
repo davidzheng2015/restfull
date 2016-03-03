@@ -74,3 +74,6 @@ local.properties
 # Code Recommenders
 .recommenders/
 .project
+
+#jetbrains
+.idea/
