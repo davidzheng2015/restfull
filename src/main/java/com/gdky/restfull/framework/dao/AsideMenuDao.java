@@ -13,9 +13,6 @@ import com.gdky.restfull.framework.entity.AsideMenu;
 @Repository
 public class AsideMenuDao<AsideMenuDao> extends BaseJdbcDao implements IAsideMenuDao {
 	
-//	@Resource(name ="jdbcTemplate")
-//	private JdbcTemplate jt;
-	
 	@Override
 	public List<AsideMenu> getAsideMenu() {
 		String sql  = "select * from fw_menu";
