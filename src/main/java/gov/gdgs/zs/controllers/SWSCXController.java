@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +26,6 @@ public class SWSCXController {
 //			 Object s = request.getParameterValues("page");
 //			Object l = request.getParameterValues("lll");
 //			 s.toString().hashCode();
-			
 			model.addAttribute("accountmodel", swsDao.testJDBC());
 			model.addAttribute("111", jgid);
 			model.addAttribute("22", sss);
@@ -77,10 +75,19 @@ public class SWSCXController {
 			 sb.put("Data", swsDao.swsxx(jgid));
 			 break;
 		 case "zyryxx" :
-			 sb.put("Data", "开发中...");
+			 sb.put("Data", swsDao.zyryxx(jgid));
 			 break;
 		 case "cyryxx" :
-			 sb.put("Data", "维护中...");
+			 sb.put("Data", swsDao.cyryxx(jgid));
+			 break;
+		 case "czrylb" :
+			 sb.put("Data", swsDao.czrylb(jgid));
+			 break;
+		 case "swsbgxx" :
+			 sb.put("Data", swsDao.swsbgxx(jgid));
+			 break;
+		 case "njjl" :
+			 sb.put("Data", swsDao.njjl(jgid));
 			 break;
 		 default:
 			 return sb;
