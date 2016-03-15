@@ -2,10 +2,8 @@ package com.gdky.restfull.framework.dao;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.gdky.restfull.framework.entity.AsideMenu;
