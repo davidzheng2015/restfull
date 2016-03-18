@@ -77,3 +77,4 @@ local.properties
 
 #jetbrains
 .idea/
+src/main/webapp/WEB-INF/spring/dataSource-context.xml
