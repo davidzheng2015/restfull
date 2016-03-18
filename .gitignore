@@ -77,3 +77,8 @@ local.properties
 
 #jetbrains
 .idea/
+
+/dataSource-context.xml
+/rest-servlet.xml
+/security-context.xml
+
