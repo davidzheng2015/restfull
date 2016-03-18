@@ -33,8 +33,8 @@ public class MenuDao {
 				menu.setOrderNo(rs.getInt("ORDER_NO"));
 				menu.setPath(rs.getString("PATH"));
 				menu.setPid(rs.getInt("PID"));
-				menu.setUrl(rs.getString("url"));
-				menu.setVisible(rs.getString("VISIBLE"));
+				menu.setHref(rs.getString("HREF"));
+				menu.setVisble(rs.getString("VISBLE"));
 				menusMap.put(menu.getId(), menu);
 				return null;
 			}

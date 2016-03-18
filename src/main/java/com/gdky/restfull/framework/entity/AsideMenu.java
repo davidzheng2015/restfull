@@ -2,12 +2,12 @@ package com.gdky.restfull.framework.entity;
 
 import java.io.Serializable;
 
-public class Menu implements Serializable {
+public class AsideMenu implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7249381922332307459L;
+	private static final long serialVersionUID = 7824929431409711325L;
 	private Integer id;
 	private Integer pid;
 	private String name;
@@ -21,11 +21,11 @@ public class Menu implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getPId() {
+	public Integer getPid() {
 		return pid;
 	}
-	public void setPid(Integer pId) {
-		this.pid = pId;
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 	public String getName() {
 		return name;
@@ -57,6 +57,4 @@ public class Menu implements Serializable {
 	public void setVisble(String visble) {
 		this.visble = visble;
 	}
-	
-	
 }
