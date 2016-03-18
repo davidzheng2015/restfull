@@ -41,6 +41,8 @@ public class SWSCXController {
 	 @RequestMapping(value="/api/jgs", method = {RequestMethod.GET})  
 	 public Map<String,Object> swscx(HttpServletRequest request ) { 
 		 Map<String,Object> sb = new HashMap<>();
+		 StringBuffer url = request.getRequestURL();
+		 String z = url.substring(0,url.indexOf("api")+3);
 		 try {
 			 if(request.getParameterValues("pagenum")[0]!=null&&!request.getParameterValues("pagenum")[0].equals("0")){
 				 if(request.getParameterValues("pagesize")[0]!=null&&!request.getParameterValues("pagesize")[0].equals("0")){
@@ -55,14 +57,14 @@ public class SWSCXController {
 					Map<String,Object> meta = new HashMap<>();
 					meta.put("pageNum",pn);
 					meta.put("pageSize",ps);
-					meta.put("pageTotal",swsDao.swscx(pn,ps).get("totalsize"));
-					meta.put("pageAll",swsDao.swscx(pn,ps).get("pagesize"));
+					meta.put("pageTotal",swsDao.swscx(z,pn,ps).get("totalsize"));
+					meta.put("pageAll",swsDao.swscx(z,pn,ps).get("pagesize"));
 					sb.put("Page",meta);
-					sb.put("Data", swsDao.swscx(pn,ps).get("data"));
+					sb.put("Data", swsDao.swscx(z,pn,ps).get("data"));
 				 }
 			 }
 		} catch (Exception e) {
-			sb.put("Data", swsDao.swscx().get("data"));
+			sb.put("Data", swsDao.swscx(z).get("data"));
 		}
 		 return sb;
 		 

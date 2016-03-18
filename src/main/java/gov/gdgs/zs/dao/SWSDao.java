@@ -28,7 +28,7 @@ public class SWSDao {
 	 * @param ps
 	 * @return 事务所分页查询
 	 */
-	public Map<String,Object> swscx(int pn,int ps){
+	public Map<String,Object> swscx(String z,int pn,int ps){
 		StringBuffer sb = new StringBuffer();
 		sb.append("	SELECT ");
 		sb.append("		    a.ID,");
@@ -58,12 +58,12 @@ public class SWSDao {
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
 		for(Map<String, Object> rec : pager.getPagedList(pn)){
 			Map<String,Object> link = new HashMap<>();
-			link.put("herf_sws", "http://localhost:8080/restfull/api/swsxx/"+rec.get("ID").toString());
-			link.put("herf_zyry", "http://localhost:8080/restfull/api/zyryxx/"+rec.get("ID").toString());
-			link.put("herf_cyry", "http://localhost:8080/restfull/api/cyryxx/"+rec.get("ID").toString());
-			link.put("herf_czrylb", "http://localhost:8080/restfull/api/czrylb/"+rec.get("ID").toString());
-			link.put("herf_swsbgxx", "http://localhost:8080/restfull/api/swsbgxx/"+rec.get("ID").toString());
-			link.put("herf_njjl", "http://localhost:8080/restfull/api/njjl/"+rec.get("ID").toString());
+			link.put("herf_sws", z+"/swsxx/"+rec.get("ID").toString());
+			link.put("herf_zyry", z+"/zyryxx/"+rec.get("ID").toString());
+			link.put("herf_cyry", z+"/cyryxx/"+rec.get("ID").toString());
+			link.put("herf_czrylb", z+"/czrylb/"+rec.get("ID").toString());
+			link.put("herf_swsbgxx", z+"/swsbgxx/"+rec.get("ID").toString());
+			link.put("herf_njjl", z+"/njjl/"+rec.get("ID").toString());
 			rec.put("_links", link);
 			fl.add(rec);
 		}
@@ -77,7 +77,7 @@ public class SWSDao {
 	 * 
 	 * @return 事务所查询
 	 */
-	public Map<String,Object> swscx(){
+	public Map<String,Object> swscx(String z){
 		StringBuffer sb = new StringBuffer();
 		sb.append("	SELECT ");
 		sb.append("		    a.ID,");
@@ -106,12 +106,12 @@ public class SWSDao {
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
 		for(Map<String, Object> rec : ls){
 			Map<String,Object> link = new HashMap<>();
-			link.put("herf_sws", "http://localhost:8080/restfull/api/swsxx/"+rec.get("ID").toString());
-			link.put("herf_zyry", "http://localhost:8080/restfull/api/zyryxx/"+rec.get("ID").toString());
-			link.put("herf_cyry", "http://localhost:8080/restfull/api/cyryxx/"+rec.get("ID").toString());
-			link.put("herf_czrylb", "http://localhost:8080/restfull/api/czrylb/"+rec.get("ID").toString());
-			link.put("herf_swsbgxx", "http://localhost:8080/restfull/api/swsbgxx/"+rec.get("ID").toString());
-			link.put("herf_njjl", "http://localhost:8080/restfull/api/njjl/"+rec.get("ID").toString());
+			link.put("herf_sws", z+"/swsxx/"+rec.get("ID").toString());
+			link.put("herf_zyry", z+"/zyryxx/"+rec.get("ID").toString());
+			link.put("herf_cyry", z+"/cyryxx/"+rec.get("ID").toString());
+			link.put("herf_czrylb", z+"/czrylb/"+rec.get("ID").toString());
+			link.put("herf_swsbgxx", z+"/swsbgxx/"+rec.get("ID").toString());
+			link.put("herf_njjl", z+"/njjl/"+rec.get("ID").toString());
 			rec.put("_links", link);
 			fl.add(rec);
 		}
