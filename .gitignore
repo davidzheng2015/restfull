@@ -74,3 +74,7 @@ local.properties
 # Code Recommenders
 .recommenders/
 .project
+
+#jetbrains
+.idea/
+src/main/webapp/WEB-INF/spring/dataSource-context.xml
