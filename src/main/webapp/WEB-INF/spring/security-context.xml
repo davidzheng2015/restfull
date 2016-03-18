@@ -14,7 +14,7 @@
 
 	<http entry-point-ref="restAuthenticationEntryPoint">
 		<intercept-url pattern="/api/admin/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/api/*" access="hasRole('ROLE_USER')" />
+		<!-- <intercept-url pattern="/api/*" access="hasRole('ROLE_USER')" /> -->
 		<intercept-url pattern="/dist/*" access="hasRole('ROLE_USER')" />
 		<form-login authentication-success-handler-ref="mySuccessHandler" />
 
