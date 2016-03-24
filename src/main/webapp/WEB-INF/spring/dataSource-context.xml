@@ -16,10 +16,10 @@
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="url"
-			value="jdbc:mysql://127.0.0.1:3306/zs_new?useUnicode=true&amp;characterEncoding=utf-8" />
+			value="jdbc:mysql://127.0.0.1:3306/gd_gdzs?useUnicode=true&amp;characterEncoding=utf-8" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="password" value="my123" />
 		<property name="minIdle" value="10" />
 		<property name="maxActive" value="20" />
 		<property name="maxWait" value="1000" />

@@ -44,91 +44,66 @@ public class SWSCXController {
 	 * "jsontournamenttemplate"; }
 	 */
 
-	@RequestMapping(value = "/api/jgs", method = { RequestMethod.GET })
+	@RequestMapping(value = "/jgs", method = { RequestMethod.GET })
 	public Map<String, Object> swscx(HttpServletRequest request) {
 		Map<String, Object> sb = new HashMap<>();
 		StringBuffer url = request.getRequestURL();
-		String z = url.substring(0, url.indexOf("api") + 3);
+		String z = url.substring(0, url.indexOf("jgs"));
 		try {
 			if (request.getParameterValues("pagenum")[0] != null
-					&& !request.getParameterValues("pagenum")[0].equals("0")) {
-				if (request.getParameterValues("pagesize")[0] != null
-						&& !request.getParameterValues("pagesize")[0]
-								.equals("0")) {
+					&& !request.getParameterValues("pagenum")[0].equals("0")&&request.getParameterValues("pagesize")[0] != null 
+					&& !request.getParameterValues("pagesize")[0].equals("0")) {
 					Map<String, Object> qury = new HashMap<>();
 					qury.put("pn", request.getParameterValues("pagenum")[0]);
 					qury.put("ps", request.getParameterValues("pagesize")[0]);
-					// Object y =request.getParameterValues("qury");
-					// String q
-					// =java.net.URLDecoder.decode(request.getParameterValues("qury")[0].toString(),"UTF-8");
-					// qury.put("qury", q);
-					int pn = Integer.parseInt(qury.get("pn").toString());
-					int ps = Integer.parseInt(qury.get("ps").toString());
-					Map<String, Object> meta = new HashMap<>();
-					meta.put("pageNum", pn);
-					meta.put("pageSize", ps);
-					meta.put("pageTotal",
-							swsDao.swscx(z, pn, ps).get("totalsize"));
-					meta.put("pageAll", swsDao.swscx(z, pn, ps).get("pagesize"));
-					sb.put("Page", meta);
-					sb.put("Data", swsDao.swscx(z, pn, ps).get("data"));
+					
+					if(request.getParameterValues("sfield")[0] != null
+						&&request.getParameterValues("sorder")[0] != null){
+						qury.put("sfield", request.getParameterValues("sfield")[0]);
+						qury.put("sorder", request.getParameterValues("sorder")[0]);
+					}
+					
+					Map<String, Object> meta = swsDao.swscx(z,qury);
+					sb.put("data", meta.get("data"));
+					sb.put("page", meta.get("page"));
 				}
-			}
+			
+			
 		} catch (Exception e) {
-			sb.put("Data", swsDao.swscx(z).get("data"));
+			sb.put("data", swsDao.swscx(z).get("data"));
+			sb.put("pageTotal",swsDao.swscx(z).get("totalsize"));
 		}
 		return sb;
 
 	}
 
-	@RequestMapping("/api/{swsxqTab:^[A-Za-z]+$}/{swjgId:^[0-9]*$}")
+	@RequestMapping(value="/{swsxqTab:^[A-Za-z]+$}/{swjgId:^[0-9]*$}", method = { RequestMethod.GET} )
 	public Map<String, Object> swsxx(
 			@PathVariable(value = "swsxqTab") String xqTab,
 			@PathVariable(value = "swjgId") int jgid) {
 		Map<String, Object> sb = new HashMap<>();
 		switch (xqTab) {
 		case "swsxx":
-			sb.put("Data", swsDao.swsxx(jgid));
+			sb.put("data", swsDao.swsxx(jgid));
 			break;
 		case "zyryxx":
-			sb.put("Data", swsDao.zyryxx(jgid));
+			sb.put("data", swsDao.zyryxx(jgid));
 			break;
 		case "cyryxx":
-			sb.put("Data", swsDao.cyryxx(jgid));
+			sb.put("data", swsDao.cyryxx(jgid));
 			break;
 		case "czrylb":
-			sb.put("Data", swsDao.czrylb(jgid));
+			sb.put("data", swsDao.czrylb(jgid));
 			break;
 		case "swsbgxx":
-			sb.put("Data", swsDao.swsbgxx(jgid));
+			sb.put("data", swsDao.swsbgxx(jgid));
 			break;
 		case "njjl":
-			sb.put("Data", swsDao.njjl(jgid));
+			sb.put("data", swsDao.njjl(jgid));
 			break;
 		default:
 			return sb;
 		}
 		return sb;
-	}
-
-	public class User {
-		private String name;
-		private String age;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getAge() {
-			return age;
-		}
-
-		public void setAge(String age) {
-			this.age = age;
-		}
 	}
 }
