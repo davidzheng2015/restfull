@@ -1,7 +1,5 @@
 package gov.gdgs.zs.dao;
 
-import gov.gdgs.zs.untils.Pager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,30 +50,31 @@ public class SWSDao extends BaseDao{
 		sb.append("			and a.id = d.zsjg_id");
 		sb.append("			and v.zsjg_id = d.zsjg_id");
 		sb.append("		    and d.nd = v.nd ");
+		Boolean asc = qury.get("sorder").toString().equals("ascend");
 		switch (qury.get("sfield").toString()) {
 		case "dwmc":
-			if(qury.get("sorder").toString().equals("ascend")){
+			if(asc){
 				sb.append("		    order by convert( a.dwmc USING gbk) COLLATE gbk_chinese_ci ");
 			}else{
 				sb.append("		    order by convert( a.dwmc USING gbk) COLLATE gbk_chinese_ci desc");
 			}
 			break;
 		case "zczj":
-			if(qury.get("sorder").toString().equals("ascend")){
+			if(asc){
 				sb.append("		    order by a.zczj ");
 			}else{
 				sb.append("		    order by a.zczj desc");
 			}
 			break;
 		case "fddbr":
-			if(qury.get("sorder").toString().equals("ascend")){
+			if(asc){
 				sb.append("		    order by convert( a.fddbr USING gbk) COLLATE gbk_chinese_ci ");
 			}else{
 				sb.append("		    order by convert( a.fddbr USING gbk) COLLATE gbk_chinese_ci desc");
 			}
 			break;
 		case "clsj":
-			if(qury.get("sorder").toString().equals("ascend")){
+			if(asc){
 				sb.append("		    order by a.swszsclsj ");
 			}else{
 				sb.append("		    order by a.swszsclsj desc");
@@ -85,7 +84,6 @@ public class SWSDao extends BaseDao{
 		}
 		sb.append("		    LIMIT ?, ? ");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{(pn-1)*ps,(pn-1)*ps,ps});
-//		Pager<Map<String, Object>> pager = Pager.create(ls, ps);
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
 		for(Map<String, Object> rec : ls){
 			Map<String,Object> link = new HashMap<>();
@@ -101,7 +99,6 @@ public class SWSDao extends BaseDao{
 		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", fl);
-		
 		Map<String, Object> meta = new HashMap<>();
 		meta.put("pageNum", pn);
 		meta.put("pageSize", ps);
