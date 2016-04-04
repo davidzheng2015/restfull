@@ -13,7 +13,7 @@ public class AsideMenuDao<AsideMenuDao> extends BaseJdbcDao implements IAsideMen
 	
 	@Override
 	public List<AsideMenu> getAsideMenu() {
-		String sql  = "select * from fw_menu";
+		String sql  = "select * from fw_menu  where pid is not null order by path,order_no";
 		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
 	}
