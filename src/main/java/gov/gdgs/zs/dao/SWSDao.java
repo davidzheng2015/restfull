@@ -173,8 +173,8 @@ public class SWSDao extends BaseDao{
 		sb.append("		a.dzhi,");
 		sb.append("		a.sjlzxsbwh,");
 		sb.append("		a.zcdz,");
-		sb.append("		a.sglzxsbsj,");
-		sb.append("		a.zjpzsj,");
+		sb.append("		date_format(a.sglzxsbsj,'%Y-%m-%d') as sglzxsbsj,");
+		sb.append("		date_format(a.zjpzsj,'%Y-%m-%d') as zjpzsj,");
 		sb.append("		a.yzbm,");
 		sb.append("		a.zjpzwh,");
 		sb.append("		a.czhen,");
@@ -192,17 +192,17 @@ public class SWSDao extends BaseDao{
 		sb.append("		a.gsyhmcbh,");
 		sb.append("		a.dzyj,");
 		sb.append("		a.yhdw,");
-		sb.append("		a.yhsj,");
+		sb.append("		date_format(a.yhsj,'%Y-%m-%d') as yhsj,");
 		sb.append("		a.gzbh,");
 		sb.append("		a.gzdw,");
 		sb.append("		a.gzry,");
-		sb.append("		a.gzsj,");
+		sb.append("		date_format(a.gzsj,'%Y-%m-%d') as gzsj,");
 		sb.append("		a.yzbh,");
 		sb.append("		a.yzdw,");
 		sb.append("		a.yzry,");
-		sb.append("		a.yzsj,");
+		sb.append("		date_format(a.yzsj,'%Y-%m-%d') as yzsj,");
 		sb.append("		a.tthybh,");
-		sb.append("		a.rhsj,");
+		sb.append("		date_format(a.rhsj,'%Y-%m-%d') as rhsj,");
 		sb.append("		a.khh,");
 		sb.append("		a.khhzh,");
 		sb.append("		a.fj,");
@@ -256,10 +256,10 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> cyryxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select @rownum:=@rownum+1 as 'key',c.xming,");
-		sb.append("		 d.mc, ");
+		sb.append("		select @rownum:=@rownum+1 as 'key', c.xming, ");
+		sb.append("		 d.mc as xl, ");
 		sb.append("		c.sfzh,");
-		sb.append("		e.mc,");
+		sb.append("		e.mc as zc,");
 		sb.append("		a.id");
 		sb.append("		from zs_cyry a,");
 		sb.append("		zs_jg b");
@@ -301,9 +301,9 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> swsbgxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select * from (select b.* from zs_jg a,zs_jglsbgxxb b where a.id = ? and b.jgb_id = a.id ");
+		sb.append("		select * from (select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg a,zs_jglsbgxxb b,(select @rownum:=0) zs_jg where a.id = ? and b.jgb_id = a.id ");
 		sb.append("				union ");
-		sb.append("				select b.* from zs_jg a,zs_jgbgxxb b,zs_jgbgspb c where a.id = ? and b.jgbgspb_id = c.id and c.jg_id = a.id) as g,(select @rownum:=0) zs_jg where g.jgb_id = ? ");
+		sb.append("				select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg a,zs_jgbgxxb b,zs_jgbgspb c where a.id = ? and b.jgbgspb_id = c.id and c.jg_id = a.id) as g where g.jgb_id = ? ");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id,id,id});
 	}
 	/**

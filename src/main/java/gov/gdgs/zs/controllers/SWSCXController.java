@@ -48,7 +48,7 @@ public class SWSCXController {
 	public Map<String, Object> swscx(HttpServletRequest request) {
 		Map<String, Object> sb = new HashMap<>();
 		StringBuffer url = request.getRequestURL();
-		String z = url.substring(0, url.indexOf("jgs"));
+		String z = url.substring(url.indexOf("api")-1, url.indexOf("jgs"));
 		try {
 			if (request.getParameterValues("pagenum")[0] != null
 					&& !request.getParameterValues("pagenum")[0].equals("0")&&request.getParameterValues("pagesize")[0] != null 
