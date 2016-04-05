@@ -15,6 +15,14 @@ public class AsideMenu implements Serializable {
 	private Integer orderNo;
 	private String path;
 	private String visble;
+	private String icon;
+	
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 	public Integer getId() {
 		return id;
 	}

@@ -17,9 +17,18 @@
 		<!-- <intercept-url pattern="/api/*" access="hasRole('ROLE_USER')" /> -->
 		<intercept-url pattern="/dist/*" access="hasRole('ROLE_USER')" />
 		<form-login authentication-success-handler-ref="mySuccessHandler" />
+		<csrf request-matcher-ref="csrfSecurityRequestMatcher"/>  
 
 		<logout />
 	</http>
+	
+	<beans:bean id="csrfSecurityRequestMatcher" class="com.gdky.restfull.security.CsrfSecurityRequestMatcher">
+        <beans:property name="execludeUrls">
+            <beans:list>
+                <beans:value>/api/</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
 
 	<beans:bean id="mySuccessHandler"
 		class="com.gdky.restfull.security.MySavedRequestAwareAuthenticationSuccessHandler" />
