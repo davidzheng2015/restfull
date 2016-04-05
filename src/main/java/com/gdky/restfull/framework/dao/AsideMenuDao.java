@@ -1,7 +1,11 @@
 package com.gdky.restfull.framework.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
+
+
+import java.util.Map;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,10 +16,17 @@ import com.gdky.restfull.framework.entity.AsideMenu;
 public class AsideMenuDao<AsideMenuDao> extends BaseJdbcDao implements IAsideMenuDao {
 	
 	@Override
-	public List<AsideMenu> getAsideMenu() {
+	public List<AsideMenu> getAsideMenu()  {
 		String sql  = "select * from fw_menu  where pid is not null order by path,order_no";
 		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
+	}
+
+	@Override
+	public void updateMenu(AsideMenu asideMenu){
+		String sql = "update fw_menu set pid=?,name=?,href=?,order_no=?,path=?,icon=?,visble=? where id=?";
+		this.jdbcTemplate.update(sql, new Object[]{asideMenu.getPid(),asideMenu.getName(),asideMenu.getHref(),
+				asideMenu.getOrderNo(),asideMenu.getPath(),asideMenu.getIcon(),asideMenu.getVisble(),asideMenu.getId()});
 	}
 
 }

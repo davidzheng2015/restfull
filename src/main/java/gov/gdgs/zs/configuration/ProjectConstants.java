@@ -1,6 +1,6 @@
 package gov.gdgs.zs.configuration;
 
-public class ProjectConstants {
+public final  class ProjectConstants {
 
 	/**
 	 * prefix of REST API

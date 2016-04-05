@@ -1,6 +1,6 @@
 package com.gdky.restfull.configuration;
 
-public class Constants {
+public final class Constants {
 
 	/**
 	 * prefix of REST API

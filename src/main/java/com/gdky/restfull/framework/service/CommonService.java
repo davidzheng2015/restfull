@@ -1,5 +1,6 @@
 package com.gdky.restfull.framework.service;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -15,8 +16,14 @@ public class CommonService implements ICommonService {
 	private IAsideMenuDao asideMenuDao;
 
 	@Override
-	public List<AsideMenu> getAsideMenu() {
+	public List<AsideMenu> getAsideMenu()  {
 		return asideMenuDao.getAsideMenu();
+	}
+
+	@Override
+	public void updateMenu(AsideMenu asideMenu)  {
+		asideMenuDao.updateMenu(asideMenu);
+		
 	}
 
 }
