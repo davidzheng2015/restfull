@@ -1,4 +1,4 @@
-package com.gdky.restfull;
+package com.gdky.restfull.configuration;
 
 public class Constants {
 

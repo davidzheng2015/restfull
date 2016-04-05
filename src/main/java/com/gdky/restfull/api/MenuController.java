@@ -1,5 +1,6 @@
 package com.gdky.restfull.api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gdky.restfull.Constants;
+import com.alibaba.fastjson.JSONObject;
+import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.framework.entity.AsideMenu;
 import com.gdky.restfull.framework.service.ICommonService;
 
@@ -28,8 +30,14 @@ public class MenuController {
 		return commonService.getAsideMenu();
 	}
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
-	public void updateMenu(@PathVariable("id") String id, @RequestBody AsideMenu asideMenu){
-		System.out.println(asideMenu.getName());
+	public Map<String,Object> updateMenu(@PathVariable("id") String id, @RequestBody JSONObject asideMenu){
+		System.out.println(asideMenu.getString("id"));
+		System.out.println(asideMenu.getString("name"));
+		Map<String,Object> obj = new LinkedHashMap<String,Object>();
+		obj.put("message", "操作成功");
+		obj.put("name", "项目");
+		return obj;
+		
 	}
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.POST)
 	public void addMenu(@PathVariable("id") String id, @RequestBody Map<String,Object> var){
