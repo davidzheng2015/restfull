@@ -1,4 +1,4 @@
-package gov.gdgs.zs.controllers;
+package gov.gdgs.zs.api;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -24,6 +24,6 @@ public class ApiController {
  
     }
     public ApiController(){
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>  API 启动    >>>>>>>>>>>>>>>>>>>>>");
     }
 }
