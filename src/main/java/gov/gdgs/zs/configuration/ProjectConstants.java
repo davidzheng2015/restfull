@@ -1,10 +1,11 @@
-package gov.gdgs.zs;
+package gov.gdgs.zs.configuration;
 
-public class ZsConstants {
+public final  class ProjectConstants {
 
 	/**
 	 * prefix of REST API
 	 */
 	public static final String URI_API_ZS = "/zs";
+	
 	
 }
