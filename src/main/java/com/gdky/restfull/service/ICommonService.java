@@ -1,9 +1,9 @@
-package com.gdky.restfull.framework.service;
+package com.gdky.restfull.service;
 
 import java.util.List;
 import java.util.Map;
 
-import com.gdky.restfull.framework.entity.AsideMenu;
+import com.gdky.restfull.entity.AsideMenu;
 
 
 public interface ICommonService {

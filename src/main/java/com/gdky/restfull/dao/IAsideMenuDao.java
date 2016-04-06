@@ -1,9 +1,9 @@
-package com.gdky.restfull.framework.dao;
+package com.gdky.restfull.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.gdky.restfull.framework.entity.AsideMenu;
+import com.gdky.restfull.entity.AsideMenu;
 
 public interface IAsideMenuDao {
 	

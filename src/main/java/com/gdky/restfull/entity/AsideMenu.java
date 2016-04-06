@@ -1,4 +1,4 @@
-package com.gdky.restfull.framework.entity;
+package com.gdky.restfull.entity;
 
 import java.io.Serializable;
 

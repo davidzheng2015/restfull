@@ -1,4 +1,4 @@
-package com.gdky.restfull.framework.dao;
+package com.gdky.restfull.dao;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.gdky.restfull.framework.entity.AsideMenu;
+import com.gdky.restfull.entity.AsideMenu;
 
 @Repository
 public class AsideMenuDao<AsideMenuDao> extends BaseJdbcDao implements IAsideMenuDao {

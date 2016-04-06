@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
-import com.gdky.restfull.framework.entity.AsideMenu;
-import com.gdky.restfull.framework.service.ICommonService;
+import com.gdky.restfull.entity.AsideMenu;
+import com.gdky.restfull.service.ICommonService;
 
 @RestController
 @RequestMapping(value = Constants.URI_API_PREFIX + Constants.URI_API_FRAMEWORK)
