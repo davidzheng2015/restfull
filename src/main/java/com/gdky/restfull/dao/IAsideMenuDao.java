@@ -11,4 +11,6 @@ public interface IAsideMenuDao {
 
 	public void updateMenu(AsideMenu asideMenu);
 
+	public AsideMenu getMenuDetail(String id);
+
 }

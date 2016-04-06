@@ -22,4 +22,6 @@ public interface ICommonService {
 	 * @throws Exception 
 	 */
 	public void updateMenu(AsideMenu asideMenu);
+
+	public AsideMenu getMenuDetail(String id);
 }

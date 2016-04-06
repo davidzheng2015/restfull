@@ -26,4 +26,9 @@ public class CommonService implements ICommonService {
 		
 	}
 
+	@Override
+	public AsideMenu getMenuDetail(String id) {
+		return asideMenuDao.getMenuDetail(id);
+	}
+
 }

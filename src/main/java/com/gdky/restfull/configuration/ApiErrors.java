@@ -6,6 +6,8 @@ public final class ApiErrors {
 
     public static final String INVALID_REQUEST = PREFIX + "INVALID_REQUEST";
     
+    public static final String DATA_ACCESS_ERROR = PREFIX + "Catch DataAccessException";
+    
     private ApiErrors() {
         throw new InstantiationError( "Must not instantiate this class" );
     }

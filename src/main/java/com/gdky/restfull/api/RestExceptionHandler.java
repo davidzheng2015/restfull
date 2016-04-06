@@ -1,11 +1,13 @@
 package com.gdky.restfull.api;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -68,11 +70,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         List<FieldError> fieldErrors = result.getFieldErrors();
 
         if (!fieldErrors.isEmpty()) {
-            fieldErrors.stream().forEach(e -> {
-                alert.addError(e.getField(), e.getCode(), e.getDefaultMessage());
-            });
+        	for (FieldError e : fieldErrors){
+        		alert.addError(e.getField(), e.getCode(), e.getDefaultMessage());
+        	}
         }
-
         return new ResponseEntity<>(alert, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    /**
+     * 处理jdbctemplate抛出的错误
+     * @date 2016年4月6日
+     * @para DataAccessException 
+     * @param ex
+     * @return JSON<ResponseMessage>
+     *
+     */
+    @ExceptionHandler(value={DataAccessException.class})
+    public ResponseEntity<ResponseMessage> handleSqlException(DataAccessException ex) {
+    	ResponseMessage alert = new ResponseMessage(
+    			ResponseMessage.Type.danger,
+    			ApiErrors.DATA_ACCESS_ERROR,
+    			ex.getMessage());
+    	 return new ResponseEntity<>(alert, HttpStatus.INTERNAL_SERVER_ERROR);
+	  
+    }
+  
+  
 }
