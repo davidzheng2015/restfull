@@ -50,6 +50,10 @@ public class SWSDao extends BaseDao{
 		sb.append("			and a.id = d.zsjg_id");
 		sb.append("			and v.zsjg_id = d.zsjg_id");
 		sb.append("		    and d.nd = v.nd ");
+		if(!qury.get("dwmc").equals("undefind")){
+			
+			String qq=qury.get("dwmc").toString();
+		}
 		Boolean asc = qury.get("sorder").toString().equals("ascend");
 		switch (qury.get("sfield").toString()) {
 		case "dwmc":

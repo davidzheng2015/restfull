@@ -62,6 +62,15 @@ public class SWSCXController {
 						qury.put("sfield", request.getParameterValues("sfield")[0]);
 						qury.put("sorder", request.getParameterValues("sorder")[0]);
 					}
+					if(!request.getParameterValues("dwmc")[0].equals("null")){
+					qury.put("dwmc", request.getParameterValues("dwmc")[0]);}
+					
+					if(!request.getParameterValues("zsbh")[0].equals("null")){
+					qury.put("zsbh", request.getParameterValues("zsbh")[0]);}
+					
+					if(!request.getParameterValues("zczj")[0].equals("null")){
+					qury.put("zczj", request.getParameterValues("zczj")[0]);}
+					
 					
 					Map<String, Object> meta = swsDao.swscx(z,qury);
 					sb.put("data", meta.get("data"));
