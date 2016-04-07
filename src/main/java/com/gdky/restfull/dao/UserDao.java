@@ -1,4 +1,4 @@
-package com.gdky.restfull.framework.dao;
+package com.gdky.restfull.dao;
 
 import javax.annotation.Resource;
 

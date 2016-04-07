@@ -1,4 +1,4 @@
-package com.gdky.restfull.framework.entity;
+package com.gdky.restfull.entity;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ public class AsideMenu implements Serializable {
 	private String href;
 	private Integer orderNo;
 	private String path;
-	private String visble;
+	private Integer visble;
 	private String icon;
 	
 	public String getIcon() {
@@ -59,10 +59,10 @@ public class AsideMenu implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public String getVisble() {
+	public Integer getVisble() {
 		return visble;
 	}
-	public void setVisble(String visble) {
+	public void setVisble(Integer visble) {
 		this.visble = visble;
 	}
 }
