@@ -30,12 +30,21 @@ public class MenuController {
 	@Resource
 	private ICommonService commonService;
 
+	/**
+	 * 获取模块菜单列表
+	 * @return
+	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
 	public  ResponseEntity<List<AsideMenu>> getAsideMenu() {
 		List<AsideMenu> ls = commonService.getAsideMenu();
 		return new ResponseEntity<>(ls,HttpStatus.OK);
 	}
-
+	/**
+	 * 修改模块菜单内容
+	 * @param id
+	 * @param asideMenu
+	 * @return
+	 */
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updateMenu(@PathVariable("id") String id,
 			@RequestBody AsideMenu asideMenu) {
