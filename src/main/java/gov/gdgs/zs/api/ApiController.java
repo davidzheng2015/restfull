@@ -1,16 +1,11 @@
-package gov.gdgs.zs.controllers;
+package gov.gdgs.zs.api;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gdky.restfull.framework.dao.MenuDao;
-import com.gdky.restfull.framework.entity.Menu;
 import com.gdky.restfull.view.Greeting;
 @RestController
 public class ApiController {
@@ -24,6 +19,6 @@ public class ApiController {
  
     }
     public ApiController(){
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>  API 启动    >>>>>>>>>>>>>>>>>>>>>");
     }
 }

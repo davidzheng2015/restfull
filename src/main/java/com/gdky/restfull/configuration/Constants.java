@@ -1,6 +1,6 @@
-package com.gdky.restfull;
+package com.gdky.restfull.configuration;
 
-public class Constants {
+public final class Constants {
 
 	/**
 	 * prefix of REST API
@@ -10,5 +10,6 @@ public class Constants {
 	public static final String URI_API_FRAMEWORK = "/fw";
 	
 	public static final String URI_API_VERSION = "1.1";
+	
 	
 }
