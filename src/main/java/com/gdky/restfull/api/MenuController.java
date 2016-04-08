@@ -57,14 +57,15 @@ public class MenuController {
 	@RequestMapping(value = "/asidemenu/{id}",method = RequestMethod.GET)
 	public ResponseEntity<AsideMenu> getMenuDetail(@PathVariable("id") String id){
 		AsideMenu rs = this.commonService.getMenuDetail(id);
-		log.debug("get result @" + rs);
 		return  new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.POST)
-	public void addMenu(@PathVariable("id") String id,
-			@RequestBody Map<String, Object> var) {
-		System.out.println(var);
+	@RequestMapping(value = "/asidemenu", method = RequestMethod.POST)
+	public ResponseEntity<ResponseMessage> addMenu(@RequestBody Map<String, Object> node) {
+		System.out.println(node.toString());
+		String rs = commonService.addMenu(node);
+		System.out.println(rs);
+		return new ResponseEntity<>(ResponseMessage.success("成功"),HttpStatus.CREATED);
 	}
 
 }

@@ -13,4 +13,13 @@ public interface IAsideMenuDao {
 
 	public AsideMenu getMenuDetail(String id);
 
+	public String addMenu(AsideMenu item);
+
+
+	/**
+	 * 通过id返回该记录的path
+	 * @para id
+	 */
+	public String getPathById(Integer id);
+
 }
