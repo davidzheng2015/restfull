@@ -1,6 +1,5 @@
 package com.gdky.restfull.api;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class MenuController {
 	private ICommonService commonService;
 
 	/**
-	 * 获取模块菜单列表
+	 * 定义模块菜单类api
 	 * @return
 	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
@@ -39,12 +38,7 @@ public class MenuController {
 		List<AsideMenu> ls = commonService.getAsideMenu();
 		return new ResponseEntity<>(ls,HttpStatus.OK);
 	}
-	/**
-	 * 修改模块菜单内容
-	 * @param id
-	 * @param asideMenu
-	 * @return
-	 */
+
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updateMenu(@PathVariable("id") String id,
 			@RequestBody AsideMenu asideMenu) {
@@ -61,11 +55,18 @@ public class MenuController {
 	}
 
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.POST)
-	public ResponseEntity<ResponseMessage> addMenu(@RequestBody Map<String, Object> node) {
-		System.out.println(node.toString());
-		String rs = commonService.addMenu(node);
-		System.out.println(rs);
-		return new ResponseEntity<>(ResponseMessage.success("成功"),HttpStatus.CREATED);
+	public ResponseEntity<Map<String,Object>> addMenu(@RequestBody Map<String, Object> node) {
+		Map<String,Object> rs = commonService.addMenu(node);
+		return new ResponseEntity<>(rs,HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<List<AsideMenu>> removeMenu(@PathVariable("id") String id) {
+		
+		commonService.removeMenu(id);
+		List<AsideMenu> ls = commonService.getAsideMenu();
+		return new ResponseEntity<>(ls,HttpStatus.OK);
 
+	}
+	
 }

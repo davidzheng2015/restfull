@@ -13,7 +13,7 @@ public interface IAsideMenuDao {
 
 	public AsideMenu getMenuDetail(String id);
 
-	public String addMenu(AsideMenu item);
+	public Number addMenu(AsideMenu item);
 
 
 	/**
@@ -21,5 +21,7 @@ public interface IAsideMenuDao {
 	 * @para id
 	 */
 	public String getPathById(Integer id);
+
+	public int removeMenu(AsideMenu menu);
 
 }
