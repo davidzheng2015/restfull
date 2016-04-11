@@ -1,6 +1,5 @@
 package com.gdky.restfull.api;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;

@@ -1,7 +1,6 @@
 package com.gdky.restfull.dao;
 
 import java.util.List;
-import java.util.Map;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import com.gdky.restfull.entity.AsideMenu;

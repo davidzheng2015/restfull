@@ -1,5 +1,6 @@
 package gov.gdgs.zs.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,10 @@ public class SWSDao extends BaseDao{
 		String sql = "select * from zs_jg";
 		return this.jdbcTemplate.queryForList(sql);
 		
+	}
+	public String formatDate(Object date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(date);
 	}
 	/**
 	 * 
@@ -50,9 +55,35 @@ public class SWSDao extends BaseDao{
 		sb.append("			and a.id = d.zsjg_id");
 		sb.append("			and v.zsjg_id = d.zsjg_id");
 		sb.append("		    and d.nd = v.nd ");
-		if(!qury.get("dwmc").equals("undefind")){
-			
-			String qq=qury.get("dwmc").toString();
+		if(qury.get("dwmc")!=null){
+			sb.append("		    and a.dwmc like '%"+qury.get("dwmc")+"%'");
+		}
+		if(qury.get("zsbh")!=null){
+			sb.append("		    and a.jgzch =  "+qury.get("zsbh"));
+		}
+		if(qury.get("zczj")!=null){
+			sb.append("		    and a.zczj>="+qury.get("zczj"));
+		}
+		if(qury.get("zczj2")!=null){
+			sb.append("		    and a.zczj<="+qury.get("zczj2"));
+		}
+		if(qury.get("cs")!=null){
+			sb.append("		   and a.CS_DM="+qury.get("cs"));
+		}
+		if(qury.get("swsxz")!=null){
+			sb.append("		    and a.JGXZ_DM="+qury.get("swsxz"));
+		}
+		if(qury.get("zrs")!=null){
+			sb.append("		    and d.zrs>="+qury.get("zrs"));
+		}
+		if(qury.get("zrs2")!=null){
+			sb.append("		    and d.zrs<="+qury.get("zrs2"));
+		}
+		if(qury.get("clsj")!=null){
+			sb.append("		    and DATE_FORMAT(a.swszsclsj,'%Y-%m-%d') >='"+qury.get("clsj")+"'");
+		}
+		if(qury.get("clsj2")!=null){
+			sb.append("		    and DATE_FORMAT(a.swszsclsj,'%Y-%m-%d') <='"+qury.get("clsj2")+"'");
 		}
 		Boolean asc = qury.get("sorder").toString().equals("ascend");
 		switch (qury.get("sfield").toString()) {
@@ -228,9 +259,10 @@ public class SWSDao extends BaseDao{
 		sb.append("		and d.nd = v.nd");
 		sb.append("		and a.id = ?");
 		String sql = "select @rownum:=@rownum+1 as 'key',b.* from zs_jg a,zs_nbjgsz b where a.id = b.jg_id and a.id = ?";
-		Map<String,Object> tl = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});
-		tl.put("nbjgsz", this.jdbcTemplate.queryForList(sql,new Object[]{id}));
-		return tl;
+		List<Map<String, Object>> tl = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
+		Map<String,Object> ll =tl.get(0);
+		ll.put("nbjgsz", this.jdbcTemplate.queryForList(sql,new Object[]{id}));
+		return ll;
 	}
 	/**
 	 * 
