@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -34,10 +35,13 @@ public class MenuController {
 	 * @return
 	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
-	public  ResponseEntity<List<AsideMenu>> getAsideMenu() {
-		List<AsideMenu> ls = commonService.getAsideMenu();
+	public  ResponseEntity<List<AsideMenu>> getAsideMenu(
+			@RequestParam(value = "q", required = false) String q,
+			@RequestParam(value = "l", required = true) String l) {
+		List<AsideMenu> ls = commonService.getAsideMenu(q,l);
 		return new ResponseEntity<>(ls,HttpStatus.OK);
 	}
+	
 
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updateMenu(@PathVariable("id") String id,
@@ -61,10 +65,15 @@ public class MenuController {
 	}
 	
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<List<AsideMenu>> removeMenu(@PathVariable("id") String id) {
+	public ResponseEntity<List<AsideMenu>> removeMenu(
+			@PathVariable("id") String id,
+			@RequestParam(value = "l", required = true) String l) {
 		
 		commonService.removeMenu(id);
-		List<AsideMenu> ls = commonService.getAsideMenu();
+		
+		String q = "all";				
+		List<AsideMenu> ls = commonService.getAsideMenu(q,l);
+		
 		return new ResponseEntity<>(ls,HttpStatus.OK);
 
 	}

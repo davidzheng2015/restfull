@@ -2,6 +2,8 @@ package com.gdky.restfull.dao;
 
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +14,10 @@ import com.gdky.restfull.entity.AsideMenu;
 public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
-	public List<AsideMenu> getAsideMenu() {
-		String sql = "select * from fw_menu  where pid is not null order by path,order_no";
-		List<AsideMenu> ls = this.jdbcTemplate.query(sql,
-				new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
+	public List<AsideMenu> getAsideMenu(String para,String l) {
+		String sql = "select * from " + Constants.PROJECT_SCHEMA 
+				+ "fw_menu  where pid is not null"+para+" and lx = ? order by path,order_no";
+		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new String[]{l},new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
 	}
 
