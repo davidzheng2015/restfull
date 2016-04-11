@@ -11,4 +11,15 @@ public interface IAsideMenuDao {
 
 	public AsideMenu getMenuDetail(String id);
 
+	public Number addMenu(AsideMenu item);
+
+
+	/**
+	 * 通过id返回该记录的path
+	 * @para id
+	 */
+	public String getPathById(Integer id);
+
+	public int removeMenu(AsideMenu menu);
+
 }

@@ -127,20 +127,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant</artifactId>
-			<version>1.7.0</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.6.4</version>
 		</dependency>
+		<!-- 用来生成混淆id http://hashids.org/java/ -->
 		<dependency>
-            <groupId>com.alibaba</groupId>
-     		<artifactId>fastjson</artifactId>
-     		<version>1.2.8</version>
+  			<groupId>org.hashids</groupId>
+  			<artifactId>hashids</artifactId>
+  			<version>1.0.1</version>
 		</dependency>
+
 
 		<!-- Test -->
 		<dependency>

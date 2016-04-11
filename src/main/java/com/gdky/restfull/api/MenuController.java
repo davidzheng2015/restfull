@@ -29,6 +29,10 @@ public class MenuController {
 	@Resource
 	private ICommonService commonService;
 
+	/**
+	 * 定义模块菜单类api
+	 * @return
+	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
 	public  ResponseEntity<List<AsideMenu>> getAsideMenu() {
 		List<AsideMenu> ls = commonService.getAsideMenu();
@@ -47,14 +51,22 @@ public class MenuController {
 	@RequestMapping(value = "/asidemenu/{id}",method = RequestMethod.GET)
 	public ResponseEntity<AsideMenu> getMenuDetail(@PathVariable("id") String id){
 		AsideMenu rs = this.commonService.getMenuDetail(id);
-		log.debug("get result @" + rs);
 		return  new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.POST)
-	public void addMenu(@PathVariable("id") String id,
-			@RequestBody Map<String, Object> var) {
-		System.out.println(var);
+	@RequestMapping(value = "/asidemenu", method = RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> addMenu(@RequestBody Map<String, Object> node) {
+		Map<String,Object> rs = commonService.addMenu(node);
+		return new ResponseEntity<>(rs,HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<List<AsideMenu>> removeMenu(@PathVariable("id") String id) {
+		
+		commonService.removeMenu(id);
+		List<AsideMenu> ls = commonService.getAsideMenu();
+		return new ResponseEntity<>(ls,HttpStatus.OK);
 
+	}
+	
 }

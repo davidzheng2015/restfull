@@ -24,4 +24,9 @@ public interface ICommonService {
 	public void updateMenu(AsideMenu asideMenu);
 
 	public AsideMenu getMenuDetail(String id);
+
+	public Map<String,Object> addMenu(Map<String, Object> node);
+
+	public int removeMenu(String id);
+
 }
