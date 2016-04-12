@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -29,11 +30,18 @@ public class MenuController {
 	@Resource
 	private ICommonService commonService;
 
+	/**
+	 * 定义模块菜单类api
+	 * @return
+	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)
-	public  ResponseEntity<List<AsideMenu>> getAsideMenu() {
-		List<AsideMenu> ls = commonService.getAsideMenu();
+	public  ResponseEntity<List<AsideMenu>> getAsideMenu(
+			@RequestParam(value = "q", required = false) String q,
+			@RequestParam(value = "l", required = true) String l) {
+		List<AsideMenu> ls = commonService.getAsideMenu(q,l);
 		return new ResponseEntity<>(ls,HttpStatus.OK);
 	}
+	
 
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updateMenu(@PathVariable("id") String id,
@@ -47,14 +55,27 @@ public class MenuController {
 	@RequestMapping(value = "/asidemenu/{id}",method = RequestMethod.GET)
 	public ResponseEntity<AsideMenu> getMenuDetail(@PathVariable("id") String id){
 		AsideMenu rs = this.commonService.getMenuDetail(id);
-		log.debug("get result @" + rs);
 		return  new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.POST)
-	public void addMenu(@PathVariable("id") String id,
-			@RequestBody Map<String, Object> var) {
-		System.out.println(var);
+	@RequestMapping(value = "/asidemenu", method = RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> addMenu(@RequestBody Map<String, Object> node) {
+		Map<String,Object> rs = commonService.addMenu(node);
+		return new ResponseEntity<>(rs,HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<List<AsideMenu>> removeMenu(
+			@PathVariable("id") String id,
+			@RequestParam(value = "l", required = true) String l) {
+		
+		commonService.removeMenu(id);
+		
+		String q = "all";				
+		List<AsideMenu> ls = commonService.getAsideMenu(q,l);
+		
+		return new ResponseEntity<>(ls,HttpStatus.OK);
 
+	}
+	
 }
