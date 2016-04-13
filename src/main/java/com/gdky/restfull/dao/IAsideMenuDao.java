@@ -7,7 +7,7 @@ import com.gdky.restfull.entity.AsideMenu;
 
 public interface IAsideMenuDao {
 	
-	public List<AsideMenu> getAsideMenu() ;
+	public List<AsideMenu> getAsideMenu(String para,String l) ;
 
 	public void updateMenu(AsideMenu asideMenu);
 

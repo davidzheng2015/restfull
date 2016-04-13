@@ -11,11 +11,12 @@ public interface ICommonService {
 	
 	/**
 	 * 获取导航菜单集合
+	 * @param q 
 	 * @param
 	 * @return AsideMenu
 	 * @throws Exception 
 	 */
-	public List<AsideMenu> getAsideMenu() ;
+	public List<AsideMenu> getAsideMenu(String q,String l) ;
 
 	/**
 	 * 更新菜单节点
@@ -28,5 +29,6 @@ public interface ICommonService {
 	public Map<String,Object> addMenu(Map<String, Object> node);
 
 	public int removeMenu(String id);
+
 
 }

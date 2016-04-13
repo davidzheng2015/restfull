@@ -1,5 +1,6 @@
 package com.gdky.restfull.service;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,15 @@ public class CommonService implements ICommonService {
 	private IAsideMenuDao asideMenuDao;
 
 	@Override
-	public List<AsideMenu> getAsideMenu() {
-		return asideMenuDao.getAsideMenu();
+	public List<AsideMenu> getAsideMenu(String q, String l) {
+		String para = " and visble = 1 ";
+
+		if (q!=null && q.equals("all")){
+			para = " ";
+		}
+		return asideMenuDao.getAsideMenu(para,l);
 	}
+
 
 	@Override
 	public void updateMenu(AsideMenu asideMenu) {
@@ -60,7 +67,8 @@ public class CommonService implements ICommonService {
 	public int removeMenu(String id) {
 		AsideMenu menu = asideMenuDao.getMenuDetail(id);
 		return asideMenuDao.removeMenu(menu);
-		
 	}
+
+	
 
 }
