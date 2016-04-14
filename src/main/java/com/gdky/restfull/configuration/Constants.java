@@ -11,5 +11,6 @@ public final class Constants {
 	
 	public static final String URI_API_VERSION = "1.1";
 	
+	public static final String PROJECT_SCHEMA = ""; //zs_new.
 	
 }
