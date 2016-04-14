@@ -16,11 +16,8 @@ public class YwglService {
 	@Resource
 	private YwglDao ywglDao;
 
-	public Map<String, Object> getYwxy() {
-		Map<String,Object> obj = new LinkedHashMap<String,Object>();
-		List<Map<String, Object>> ls = ywglDao.getYwxy();
-		obj.put("data", ls) ;
-		return obj;
+	public Map<String, Object> getYwxy(int page, int pageSize) {
+		return  ywglDao.getYwxy(page,pageSize);
 	}
 
 }

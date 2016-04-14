@@ -10,8 +10,10 @@ import gov.gdgs.zs.service.YwglService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -24,7 +26,7 @@ import com.gdky.restfull.configuration.Constants;
  */
 
 @RestController
-@RequestMapping(value = Constants.URI_API_PREFIX + ProjectConstants.URI_API_ZS)
+@RequestMapping(value = Constants.URL_PROJECT)
 public class YwglController {
 	
 	@Resource
@@ -35,9 +37,12 @@ public class YwglController {
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/ywxy", method = RequestMethod.GET)
-	public  ResponseEntity<Map<String,Object>> getAsideMenu() {
-		Map<String,Object> obj = ywglService.getYwxy();
+	@RequestMapping(value = "/zsxygl", method = RequestMethod.GET)
+	public  ResponseEntity<Map<String,Object>> getAsideMenu(
+			@RequestParam(value = "page", required = false) int page,
+			@RequestParam(value = "pageSize", required = false) int pageSize) {
+
+		Map<String,Object> obj = ywglService.getYwxy(page,pageSize);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
