@@ -55,6 +55,7 @@ public class CommonService implements ICommonService {
 		item.setPath(path);
 		item.setName((String) node.get("name"));
 		item.setVisble((Integer) node.get("visble"));
+		item.setLx((String) node.get("lx"));
 		Number rs =  asideMenuDao.addMenu(item);
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("id", rs);

@@ -36,9 +36,9 @@ public class YwglController {
 	 *
 	 */
 	@RequestMapping(value = "/ywxy", method = RequestMethod.GET)
-	public  ResponseEntity<List<Map<String,Object>>> getAsideMenu() {
-		List<Map<String,Object>> ls = ywglService.getYwxy();
-		return new ResponseEntity<>(ls,HttpStatus.OK);
+	public  ResponseEntity<Map<String,Object>> getAsideMenu() {
+		Map<String,Object> obj = ywglService.getYwxy();
+		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
 }

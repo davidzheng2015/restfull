@@ -54,10 +54,10 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 	public Number addMenu(AsideMenu item) {
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Constants.PROJECT_SCHEMA + "fw_menu ");
-		sb.append("(pid,name,path,visble) ");
-		sb.append("values (?,?,?,?)");
+		sb.append("(pid,name,path,visble,lx) ");
+		sb.append("values (?,?,?,?,?)");
 		Object[] arg = new Object[] { item.getPid(), item.getName(),
-				item.getPath(), item.getVisble() };
+				item.getPath(), item.getVisble(),item.getLx() };
 
 		Number rs = this.insertAndGetKeyByJdbc(sb.toString(), arg,
 				new String[] { "id" });
