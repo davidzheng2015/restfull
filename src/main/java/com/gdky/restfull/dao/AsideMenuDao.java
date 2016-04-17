@@ -1,6 +1,8 @@
 package com.gdky.restfull.dao;
 
 
+import gov.gdgs.zs.configuration.ProjectConstants;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
 	public List<AsideMenu> getAsideMenu(String para,String l) {
-		String sql = "select * from " + Constants.PROJECT_SCHEMA 
+		String sql = "select * from " + ProjectConstants.PROJECT_SCHEMA 
 				+ "fw_menu  where pid is not null"+para+" and lx = ? order by path,order_no";
 		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new String[]{l},new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
@@ -43,7 +45,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
 	public String getPathById(Integer id) {
-		String sql = "select path from " + Constants.PROJECT_SCHEMA
+		String sql = "select path from " + ProjectConstants.PROJECT_SCHEMA
 				+ "fw_menu where id = ?";
 		String rs = jdbcTemplate.queryForObject(sql, new Object[] { id },
 				String.class);
@@ -53,7 +55,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 	@Override
 	public Number addMenu(AsideMenu item) {
 		final StringBuffer sb = new StringBuffer("insert into "
-				+ Constants.PROJECT_SCHEMA + "fw_menu ");
+				+ ProjectConstants.PROJECT_SCHEMA + "fw_menu ");
 		sb.append("(pid,name,path,visble,lx) ");
 		sb.append("values (?,?,?,?,?)");
 		Object[] arg = new Object[] { item.getPid(), item.getName(),
@@ -67,7 +69,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
 	public int removeMenu(AsideMenu menu) {
-		String sql = "delete from " + Constants.PROJECT_SCHEMA
+		String sql = "delete from " + ProjectConstants.PROJECT_SCHEMA
 				+ "fw_menu where path like concat(?,'-',lpad(?,3,0),'%') or id = ?";
 		int rs = this.jdbcTemplate.update(sql, new Object[] { menu.getPath(),
 				menu.getId(), menu.getId() });

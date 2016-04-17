@@ -1,5 +1,6 @@
 package gov.gdgs.zs.api;
 
+import gov.gdgs.zs.configuration.ProjectConstants;
 import gov.gdgs.zs.service.DMService;
 
 import java.util.List;
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gdky.restfull.configuration.Constants;
 
 /** 代码表有关api **/
 @RestController
-@RequestMapping(value = Constants.URL_PROJECT)
+@RequestMapping(value = ProjectConstants.URL_PROJECT)
 public class DMController {
 	
 	@Resource

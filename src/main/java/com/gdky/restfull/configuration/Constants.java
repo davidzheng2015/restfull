@@ -11,10 +11,10 @@ public final class Constants {
 
 	public static final String URI_API_VERSION = "1.1";
 
-	public static final String PROJECT_SCHEMA = ""; // zs_new.
+	public static final String FRAMEWORK_SCHEMA = ""; // zs_new.
 
-	public static final String URL_FW = URI_API_PREFIX + URI_API_FRAMEWORK;
-
-	public static final String URL_PROJECT = URI_API_PREFIX + PROJECT_SCHEMA;
-
+	public static final String URL_FRAMKEWORK = URI_API_PREFIX + URI_API_FRAMEWORK;
+	
+	public static final String URI_API_FRAMEWORK_PRIFIX = "/api/fw";
+	
 }

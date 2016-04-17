@@ -22,7 +22,7 @@ import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.service.ICommonService;
 
 @RestController
-@RequestMapping(value = Constants.URL_FW)
+@RequestMapping(value = Constants.URI_API_FRAMEWORK_PRIFIX)
 public class MenuController {
 	private static final Logger log = LoggerFactory
             .getLogger(MenuController.class);

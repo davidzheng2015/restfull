@@ -1,6 +1,9 @@
 package gov.gdgs.zs.api;
 
-import java.util.List;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -10,13 +13,16 @@ import gov.gdgs.zs.service.YwglService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gdky.restfull.configuration.Constants;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 /**
@@ -26,7 +32,7 @@ import com.gdky.restfull.configuration.Constants;
  */
 
 @RestController
-@RequestMapping(value = Constants.URL_PROJECT)
+@RequestMapping(value = ProjectConstants.URL_PROJECT)
 public class YwglController {
 	
 	@Resource
@@ -34,14 +40,27 @@ public class YwglController {
 	
 	/**
 	 * 业务协议类api
+	 * @throws UnsupportedEncodingException 
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/zsxygl", method = RequestMethod.GET)
+	@RequestMapping(value = "/xygl", method = RequestMethod.GET)
 	public  ResponseEntity<Map<String,Object>> getAsideMenu(
-			@RequestParam(value = "page", required = false) int page,
-			@RequestParam(value = "pageSize", required = false) int pageSize) {
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@RequestParam(value="where", required=false) String where){
 
+		System.out.println(where);
+		try {
+			where = java.net.URLDecoder.decode(where,"UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			HashMap<String,Object> map = mapper.readValue(where,new TypeReference<Map<String,Object>>(){});
+			System.out.println(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		System.out.println(where);
 		Map<String,Object> obj = ywglService.getYwxy(page,pageSize);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
