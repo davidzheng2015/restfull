@@ -1,6 +1,9 @@
 package gov.gdgs.zs.api;
 
-import java.util.List;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -12,9 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gdky.restfull.configuration.Constants;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 /**
@@ -24,7 +32,7 @@ import com.gdky.restfull.configuration.Constants;
  */
 
 @RestController
-@RequestMapping(value = Constants.URI_API_PREFIX + ProjectConstants.URI_API_ZS)
+@RequestMapping(value = ProjectConstants.URL_PROJECT)
 public class YwglController {
 	
 	@Resource
@@ -32,13 +40,18 @@ public class YwglController {
 	
 	/**
 	 * 业务协议类api
+	 * @throws UnsupportedEncodingException 
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/ywxy", method = RequestMethod.GET)
-	public  ResponseEntity<List<Map<String,Object>>> getAsideMenu() {
-		List<Map<String,Object>> ls = ywglService.getYwxy();
-		return new ResponseEntity<>(ls,HttpStatus.OK);
+	@RequestMapping(value = "/xygl", method = RequestMethod.GET)
+	public  ResponseEntity<Map<String,Object>> getAsideMenu(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@RequestParam(value="where", required=false) String where){
+
+		Map<String,Object> obj = ywglService.getYwxy(page,pageSize,where);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
 }
