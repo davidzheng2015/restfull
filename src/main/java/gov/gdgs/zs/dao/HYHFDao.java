@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.gdky.restfull.dao.BaseJdbcDao;
@@ -17,14 +15,13 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 
 @Repository
 public class HYHFDao extends BaseJdbcDao{
-//	@Resource(name="jdbcTemplate")
-//	private JdbcTemplate jdbcTemplate;
+
 	 public Map<String,Object> hyhf(int pn,int ps){
   	   StringBuffer sb= new StringBuffer();
   	 sb.append("	select  ");
   	 sb.append("  a.ID AS 'key',a.ID,a.ND,a.JGNAME,FORMAT(a.ZYYWSR,2) AS ZYYWSR,FORMAT(a.ZJNE,2) AS ZJNE,");	 
-  	  sb.append(" FORMAT(a.YJTTHF,2) AS YJTTHF,FORMAT(a.YJTTHF1,2) AS YJTTHF1,a.QJTTHF,FORMAT(a.YJGRHF,2) AS YJGRHF,");
-  	 sb.append(" FORMAT(a.YJGRHF2,2) AS YJGRHF2,a.QJGRHF,a.JG_ID");
+  	  sb.append(" FORMAT(a.YJTTHF,2) AS YJTTHF,FORMAT(a.YJTTHF1,2) AS YJTTHF1,FORMAT(a.QJTTHF,2) AS QJTTHF,FORMAT(a.YJGRHF,2) AS YJGRHF,");
+  	 sb.append(" FORMAT(a.YJGRHF2,2) AS YJGRHF2,FORMAT(a.QJGRHF,2) AS QJGRHF,a.JG_ID");
   	 sb.append(" FROM zs_hyhf a");
  
   	   List<Map<String,Object>> ls= this.jdbcTemplate.queryForList(sb.toString());
@@ -41,8 +38,8 @@ public class HYHFDao extends BaseJdbcDao{
 	 public Map<String,Object> hyhf1(){
 	   		StringBuffer sb = new StringBuffer();
 	   	   sb.append(" SELECT a.ID AS 'key',a.ID,a.ND,a.JGNAME,FORMAT(a.ZYYWSR,2) AS ZYYWSR,FORMAT(a.ZJNE,2) AS ZJNE,");	 
-	   	  sb.append(" FORMAT(a.YJTTHF,2) AS YJTTHF,FORMAT(a.YJTTHF1,2) AS YJTTHF1,a.QJTTHF,FORMAT(a.YJGRHF,2) AS YJGRHF,");
-	   	 sb.append(" FORMAT(a.YJGRHF2,2) AS YJGRHF2,a.QJGRHF,a.JG_ID");
+	   	  sb.append(" FORMAT(a.YJTTHF,2) AS YJTTHF,FORMAT(a.YJTTHF1,2) AS YJTTHF1,FORMAT(a.QJTTHF,2) AS QJTTHF,FORMAT(a.YJGRHF,2) AS YJGRHF,");
+	   	 sb.append(" FORMAT(a.YJGRHF2,2) AS YJGRHF2,FORMAT(a.QJGRHF,2) AS QJGRHF,a.JG_ID");
 	   	 sb.append(" FROM zs_hyhf a");
 		   List<Map<String,Object>> f1= this.jdbcTemplate.queryForList(sb.toString());
 	   		Map<String,Object> ob = new HashMap<>();
@@ -88,7 +85,7 @@ public class HYHFDao extends BaseJdbcDao{
  	  sb.append(" WHERE a.TYPE=1 AND a.DQ=b.ID  AND a.ID=? ORDER BY a.ND DESC,ID DESC");	 	    
  	 Map<String,Object> bg = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});
 	   Map<String,Object> ob = new HashMap<>();
-		    ob.put("Data", bg);
+		    ob.put("data", bg);
 		return ob;
 		 
      }

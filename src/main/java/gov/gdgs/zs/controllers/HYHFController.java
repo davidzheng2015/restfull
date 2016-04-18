@@ -36,12 +36,12 @@ public class HYHFController {
 					meta.put("pageSize",ps);
 					meta.put("pageTotal",hyhfDao.hyhf(pn,ps).get("pagetotal"));
 					meta.put("total_number",hyhfDao.hyhf(pn,ps).get("total_number"));
-					sb.put("Page",meta);
-					sb.put("Data", hyhfDao.hyhf(pn,ps).get("data"));
+					sb.put("page",meta);
+					sb.put("data", hyhfDao.hyhf(pn,ps).get("data"));
 				 }
 			 }
 		} catch (Exception e) {
-			sb.put("Data", hyhfDao.hyhf1().get("data"));
+			sb.put("data", hyhfDao.hyhf1().get("data"));
 		}
 		 return sb;
 
@@ -62,12 +62,12 @@ public class HYHFController {
 					meta.put("pageSize",ps);
 					meta.put("pageTotal",hyhfDao.grhf1(pn,ps).get("pagetotal"));
 					meta.put("total_number1",hyhfDao.grhf1(pn,ps).get("total_number1"));
-					sb.put("Page",meta);
-					sb.put("Data", hyhfDao.grhf1(pn,ps).get("data"));
+					sb.put("page",meta);
+					sb.put("data", hyhfDao.grhf1(pn,ps).get("data"));
 				 }
 			 }
 		} catch (Exception e) {
-			sb.put("Data", hyhfDao.grhf().get("data"));
+			sb.put("data", hyhfDao.grhf().get("data"));
 		}
 		 return sb;
 		 
