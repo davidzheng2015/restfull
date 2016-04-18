@@ -120,7 +120,6 @@ public class SWSDao extends BaseDao{
 				sb.append("		    order by a.swszsclsj desc");
 			}
 			break;
-
 		}
 		sb.append("		    LIMIT ?, ? ");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{(pn-1)*ps,(pn-1)*ps,ps});
@@ -147,19 +146,22 @@ public class SWSDao extends BaseDao{
 		meta.put("pageTotal",total);
 		meta.put("pageAll",(total + ps - 1) / ps);
 		ob.put("page", meta);
-		DbToDb bb = new DbToDb();
-		bb.insertnewDB();
+		
 		return ob;
 	}
 	/**
 	 * 
-	 * @return 事务所查询
+	 * @return 事务所查询新库迁移
+	 * @throws Exception 
 	 */
-	public Map<String,Object> swscx(String z){
+	public Map<String,Object> swscx(String z) throws Exception{
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select ");
 		sb.append("		     @rownum:=@rownum+1 as 'key',@rownum AS xh,a.id,");
 		sb.append("	    a.dwmc,");
+		sb.append("	    a.cs_dm,");
+		sb.append("	    a.jgxz_dm,");
+		sb.append("	    a.JGZT_DM,");
 		sb.append("		    a.zczj,");
 		sb.append("		    a.fddbr,");
 		sb.append("		    a.jgzch as zsbh,");
@@ -170,7 +172,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		    date_format(a.swszsclsj,'%Y-%m-%d') as clsj");
 		sb.append("		    	from");
 		sb.append("		    zs_jg a,");
-		sb.append("		    dm_jgxz b,");
+		sb.append("		    dm_jgxz b,");//加人员表去无效事务所
 		sb.append("	    dm_cs c,");
 		sb.append("	    zs_jgnj d,");
 		sb.append("	    (select max(nd) as nd,zsjg_id from zs_jgnj group by zsjg_id) as v,(select @rownum:=0) zs_jg");
@@ -179,7 +181,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		    and a.cs_dm = c.id");
 		sb.append("			and a.id = d.zsjg_id");
 		sb.append("			and v.zsjg_id = d.zsjg_id");
-		sb.append("		    and d.nd = v.nd ");
+		sb.append("		    and d.nd = v.nd  group by a.id");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
 		
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
@@ -197,7 +199,12 @@ public class SWSDao extends BaseDao{
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", fl);
 		ob.put("totalsize", ls.size());
-		System.out.println("拿数据了~~~~~~~~~~~~");
+		String sql = "SELECT MAX(nd) AS nd,zsjg_id,id "+
+" FROM zs_jgnj "+
+" GROUP BY zsjg_id";
+		DbToDb bb = new DbToDb();
+		bb.insertnewDB(ls);
+		System.out.println("插入了~~~~~~~~~~~~");
 		return ob;
 	}
 	/**

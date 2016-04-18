@@ -1,9 +1,12 @@
 package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.dao.RyglDao;
 import gov.gdgs.zs.dao.SWSDao;
+import gov.gdgs.zs.untils.DbToDb;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -26,6 +29,8 @@ import com.gdky.restfull.configuration.Constants;
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
+	@Resource
+	private RyglDao ryglDao;
 
 	@RequestMapping(value = "/modelautobind", method = { RequestMethod.GET })
 	@ResponseBody
@@ -48,7 +53,7 @@ public class SWSCXController {
 	 */
 
 	@RequestMapping(value = "/jgs", method = { RequestMethod.GET })
-	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) throws Exception {
 		Map<String, Object> sb = new HashMap<>();
 		StringBuffer url = request.getRequestURL();
 		String z = url.substring(url.indexOf("api")-1, url.indexOf("jgs"));
@@ -113,9 +118,10 @@ public class SWSCXController {
 			
 			
 		} catch (Exception e) {
-			System.out.println(e);
-			sb.put("data", swsDao.swscx(z).get("data"));
-			sb.put("pageTotal",swsDao.swscx(z).get("totalsize"));
+//			swsDao.swscx(z);
+//			ryglDao.ryqy();
+			DbToDb bb = new DbToDb();
+			bb.dealwithRYDB();
 		}
 		return new ResponseEntity<>(sb,HttpStatus.OK);
 
