@@ -11,9 +11,9 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 @Repository
 public class YwglDao extends BaseJdbcDao {
 
-	public Map<String, Object> getYwxy(int page, int pageSize) {
+	public Map<String, Object> getYwxy(int page, int pageSize, Map<String,Object> where) {
 		int startIndex = pageSize * (page-1) ;
-		String sql = "select t.nd,t.swsmc, t.CS_DM as ywfsd ,t.YWLX_ID as ywlx,t.bgwh,t.SFJE as xysfje,t.bbhm,t.bbrq,t.yzm"
+		String sql = "select t.nd,t.swsmc, t.CS_DM as cs ,t.YWLX_ID as ywlx,t.bgwh,t.SFJE as xysfje,t.bbhm,t.bbrq,t.yzm"
 				+ " from zs_ywba_jl t limit ?,?";
 		String countSql = "select count(t.id) from zs_ywba_jl t ";
 		int total = jdbcTemplate.queryForObject(countSql, Integer.class);

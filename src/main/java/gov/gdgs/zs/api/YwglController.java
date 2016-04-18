@@ -50,18 +50,7 @@ public class YwglController {
 			@RequestParam(value = "pageSize", required = true) int pageSize,
 			@RequestParam(value="where", required=false) String where){
 
-		System.out.println(where);
-		try {
-			where = java.net.URLDecoder.decode(where,"UTF-8");
-			ObjectMapper mapper = new ObjectMapper();
-			HashMap<String,Object> map = mapper.readValue(where,new TypeReference<Map<String,Object>>(){});
-			System.out.println(map);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 
-		System.out.println(where);
-		Map<String,Object> obj = ywglService.getYwxy(page,pageSize);
+		Map<String,Object> obj = ywglService.getYwxy(page,pageSize,where);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
