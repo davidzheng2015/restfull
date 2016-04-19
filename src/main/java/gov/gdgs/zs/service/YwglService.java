@@ -34,7 +34,7 @@ public class YwglService {
 			}
 		}
 
-		return ywglDao.getYwxy(page, pageSize,map);
+		return ywglDao.getYwxy(page, pageSize, map);
 	}
 
 }
