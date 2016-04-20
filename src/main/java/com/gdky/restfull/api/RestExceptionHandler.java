@@ -2,6 +2,8 @@ package com.gdky.restfull.api;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
     @ResponseBody
     public ResponseEntity<ResponseMessage> handleGenericException(Exception ex, WebRequest request) {
-        if (log.isDebugEnabled()) {
-            log.debug("handling exception...");
-        }
+//        if (log.isDebugEnabled()) {
+//            log.warn(ex.getMessage());
+//        }
+    	log.error(ex.getMessage());
         return new ResponseEntity<>(new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -89,14 +92,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     			ResponseMessage.Type.danger,
     			ApiErrors.DATA_ACCESS_ERROR,
     			ex.getMessage());
+    	log.error(ex.getMessage());
     	 return new ResponseEntity<>(alert, HttpStatus.INTERNAL_SERVER_ERROR);
 	  
     }
     
-    @ExceptionHandler(Exception.class)
-    public void  handleException(Exception e) {
-        log.warn(e.getMessage());
-    }
-  
   
 }
