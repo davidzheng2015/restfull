@@ -92,6 +92,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     	 return new ResponseEntity<>(alert, HttpStatus.INTERNAL_SERVER_ERROR);
 	  
     }
+    
+    @ExceptionHandler(Exception.class)
+    public void  handleException(Exception e) {
+        log.warn(e.getMessage());
+    }
   
   
 }
