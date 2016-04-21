@@ -30,7 +30,6 @@ public class YwglService {
 						new TypeReference<Map<String, Object>>() {
 						});
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 

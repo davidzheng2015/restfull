@@ -40,11 +40,10 @@ public class YwglController {
 	
 	/**
 	 * 业务协议类api
-	 * @throws UnsupportedEncodingException 
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/xygl", method = RequestMethod.GET)
+	@RequestMapping(value = "/ywbb", method = RequestMethod.GET)
 	public  ResponseEntity<Map<String,Object>> getAsideMenu(
 			@RequestParam(value = "page", required = true) int page,
 			@RequestParam(value = "pageSize", required = true) int pageSize,
