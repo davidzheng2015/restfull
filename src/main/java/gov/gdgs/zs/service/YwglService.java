@@ -31,8 +31,7 @@ public class YwglService {
 						});
 			} catch (Exception e) {
 			}
-		}
-
+		}		
 		return ywglDao.getYwxy(page, pageSize, map);
 	}
 

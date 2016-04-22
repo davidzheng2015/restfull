@@ -131,6 +131,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.6.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+		
 		<!-- 用来生成混淆id http://hashids.org/java/ -->
 		<dependency>
   			<groupId>org.hashids</groupId>

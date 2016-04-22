@@ -47,7 +47,7 @@ public class YwglController {
 	public  ResponseEntity<Map<String,Object>> getAsideMenu(
 			@RequestParam(value = "page", required = true) int page,
 			@RequestParam(value = "pageSize", required = true) int pageSize,
-			@RequestParam(value="where", required=false) String where){
+			@RequestParam(value="where", required=false) String where){ 
 
 		Map<String,Object> obj = ywglService.getYwxy(page,pageSize,where);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
