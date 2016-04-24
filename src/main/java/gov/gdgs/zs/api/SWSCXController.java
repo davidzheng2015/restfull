@@ -1,6 +1,6 @@
 package gov.gdgs.zs.api;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.dao.SWSDao;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gdky.restfull.configuration.Constants;
 
 @RestController
-@RequestMapping(value = Constants.URI_API_PREFIX + ProjectConstants.URI_API_ZS)
+@RequestMapping(value = Constants.URI_API_PREFIX + Config.URI_API_ZS)
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;

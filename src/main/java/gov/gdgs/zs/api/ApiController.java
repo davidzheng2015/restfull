@@ -1,6 +1,6 @@
 package gov.gdgs.zs.api;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.configuration.Config;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.view.Greeting;
 @RestController
-@RequestMapping(value = ProjectConstants.URL_PROJECT)
+@RequestMapping(value = Config.URL_PROJECT)
 public class ApiController {
 	
    

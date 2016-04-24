@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.service.YwglService;
 
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 @RestController
-@RequestMapping(value = ProjectConstants.URL_PROJECT)
+@RequestMapping(value = Config.URL_PROJECT)
 public class YwglController {
 	
 	@Resource
@@ -49,7 +49,7 @@ public class YwglController {
 			@RequestParam(value = "pageSize", required = true) int pageSize,
 			@RequestParam(value="where", required=false) String where){ 
 
-		Map<String,Object> obj = ywglService.getYwxy(page,pageSize,where);
+		Map<String,Object> obj = ywglService.getYwbb(page,pageSize,where);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
