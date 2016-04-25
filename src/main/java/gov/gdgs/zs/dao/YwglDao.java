@@ -53,7 +53,6 @@ public class YwglDao extends BaseJdbcDao {
 		// ===> 插入查询条件集合结束
 		sb.append("    WHERE ");
 		sb.append("        t.CS_DM = ds.ID AND t.YWLX_DM = dl.ID ");
-		sb.append("            AND t.id ");
 		sb.append("            AND sub.id = t.id) v, ");
 		sb.append("    (SELECT @rownum:=?) tmp ");
 		sb.append(" ");
@@ -73,7 +72,7 @@ public class YwglDao extends BaseJdbcDao {
 		String countSql = condition.getCountSql("id", "zs_ywbb");
 		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
 				.toArray(), Integer.class);
-
+		
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("data", ls);
 		obj.put("total", total);
@@ -81,6 +80,12 @@ public class YwglDao extends BaseJdbcDao {
 		obj.put("current", page);
 
 		return obj;
+	}
+
+	public Map<String, Object> getYwbbById(long id) {
+		String sql = "select * from "+Config.PROJECT_SCHEMA+"zs_ywbb where id = ?";
+		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
+		return rs;
 	}
 
 }
