@@ -1,7 +1,6 @@
 package gov.gdgs.zs.dao;
 
 import gov.gdgs.zs.untils.Pager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +45,8 @@ public class HYHFDao extends BaseJdbcDao{
 	   		ob.put("data", f1);
 	   		return ob;
 	 }
+
+	
 	 
 	 public Map<String,Object> grhf1(int pn,int ps){
 	  	   StringBuffer sb= new StringBuffer();
