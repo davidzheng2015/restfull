@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.service.YwglService;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = ProjectConstants.URL_PROJECT)
+@RequestMapping(value = Config.URL_PROJECT)
 public class YwglController {
 	
 	@Resource
@@ -33,17 +33,16 @@ public class YwglController {
 	
 	/**
 	 * 业务协议类api
-	 * @throws UnsupportedEncodingException 
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/xygl", method = RequestMethod.GET)
+	@RequestMapping(value = "/ywbb", method = RequestMethod.GET)
 	public  ResponseEntity<Map<String,Object>> getAsideMenu(
 			@RequestParam(value = "page", required = true) int page,
 			@RequestParam(value = "pageSize", required = true) int pageSize,
-			@RequestParam(value="where", required=false) String where){
+			@RequestParam(value="where", required=false) String where){ 
 
-		Map<String,Object> obj = ywglService.getYwxy(page,pageSize,where);
+		Map<String,Object> obj = ywglService.getYwbb(page,pageSize,where);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 
