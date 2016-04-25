@@ -47,7 +47,7 @@ public class YwglService {
 	}
 
 	public Map<String, Object> getYwbbById(String hash) {
-		Hashids hashids = new Hashids(Config.HASHID_SALT);
+		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
 		long[] id = hashids.decode(hash);
 		if(id.length<1){
 			throw new ResourceNotFoundException(hash);
