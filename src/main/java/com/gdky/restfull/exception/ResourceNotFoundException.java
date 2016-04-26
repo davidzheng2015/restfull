@@ -4,13 +4,14 @@ public class ResourceNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long id;
+    private final String id;
+    
 
-    public ResourceNotFoundException(Long id) {
+	public ResourceNotFoundException(String id) {
         this.id = id;
-    }
+    }	
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 }

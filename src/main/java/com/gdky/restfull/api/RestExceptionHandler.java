@@ -2,6 +2,8 @@ package com.gdky.restfull.api;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
-    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
-    @ResponseBody
-    public ResponseEntity<ResponseMessage> handleGenericException(Exception ex, WebRequest request) {
-        if (log.isDebugEnabled()) {
-            log.debug("handling exception...");
-        }
-        return new ResponseEntity<>(new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()), HttpStatus.BAD_REQUEST);
-    }
+
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
     @ResponseBody
@@ -49,7 +44,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         if (log.isDebugEnabled()) {
             log.debug("handling ResourceNotFoundException...");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ResponseMessage alert = new ResponseMessage(
+                ResponseMessage.Type.danger,
+                "404",
+                ex.getId()+" Not Found ");
+        return new ResponseEntity<>(alert,HttpStatus.NOT_FOUND);
     }
 
 
@@ -89,9 +88,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     			ResponseMessage.Type.danger,
     			ApiErrors.DATA_ACCESS_ERROR,
     			ex.getMessage());
+    	log.error(ex.getMessage());
     	 return new ResponseEntity<>(alert, HttpStatus.INTERNAL_SERVER_ERROR);
 	  
     }
-  
+    
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
+    @ResponseBody
+    public ResponseEntity<ResponseMessage> handleGenericException(Exception ex, WebRequest request) {
+//        if (log.isDebugEnabled()) {
+//            log.warn(ex.getMessage());
+//        }
+    	log.error(ex.getMessage());
+        return new ResponseEntity<>(new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+    
   
 }

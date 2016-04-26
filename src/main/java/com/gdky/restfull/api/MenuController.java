@@ -32,6 +32,8 @@ public class MenuController {
 
 	/**
 	 * 定义模块菜单类api
+	 * q= all 时取全部模块，包括隐藏的
+	 * l = A 管理端类型， l=B 客户端类型
 	 * @return
 	 */
 	@RequestMapping(value = "/asidemenu", method = RequestMethod.GET)

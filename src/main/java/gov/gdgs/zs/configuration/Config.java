@@ -1,6 +1,6 @@
 package gov.gdgs.zs.configuration;
 
-public final class ProjectConstants {
+public final class Config {
 
 	/**
 	 * prefix of Project's REST API
@@ -14,5 +14,9 @@ public final class ProjectConstants {
 	public static final String URI_API_ZS = "/zs";
 
 	public static final String URL_PROJECT = URI_API_PREFIX + URI_API_ZS;
+	
+	public static final String HASHID_SALT = "gdzs & gdky";
+	
+	public static final int HASHID_LEN = 6;
 
 }
