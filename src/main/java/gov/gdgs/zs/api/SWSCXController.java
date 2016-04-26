@@ -2,13 +2,16 @@ package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.dao.SWSDao;
+import gov.gdgs.zs.untils.DbToDb;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hashids.Hashids;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -25,6 +28,7 @@ import com.gdky.restfull.configuration.Constants;
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
+	@Resource
 
 	@RequestMapping(value = "/modelautobind", method = { RequestMethod.GET })
 	@ResponseBody
@@ -47,7 +51,7 @@ public class SWSCXController {
 	 */
 
 	@RequestMapping(value = "/jgs", method = { RequestMethod.GET })
-	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) throws Exception {
 		Map<String, Object> sb = new HashMap<>();
 		StringBuffer url = request.getRequestURL();
 		String z = url.substring(url.indexOf("api")-1, url.indexOf("jgs"));
@@ -112,18 +116,23 @@ public class SWSCXController {
 			
 			
 		} catch (Exception e) {
-			sb.put("data", swsDao.swscx(z).get("data"));
-			sb.put("pageTotal",swsDao.swscx(z).get("totalsize"));
+//			swsDao.swscx(z);
+//			ryglDao.ryqy();
+//			DbToDb bb = new DbToDb();
+//			bb.dealwithRYDB();
 		}
 		return new ResponseEntity<>(sb,HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value="/{swsxqTab:^[A-Za-z]+$}/{swjgId:^[0-9]*$}", method = { RequestMethod.GET} )
+	@RequestMapping(value="/{swsxqTab:^[A-Za-z]+$}/{swjgId}", method = { RequestMethod.GET} )
 	public ResponseEntity<Map<String, Object>> swsxx(
 			@PathVariable(value = "swsxqTab") String xqTab,
-			@PathVariable(value = "swjgId") int jgid) {
+			@PathVariable(value = "swjgId") String gid) {
+		
 		Map<String, Object> sb = new HashMap<>();
+		Hashids hashids = new Hashids("project-zs",6);
+		int jgid = (int)hashids.decode(gid)[0];
 		switch (xqTab) {
 		case "swsxx":
 			sb.put("data", swsDao.swsxx(jgid));
