@@ -1,12 +1,15 @@
 package gov.gdgs.zs.dao;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.untils.DbToDb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 import org.hashids.Hashids;
 import org.springframework.stereotype.Repository;
@@ -79,7 +82,7 @@ public class RyglDao extends BaseDao{
 	 * @throws Exception
 	 */
 	public Map<String,Object> rycx(int pn,int ps,Map<String, Object> qury) {
-		String url=ProjectConstants.URL_PROJECT;
+		String url=Config.URL_PROJECT;
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select SQL_CALC_FOUND_ROWS ");
 		sb.append("		@rownum:=@rownum+1 as 'key',");

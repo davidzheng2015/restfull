@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import gov.gdgs.zs.configuration.ProjectConstants;
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.service.RyglService;
 
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = ProjectConstants.URL_PROJECT)
+@RequestMapping(value = Config.URL_PROJECT)
 public class RyglController {
 	@Resource
 	private RyglService ryglService;
