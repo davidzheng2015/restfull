@@ -2,10 +2,7 @@ package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.dao.SWSDao;
-import gov.gdgs.zs.untils.DbToDb;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -28,7 +25,6 @@ import com.gdky.restfull.configuration.Constants;
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
-	@Resource
 
 	@RequestMapping(value = "/modelautobind", method = { RequestMethod.GET })
 	@ResponseBody
