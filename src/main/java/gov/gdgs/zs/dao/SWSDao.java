@@ -170,7 +170,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		    date_format(a.swszsclsj,'%Y-%m-%d') as clsj");
 		sb.append("		    	from");
 		sb.append("		    zs_jg a,");
-		sb.append("		    dm_jgxz b,");//加人员表去无效事务所
+		sb.append("		    dm_jgxz b,");//加人员表去无效事务所zs_zysws
 		sb.append("	    dm_cs c,");
 		sb.append("	    zs_jgnj d,");
 		sb.append("	    (select max(nd) as nd,zsjg_id from zs_jgnj group by zsjg_id) as v,(select @rownum:=0) zs_jg");

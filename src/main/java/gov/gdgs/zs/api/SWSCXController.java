@@ -120,8 +120,8 @@ public class SWSCXController {
 		} catch (Exception e) {
 //			swsDao.swscx(z);
 //			ryglDao.ryqy();
-			DbToDb bb = new DbToDb();
-			bb.dealwithRYDB();
+//			DbToDb bb = new DbToDb();
+//			bb.dealwithRYDB();
 		}
 		return new ResponseEntity<>(sb,HttpStatus.OK);
 
