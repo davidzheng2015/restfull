@@ -36,12 +36,12 @@ public class YwglService {
 			}
 		}		
 		Map<String,Object> rs = ywglDao.getYwbb(page, pageSize, map);
-		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
+/*		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
 		ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) rs.get("data");
 		for (Map<String,Object> item : ls){
 			String id = hashids.encode((Long)item.get("id")) ;
 			item.put("id", id);
-		}
+		}*/
 
 		return rs;
 	}
