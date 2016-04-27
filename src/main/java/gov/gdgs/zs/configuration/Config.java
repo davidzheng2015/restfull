@@ -13,6 +13,7 @@ public final class Config {
 
 	public static final String URI_API_ZS = "/zs";
 
+
 	public static final String URL_PROJECT = URI_API_PREFIX + URI_API_ZS;
 	
 	public static final String HASHID_SALT = "gdzs & gdky";
