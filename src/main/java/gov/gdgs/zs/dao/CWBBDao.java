@@ -118,12 +118,12 @@ public class CWBBDao extends BaseJdbcDao {
 		return ob;
 
 	}
-	
-	public Map<String,Object> getLrb(int page, int pageSize,
-			Map<String, Object> where){
+
+	public Map<String, Object> getLrb(int page, int pageSize,
+			Map<String, Object> where) {
 		// 子查询，用于拼接查询条件和返回起止区间
 		Condition condition = new Condition();
-		condition.add("nd",condition.EQUAL, where.get("nd"));
+		condition.add("nd", condition.EQUAL, where.get("nd"));
 		condition.add(" AND ztbj = 1 ");
 
 		StringBuffer sb = new StringBuffer();
@@ -136,20 +136,17 @@ public class CWBBDao extends BaseJdbcDao {
 		sb.append("            t.nd, ");
 		sb.append("            if(t.TIMEVALUE = 0,'半年','全年') as tjsjd, ");
 		sb.append("            ds.MC AS cs, ");
-		sb.append("            t.ZGYWSR, ");
-		sb.append("            t.ZGWYLR ");
+		sb.append("            t.zgywsr, ");
+		sb.append("            t.zgwylr ");
 		sb.append("    FROM ");
-		sb.append("        zs_cwbb_lrgd t, zs_jg j,dm_cs ds, (SELECT  ");
-		sb.append("        id ");
-		sb.append("    FROM ");
-		sb.append("        zs_cwbb_lrgd ");
-		sb.append(condition.getSelectSql("zs_cwbb_lrgd", "id"));
+		sb.append("        zs_cwbb_lrgd t, zs_jg j,dm_cs ds, ");
+		sb.append("(" + condition.getSelectSql("zs_cwbb_lrgd", "id"));
 		sb.append("    ORDER BY nd DESC  ");
-		sb.append("    LIMIT 0 , 5) sub ");
+		sb.append("    LIMIT ? , ?) sub ");
 		sb.append("    WHERE j.CS_DM = ds.ID  ");
 		sb.append("   	  AND t.JG_ID=j.ID ");
 		sb.append("		  AND sub.id = t.id) v, ");
-		sb.append("    (SELECT @rownum:=0) tmp ");
+		sb.append("    (SELECT @rownum:=?) tmp ");
 
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
@@ -159,34 +156,13 @@ public class CWBBDao extends BaseJdbcDao {
 		params.add(pageSize * (page - 1));
 
 		// 获取符合条件的记录
-		List<Map<String, Object>> ls = jdbcTemplate.query(
-				sb.toString(),
-				params.toArray(),
-				new RowMapper<Map<String,Object>>(){
-			public Map<String,Object> mapRow(ResultSet rs, int arg1) throws SQLException{
-				Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
-				Map<String,Object> map = new HashMap<String,Object>();
-				map.put("key", rs.getObject("key"));
-				map.put("id", hashids.encode(rs.getLong("id")));
-				map.put("dwmc", rs.getObject("dwmc"));
-				map.put("swsmc", rs.getObject("swsmc"));
-				map.put("cs", rs.getObject("cs"));
-				map.put("ywlx", rs.getObject("ywlx"));
-				map.put("bgwh", rs.getObject("bgwh"));
-				map.put("xyje", rs.getObject("xyje"));
-				map.put("sjsqje", rs.getObject("sjsqje"));
-				map.put("bbhm", rs.getObject("bbhm"));
-				map.put("bbrq", rs.getObject("bbrq"));
-				map.put("yzm", rs.getObject("yzm"));
-				return map;
-			}
-		});
+		List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+				params.toArray());
 
 		// 获取符合条件的记录数
-		String countSql = condition.getCountSql("id", "zs_ywbb");
+		String countSql = condition.getCountSql("id", "zs_cwbb_lrgd");
 		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
 				.toArray(), Integer.class);
-		
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("data", ls);
 		obj.put("total", total);
