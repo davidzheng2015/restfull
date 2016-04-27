@@ -2,6 +2,8 @@ package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.dao.SWSDao;
+import gov.gdgs.zs.untils.DbToDb;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,11 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.hashids.Hashids;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -25,26 +25,6 @@ import com.gdky.restfull.configuration.Constants;
 public class SWSCXController {
 	@Resource
 	private SWSDao swsDao;
-
-	@RequestMapping(value = "/modelautobind", method = { RequestMethod.GET })
-	@ResponseBody
-	public String modelAutoBind(Model model, HttpServletRequest request,
-			@PathVariable(value = "name") String jgid,
-			@PathVariable(value = "age") String sss) {
-		// Object s = request.getParameterValues("page");
-		// Object l = request.getParameterValues("lll");
-		// s.toString().hashCode();
-		model.addAttribute("accountmodel", swsDao.testJDBC());
-		model.addAttribute("111", jgid);
-		model.addAttribute("22", sss);
-		return "jsontournamenttemplate";
-	}
-
-	/*
-	 * @RequestMapping("/api/swscx") public String swscx(Model model) {
-	 * model.addAttribute("Data", swsDao.swscx()); return
-	 * "jsontournamenttemplate"; }
-	 */
 
 	@RequestMapping(value = "/jgs", method = { RequestMethod.GET })
 	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) throws Exception {
@@ -115,7 +95,13 @@ public class SWSCXController {
 //			swsDao.swscx(z);
 //			ryglDao.ryqy();
 //			DbToDb bb = new DbToDb();
-//			bb.dealwithRYDB();
+//			for(Map<String, Object> rec : bb.query11111()){
+//				bb.insert11111(swsDao.swsxx((int)rec.get("YID")), rec.get("ID").toString());
+//			}
+//			for(Map<String, Object> rec : swsDao.ddd()){
+//				swsDao.udnewdb(swsDao.swsxx((int)rec.get("YID")));
+//			}
+			System.out.println("1111111111");
 		}
 		return new ResponseEntity<>(sb,HttpStatus.OK);
 

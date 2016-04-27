@@ -1,9 +1,10 @@
 package gov.gdgs.zs.dao;
 
 import gov.gdgs.zs.untils.DbToDb;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,18 +13,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class SWSDao extends BaseDao{
-//	@Resource(name ="jdbcTemplate")
-//	private JdbcTemplate jdbcTemplate;
-	
-	public List<Map<String,Object>> testJDBC (){
-		String sql = "select * from zs_jg";
-		return this.jdbcTemplate.queryForList(sql);
-		
-	}
-	public String formatDate(Object date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return sdf.format(date);
-	}
+
 	/**
 	 * 
 	 * @param pn
@@ -214,7 +204,7 @@ public class SWSDao extends BaseDao{
 	public Map<String,Object> swsxx(int id){
 		StringBuffer sb = new StringBuffer();
 		sb.append("select 	");	 
-		sb.append("		@rownum:=@rownum+1 as 'key',a.id,	 ");
+		sb.append("		@rownum:=@rownum+1 as 'key',a.id,	 ");//
 		sb.append("		a.dwmc,");
 		sb.append("		c.mc as cs,	");
 		sb.append("		a.fddbr,	");
@@ -391,5 +381,24 @@ public class SWSDao extends BaseDao{
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 
+	public void udnewdb(Map<String,Object> swxx){
+	       List listValue = new ArrayList();  
+	       Iterator it = swxx.keySet().iterator();  
+	       while (it.hasNext()) {  
+	           String key = it.next().toString();  
+	           listValue.add(swxx.get(key));  
+	       }  
+			try {
+				this.jdbcTemplate.update("insert into zs_jg_kzxx(JG_ID,BGDZ,SGLZXSBWH,ZCDZ,SGLZXSBSJ,ZJPZSJ,YZBM,ZJPZWH,CZHM,DHHM,SZYX,TXYXM,TXYYX,TXYYDDH,ZSBH,JYFW,SZYDDH,GSYHBH,DZYJ,YHDW,YHSJ,GZBH,GZDW,GZRY,GZSJ,YZBH,YZDW,YZRY,YZSJ,TTHYZCBH,RHSJ,KHYH,KHYHZH,FJ,SWDJHM,QKJJ,SWSNBGLZD,DYCGDDH,BGCSCQZM,YXBZ,LRRQ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,sysdate())", listValue.toArray());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
+	public List<Map<String, Object>> ddd(){
+		String sql = "select * from zs_jg_new";
+		return this.jdbcTemplate.queryForList(sql);
+	}
 
 }
