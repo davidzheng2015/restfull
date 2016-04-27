@@ -16,7 +16,7 @@ public final class Config {
 
 	public static final String URL_PROJECT = URI_API_PREFIX + URI_API_ZS;
 	
-	public static final String SALT = "gdzs & gdky";
+	public static final String HASHID_SALT = "gdzs & gdky";
 	
 	public static final int HASHID_LEN = 6;
 

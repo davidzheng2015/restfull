@@ -34,7 +34,7 @@ public class CWBBService {
 			}
 		}		
 		Map<String,Object> rs = cwbbDao.zcmx(page, pageSize, map);
-		Hashids hashids = new Hashids(Config.SALT);
+		Hashids hashids = new Hashids(Config.HASHID_SALT);
 		ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) rs.get("data");
 		for (Map<String,Object> item : ls){
 			String id = hashids.encode() ;
