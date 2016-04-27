@@ -17,64 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RyglDao extends BaseDao{
 	/**
-	 * 人员基本表(zs_ry)插入数据sql
-	 */
-	public void ryqy() throws Exception{
-//		char q = '2';
-//		StringBuffer sb = new StringBuffer();
-//		sb.append("		 select a.id,a.xming as xm ,DATE_FORMAT(a.sri,'%Y-%m-%d') AS csrq,");
-//		sb.append("		 b.MC as xb, c.MC as xl, a.ZYZGZSBH, a.zzdw,");
-//		sb.append("		 a.SRI,a.SFZH,a.XB_DM,a.CS_DM,a.MZ_DM,a.XL_DM,a.RYZT_DM,");
-//		sb.append("		    a.ryzt_DM");
-//		sb.append("		 from zs_fzysws a,dm_xb b,dm_xl c ");
-//		sb.append("		 where a.ryzt_dm = 1");
-//		sb.append("		 and a.XB_DM =b.ID");
-//		sb.append("		 and a.XL_DM = c.ID");
-//		sb.append("		 order by a.ID");
-//		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
-		
-		/**
-		 * 从业人员查询
-		 */
-		char q = '3';
-		StringBuffer sb = new StringBuffer();
-		sb.append("		select b.id,b.xming as xm,b.XB_DM,b.SRI,b.SFZH,b.CS_DM,b.MZ_DM,b.XL_DM,b.RYZT_DM,d.MC as xb,e.MC as xl,a.XZSNGZGW,a.ZGXLZYMC,c.DWMC");
-		sb.append("		from zs_cyry a,zs_ryjbxx b,zs_jg c,dm_xb d,dm_xl e ");
-		sb.append("		where a.RY_ID = b.ID");
-		sb.append("		and a.JG_ID = c.ID");
-		sb.append("		and b.xb_dm = d.ID");
-		sb.append("		and b.XL_DM = e.ID");
-		sb.append("		and c.id <>'-2' and a.cyryzt_dm='1'");//从业人员状态代码
-		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
-//		
-		/**
-		 * 执业人员查询
-		 */
-//		char q = '1';
-//		StringBuffer sb = new StringBuffer();
-//		sb.append("		select c.id ,c.xming as xm,d.MC as xb,c.XB_DM, c.SRI,c.DHHM, c.SFZH,c.CS_DM,c.MZ_DM,c.XL_DM,c.RYZT_DM,e.MC as xl, a.ZYZGZSBH,a.ZYZSBH,");
-//		sb.append("		case a.CZR_DM when 1 then \"是\"  when 2 then \"否\" ELSE null end as CZR,");
-//		sb.append("	case a.FQR_DM when 1 then \"是\"  when 2 then \"否\" ELSE null end as FQR,");
-//		sb.append("		b.DWMC");
-//		sb.append("		from ");
-//		sb.append("		zs_zysws a,zs_jg b ,");
-//		sb.append("		zs_ryjbxx c ,dm_xb d,dm_xl e");
-//		sb.append("		where");
-//		sb.append("		b.id=a.jg_id");
-//		sb.append("		 and a.ry_id = c.ID ");
-//		sb.append("		and a.ZYZT_DM = '1'");
-//		sb.append("		and d.ID = c.XB_DM");
-//		sb.append("		and e.ID = c.XL_DM");
-//		sb.append("		and a.JG_ID <>'-2'");
-//		sb.append("		order by a.id");
-//		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
-		
-		DbToDb bb = new DbToDb();
-		bb.insertnewRYDB(ls,q);
-	}
-	
-	
-	/**
 	 * 人员查询
 	 * @param z
 	 * @param qury

@@ -1,6 +1,4 @@
 package gov.gdgs.zs.untils;
-import gov.gdgs.zs.dao.SWSDao;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -12,16 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Repository;
-
 /**
  * 简陋的JDBC连接
  * @author Administrator
  *
  */
-@Repository
 public class DbToDb {
 	
 	/**

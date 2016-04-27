@@ -381,24 +381,5 @@ public class SWSDao extends BaseDao{
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 
-	public void udnewdb(Map<String,Object> swxx){
-	       List listValue = new ArrayList();  
-	       Iterator it = swxx.keySet().iterator();  
-	       while (it.hasNext()) {  
-	           String key = it.next().toString();  
-	           listValue.add(swxx.get(key));  
-	       }  
-			try {
-				this.jdbcTemplate.update("insert into zs_jg_kzxx(JG_ID,BGDZ,SGLZXSBWH,ZCDZ,SGLZXSBSJ,ZJPZSJ,YZBM,ZJPZWH,CZHM,DHHM,SZYX,TXYXM,TXYYX,TXYYDDH,ZSBH,JYFW,SZYDDH,GSYHBH,DZYJ,YHDW,YHSJ,GZBH,GZDW,GZRY,GZSJ,YZBH,YZDW,YZRY,YZSJ,TTHYZCBH,RHSJ,KHYH,KHYHZH,FJ,SWDJHM,QKJJ,SWSNBGLZD,DYCGDDH,BGCSCQZM,YXBZ,LRRQ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,sysdate())", listValue.toArray());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		
-	}
 	
-	public List<Map<String, Object>> ddd(){
-		String sql = "select * from zs_jg_new";
-		return this.jdbcTemplate.queryForList(sql);
-	}
-
 }
