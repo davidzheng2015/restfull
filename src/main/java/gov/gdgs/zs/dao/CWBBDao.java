@@ -14,11 +14,10 @@ import org.springframework.stereotype.Repository;
 import com.gdky.restfull.dao.BaseJdbcDao;
 @Repository
 public class CWBBDao extends BaseJdbcDao{
-	public Map<String, Object> zcmx(int page, int pageSize, Map<String,Object> where) {
+	public Map<String, Object> getZcmx(int page, int pageSize, Map<String,Object> where) {
 		
 		Condition condition = new Condition();
 		condition.add("b.DWMC", "FUZZY", where.get("DWMC"));
-		
 
 
 		StringBuffer sb = new StringBuffer();
@@ -32,7 +31,7 @@ public class CWBBDao extends BaseJdbcDao{
 		sb.append(" DATE_FORMAT(a.JSSJ,'%Y-%m-%d') AS TJSJ");
 		sb.append(" FROM "+Config.PROJECT_SCHEMA+"zs_cwbb_zcmx a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());//相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID AND a.ZTBJ=1) as t");
+		sb.append(" AND a.JG_ID=b.ID AND a.ZTBJ=1 ORDER  BY TJSJ) as t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
@@ -58,6 +57,28 @@ public class CWBBDao extends BaseJdbcDao{
 
 				return obj;
 	}
+	public Map<String,Object> getZcmxById(String id){
+		StringBuffer sb = new StringBuffer();
+		sb.append("	 SELECT a.id AS 'key',a.id,b.DWMC,DATE_FORMAT(a.KSSJ,'%Y-%m-%d') as KSSJ,");
+		sb.append("	DATE_FORMAT(a.JSSJ,'%Y-%m-%d') as JSSJ,a.ZYYWCB1,a.ZYYWCB,a.ZYYWSJFJ1,a.ZYYWSJFJ,");
+		sb.append("	a.GZFY1,a.GZFY,a.QTYWZC1,a.QTYWZC,");
+		sb.append("	a.FLF1,a.FLF,a.GLFY1,a.GLFY,a.JYF1,a.JYF,a.GLFY_GZFY1,");
+		sb.append("	a.GLFY_GZFY,a.GHJF1,a.GHJF,a.GLFY_FLF1,a.GLFY_FLF,");
+		sb.append("	a.SHTC1,a.SHTC,a.GLFY_YWZDF1,a.GLFY_YWZDF,a.BGF1,");
+		sb.append("	a.BGF,a.GLFY_BGF1,a.GLFY_BGF,a.CLF1,a.CLF,");
+		sb.append("	a.GLFY_QTSJ1,a.GLFY_QTSJ,a.HF1,a.HF,a.GLFY_QCFY1,a.GLFY_QCFY,");
+		sb.append("	a.PXZLF1,a.PXZLF,a.GLFY_ZYFXJJ1,a.GLFY_ZYFXJJ,");
+		sb.append("	a.HWF1,a.HWF,a.GLFY_ZYZRBX1,a.GLFY_ZYZRBX,a.ZPF1,");
+		sb.append("	a.ZPF,a.GLFY_CLF1,a.GLFY_CLF,a.ZJ1,a.ZJ,a.GLFY_QTFY1,a.GLFY_QTFY,");
+		sb.append("	a.ZFGJJ1,a.ZFGJJ,a.CWFY1,a.CWFY,a.GWZXF1,a.GWZXF,");
+		sb.append("	a.YYWZC1,a.YYWZC,a.QT1,a.QT,a.ZCZJ1,a.ZCZJ,a.SZ,a.AGKJ,a.ZB");
+		sb.append("	FROM zs_cwbb_zcmx a,zs_jg b");
+		sb.append("	WHERE a.JG_ID=b.ID AND a.ZTBJ=1 and a.id=?");
+		 Map<String,Object> rs = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});
+		 
+		 return rs;
+	}
+	
 	public Map<String,Object> lrfp1(int pn,int ps){
 	  	   StringBuffer sb= new StringBuffer();
 	  	 sb.append("	SELECT  b.ID AS 'key',a.id,a.JG_ID,b.DWMC,DATE_FORMAT(a.JSSJ,'%Y-%m-%d') AS TJSJ,a.DWFZR,");

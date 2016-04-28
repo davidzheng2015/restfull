@@ -27,6 +27,7 @@ public class CWBBController {
 	
 	@Resource 
 	 	private CWBBService cwbbService; 
+	@Resource 
         private CWBBDao cwbbDao;
 	@RequestMapping(value = "/zcmx", method = RequestMethod.GET) 
 	 	public  ResponseEntity<Map<String,Object>> zcmx( 
@@ -36,6 +37,12 @@ public class CWBBController {
 	 		Map<String,Object> obj = cwbbService.zcmx(page,pageSize,where); 
 	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
 	 	} 
+	@RequestMapping(value="/zcmx/{Id}",method = RequestMethod.GET)
+	 public Map<String,Object> zcmx ( @PathVariable("Id") String id){
+		 Map<String,Object> sb = new HashMap<>();
+			 sb.put("data", cwbbDao.getZcmxById(id));
+		 return sb;
+	 }
 
 	 @RequestMapping(value="/api/lrfp", method = {RequestMethod.GET})  
 	 public Map<String,Object> lrfp(HttpServletRequest request ) { 

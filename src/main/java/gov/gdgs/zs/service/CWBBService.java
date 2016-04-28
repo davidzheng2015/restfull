@@ -33,7 +33,7 @@ public class CWBBService {
 			} catch (Exception e) {
 			}
 		}		
-		Map<String,Object> rs = cwbbDao.zcmx(page, pageSize, map);
+		Map<String,Object> rs = cwbbDao.getZcmx(page, pageSize, map);
 		Hashids hashids = new Hashids(Config.SALT);
 		ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) rs.get("data");
 		for (Map<String,Object> item : ls){
