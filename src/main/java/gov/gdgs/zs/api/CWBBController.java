@@ -44,6 +44,12 @@ public class CWBBController {
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 
 	}
+	@RequestMapping(value = "/cwbb/lrb/{id}", method = RequestMethod.GET)
+	public  ResponseEntity<Map<String,Object>> getLrbById(@PathVariable("id") String id){ 
+		
+		Map<String,Object> obj = cwbbService.getLrbById(id);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
+	}
 
 	/*@RequestMapping(value = "/lrfp", method = { RequestMethod.GET })
 	public Map<String, Object> lrfp(HttpServletRequest request) {

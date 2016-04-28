@@ -9,6 +9,7 @@ import gov.gdgs.zs.dao.CWBBDao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.gdky.restfull.exception.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,11 @@ public class CWBBService {
 		}
 		Map<String, Object> rs = cwbbDao.getLrb(page, pageSize, map);
 		return rs;
+	}
+
+	public Map<String, Object> getLrbById(String id) {
+		Map<String,Object> obj = cwbbDao.getLrbById(id);
+		return obj;
 	}
 
 }

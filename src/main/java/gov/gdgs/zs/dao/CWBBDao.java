@@ -172,4 +172,10 @@ public class CWBBDao extends BaseJdbcDao {
 		return obj;
 	}
 
+	public Map<String, Object> getLrbById(String id) {
+		String sql = "select * from "+Config.PROJECT_SCHEMA+"zs_cwbb_lrgd where id = ?";
+		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
+		return rs;
+	}
+
 }
