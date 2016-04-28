@@ -5,8 +5,6 @@ import gov.gdgs.zs.dao.YwglDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdky.restfull.exception.InvalidRequestException;
+import com.gdky.restfull.exception.ResourceNotFoundException;
 
 @Service
 public class YwglService {
@@ -36,14 +36,24 @@ public class YwglService {
 			}
 		}		
 		Map<String,Object> rs = ywglDao.getYwbb(page, pageSize, map);
-		Hashids hashids = new Hashids(Config.SALT);
+/*		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
 		ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) rs.get("data");
 		for (Map<String,Object> item : ls){
-			String id = hashids.encode() ;
-			System.out.println(id);
-		}
+			String id = hashids.encode((Long)item.get("id")) ;
+			item.put("id", id);
+		}*/
 
 		return rs;
+	}
+
+	public Map<String, Object> getYwbbById(String hash) {
+		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
+		long[] id = hashids.decode(hash);
+		if(id.length<1){
+			throw new ResourceNotFoundException(hash);
+		}
+		Map<String,Object> obj = ywglDao.getYwbbById(id[0]);
+		return obj;
 	}
 
 }

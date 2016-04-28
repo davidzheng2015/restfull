@@ -1,11 +1,13 @@
 package gov.gdgs.zs.dao;
 
+import gov.gdgs.zs.untils.DbToDb;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hashids.Hashids;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,8 +29,9 @@ public class SWSDao extends BaseDao{
 	 * @param pn
 	 * @param ps
 	 * @return 事务所分页查询
+	 * @throws Exception 
 	 */
-	public Map<String,Object> swscx(String z,Map<String,Object> qury){
+	public Map<String,Object> swscx(String z,Map<String,Object> qury) throws Exception{
 		int pn = Integer.parseInt(qury.get("pn").toString());
 		int ps = Integer.parseInt(qury.get("ps").toString());
 		StringBuffer sb = new StringBuffer();
@@ -115,19 +118,20 @@ public class SWSDao extends BaseDao{
 				sb.append("		    order by a.swszsclsj desc");
 			}
 			break;
-
 		}
 		sb.append("		    LIMIT ?, ? ");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{(pn-1)*ps,(pn-1)*ps,ps});
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
 		for(Map<String, Object> rec : ls){
 			Map<String,Object> link = new HashMap<>();
-			link.put("herf_sws", z+"swsxx/"+rec.get("id").toString());
-			link.put("herf_zyry", z+"zyryxx/"+rec.get("id").toString());
-			link.put("herf_cyry", z+"cyryxx/"+rec.get("id").toString());
-			link.put("herf_czrylb", z+"czrylb/"+rec.get("id").toString());
-			link.put("herf_swsbgxx", z+"swsbgxx/"+rec.get("id").toString());
-			link.put("herf_njjl", z+"njjl/"+rec.get("id").toString());
+			Hashids hashids = new Hashids("project-zs",6);
+			String id = hashids.encode(Integer.parseInt(rec.get("id").toString()));
+			link.put("herf_sws", z+"swsxx/"+id);
+			link.put("herf_zyry", z+"zyryxx/"+id);
+			link.put("herf_cyry", z+"cyryxx/"+id);
+			link.put("herf_czrylb", z+"czrylb/"+id);
+			link.put("herf_swsbgxx", z+"swsbgxx/"+id);
+			link.put("herf_njjl", z+"njjl/"+id);
 			rec.put("_links", link);
 			fl.add(rec);
 		}
@@ -140,18 +144,22 @@ public class SWSDao extends BaseDao{
 		meta.put("pageTotal",total);
 		meta.put("pageAll",(total + ps - 1) / ps);
 		ob.put("page", meta);
-
+		
 		return ob;
 	}
 	/**
 	 * 
-	 * @return 事务所查询
+	 * @return 事务所查询新库迁移
+	 * @throws Exception 
 	 */
-	public Map<String,Object> swscx(String z){
+	public Map<String,Object> swscx(String z) throws Exception{
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select ");
 		sb.append("		     @rownum:=@rownum+1 as 'key',@rownum AS xh,a.id,");
 		sb.append("	    a.dwmc,");
+		sb.append("	    a.cs_dm,");
+		sb.append("	    a.jgxz_dm,");
+		sb.append("	    a.JGZT_DM,");
 		sb.append("		    a.zczj,");
 		sb.append("		    a.fddbr,");
 		sb.append("		    a.jgzch as zsbh,");
@@ -162,7 +170,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		    date_format(a.swszsclsj,'%Y-%m-%d') as clsj");
 		sb.append("		    	from");
 		sb.append("		    zs_jg a,");
-		sb.append("		    dm_jgxz b,");
+		sb.append("		    dm_jgxz b,");//加人员表去无效事务所zs_zysws
 		sb.append("	    dm_cs c,");
 		sb.append("	    zs_jgnj d,");
 		sb.append("	    (select max(nd) as nd,zsjg_id from zs_jgnj group by zsjg_id) as v,(select @rownum:=0) zs_jg");
@@ -171,7 +179,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		    and a.cs_dm = c.id");
 		sb.append("			and a.id = d.zsjg_id");
 		sb.append("			and v.zsjg_id = d.zsjg_id");
-		sb.append("		    and d.nd = v.nd ");
+		sb.append("		    and d.nd = v.nd  group by a.id");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString());
 		
 		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
@@ -189,7 +197,12 @@ public class SWSDao extends BaseDao{
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", fl);
 		ob.put("totalsize", ls.size());
-		System.out.println("拿数据了~~~~~~~~~~~~");
+		String sql = "SELECT MAX(nd) AS nd,zsjg_id,id "+
+" FROM zs_jgnj "+
+" GROUP BY zsjg_id";
+		DbToDb bb = new DbToDb();
+		bb.insertnewDB(ls);
+		System.out.println("插入了~~~~~~~~~~~~");
 		return ob;
 	}
 	/**
@@ -258,7 +271,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		and v.zsjg_id = d.zsjg_id ");
 		sb.append("		and d.nd = v.nd");
 		sb.append("		and a.id = ?");
-		String sql = "select @rownum:=@rownum+1 as 'key',b.* from zs_jg a,zs_nbjgsz b where a.id = b.jg_id and a.id = ?";
+		String sql = "select @rownum:=@rownum+1 as 'key',b.* from zs_jg a,zs_nbjgsz b,(select @rownum:=0) zs_jg where a.id = b.jg_id and b.BMMC is not null and a.id = ?";
 		List<Map<String, Object>> tl = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 		Map<String,Object> ll =tl.get(0);
 		ll.put("nbjgsz", this.jdbcTemplate.queryForList(sql,new Object[]{id}));
@@ -377,5 +390,6 @@ public class SWSDao extends BaseDao{
 		sb.append("		order by f.nd ");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
+
 
 }
