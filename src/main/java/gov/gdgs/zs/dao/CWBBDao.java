@@ -123,8 +123,11 @@ public class CWBBDao extends BaseJdbcDao {
 			Map<String, Object> where) {
 		// 子查询，用于拼接查询条件和返回起止区间
 		Condition condition = new Condition();
-		condition.add("nd", condition.EQUAL, where.get("nd"));
-		condition.add(" AND ztbj = 1 ");
+		condition.add("t.nd", Condition.EQUAL, where.get("nd"));
+		condition.add("j.dwmc",Condition.FUZZY,where.get("swsmc"));
+		condition.add("j.cs_dm",Condition.EQUAL,where.get("cs"));
+		condition.add(" AND t.ztbj = 1 ");
+		condition.add(" AND t.jg_id = j.id ");
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT  ");
@@ -140,7 +143,7 @@ public class CWBBDao extends BaseJdbcDao {
 		sb.append("            t.zgwylr ");
 		sb.append("    FROM ");
 		sb.append("        zs_cwbb_lrgd t, zs_jg j,dm_cs ds, ");
-		sb.append("(" + condition.getSelectSql("zs_cwbb_lrgd", "id"));
+		sb.append("(" + condition.getSelectSql("zs_cwbb_lrgd t, zs_jg j", "t.id"));
 		sb.append("    ORDER BY nd DESC  ");
 		sb.append("    LIMIT ? , ?) sub ");
 		sb.append("    WHERE j.CS_DM = ds.ID  ");
@@ -160,7 +163,7 @@ public class CWBBDao extends BaseJdbcDao {
 				params.toArray());
 
 		// 获取符合条件的记录数
-		String countSql = condition.getCountSql("id", "zs_cwbb_lrgd");
+		String countSql = condition.getCountSql("t.id", "zs_cwbb_lrgd t, zs_jg j");
 		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
 				.toArray(), Integer.class);
 		Map<String, Object> obj = new HashMap<String, Object>();
@@ -174,6 +177,67 @@ public class CWBBDao extends BaseJdbcDao {
 
 	public Map<String, Object> getLrbById(String id) {
 		String sql = "select j.DWMC,t.* from "+Config.PROJECT_SCHEMA+"zs_cwbb_lrgd t, zs_jg j where t.jg_id = j.id and t.id = ?";
+		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
+		return rs;
+	}
+
+	public Map<String, Object> getZcfzb(int page, int pageSize,
+			Map<String, Object> where) {
+		Condition condition = new Condition();
+		condition.add("t.nd", Condition.EQUAL, where.get("nd"));
+		condition.add("j.dwmc",Condition.FUZZY,where.get("swsmc"));
+		condition.add("j.cs_dm",Condition.EQUAL,where.get("cs"));
+		condition.add(" AND t.ztbj = 1 ");
+		condition.add(" AND t.jg_id = j.id ");
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT  ");
+		sb.append("    @rownum:=@rownum + 1 AS 'key', v.* ");
+		sb.append("FROM ");
+		sb.append("    (SELECT  ");
+		sb.append("        t.id, ");
+		sb.append("            j.dwmc, ");
+		sb.append("            t.nd, ");
+		sb.append("            if(t.TIMEVALUE = 0,'半年','全年') as tjsjd, ");
+		sb.append("            ds.MC AS cs, ");
+		sb.append("            t.zczj, ");
+		sb.append("            t.fzsyzqy_hj ");
+		sb.append("    FROM ");
+		sb.append("        zs_cwbb_zcfzgd t, zs_jg j,dm_cs ds, ");
+		sb.append("(" + condition.getSelectSql("zs_cwbb_zcfzgd t, zs_jg j", "t.id"));
+		sb.append("    ORDER BY nd DESC  ");
+		sb.append("    LIMIT ? , ?) sub ");
+		sb.append("    WHERE j.CS_DM = ds.ID  ");
+		sb.append("   	  AND t.JG_ID=j.ID ");
+		sb.append("		  AND sub.id = t.id) v, ");
+		sb.append("    (SELECT @rownum:=?) tmp ");
+
+		// 装嵌传值数组
+		int startIndex = pageSize * (page - 1);
+		ArrayList<Object> params = condition.getParams();
+		params.add(startIndex);
+		params.add(pageSize);
+		params.add(pageSize * (page - 1));
+
+		// 获取符合条件的记录
+		List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+				params.toArray());
+
+		// 获取符合条件的记录数
+		String countSql = condition.getCountSql("t.id", "zs_cwbb_zcfzgd t, zs_jg j");
+		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
+				.toArray(), Integer.class);
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("data", ls);
+		obj.put("total", total);
+		obj.put("pageSize", pageSize);
+		obj.put("current", page);
+
+		return obj;
+	}
+
+	public Map<String, Object> getZcfzbById(String id) {
+		String sql = "select j.DWMC,t.* from "+Config.PROJECT_SCHEMA+"zs_cwbb_zcfzgd t, zs_jg j where t.jg_id = j.id and t.id = ?";
 		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
 		return rs;
 	}

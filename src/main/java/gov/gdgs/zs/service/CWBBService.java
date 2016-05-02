@@ -69,4 +69,25 @@ public class CWBBService {
 		return obj;
 	}
 
+	public Map<String, Object> getZcfzb(int page, int pageSize, String where) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			} catch (Exception e) {
+			}
+		}
+		Map<String, Object> rs = cwbbDao.getZcfzb(page, pageSize, map);
+		return rs;
+	}
+
+	public Map<String, Object> getZcfzbById(String id) {
+		Map<String,Object> obj = cwbbDao.getZcfzbById(id);
+		return obj;
+	}
+
 }
