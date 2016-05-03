@@ -2,8 +2,10 @@ package gov.gdgs.zs.dao;
 
 
 import gov.gdgs.zs.configuration.Config;
-import gov.gdgs.zs.untils.DbToDb;
+import gov.gdgs.zs.untils.Condition;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,11 @@ import java.util.Map;
 
 
 
+
+
+
 import org.hashids.Hashids;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,11 +30,17 @@ public class RyglDao extends BaseDao{
 	 * @throws Exception
 	 */
 	public Map<String,Object> rycx(int pn,int ps,Map<String, Object> qury) {
-		String url=Config.URL_PROJECT;
+		final String url=Config.URL_PROJECT;
+		Condition condition = new Condition();
+		condition.add("a.xm", Condition.FUZZY, qury.get("xm"));
+		condition.add("a.rysf_dm", Condition.EQUAL, qury.get("rysfdm"));
+		condition.add("a.sfzh", Condition.FUZZY_LEFT, qury.get("sfzh"));
+		condition.add("a.CS_DM", Condition.EQUAL, qury.get("cs"));
+		condition.add("a.xb_DM", Condition.EQUAL, qury.get("xb"));
+		condition.add("a.xl_dm", Condition.EQUAL, qury.get("xl"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select SQL_CALC_FOUND_ROWS ");
 		sb.append("		@rownum:=@rownum+1 as 'key',");
-		sb.append("				@rownum as xh,");
 		sb.append("				a.yid,");
 		sb.append("				a.xm,");
 		sb.append("				d.mc as xb,");
@@ -39,35 +51,14 @@ public class RyglDao extends BaseDao{
 		sb.append("				f.mc as xl,");
 		sb.append("				e.mc as rysf,a.rysf_dm as rysfdm");
 		sb.append("				from zs_ry a,dm_cs b,dm_mz c,dm_xb d,dm_rysf e,dm_xl f,(select @rownum:=?) zs_ry");
-		sb.append("				where a.xb_dm= d.id");
+		sb.append("		"+condition.getSql()+" ");
+		sb.append("				and a.xb_dm= d.id");
 		sb.append("				and a.cs_dm=b.id");
 		sb.append("				and a.mz_dm=c.id");
 		sb.append("				and a.xl_dm=f.id");
 		sb.append("				and a.rysf_dm=e.id");
 		sb.append("				and a.yxbz='1'");
-		if(!qury.isEmpty()){
-			
-		if(qury.containsKey("xm")){//containsKey
-			sb.append("		    and a.xm like '%"+qury.get("xm")+"%'");
-		}
-		if(qury.containsKey("rysfdm")){
-			sb.append("		    and a.rysf_dm = "+qury.get("rysfdm"));
-		}
-		if(qury.containsKey("sfzh")){
-			sb.append("		    and a.sfzh like '%"+qury.get("sfzh")+"'");
-		}
-		if(qury.containsKey("cs")){
-			sb.append("		   and a.CS_DM="+qury.get("cs"));
-		}
-		if(qury.containsKey("xb")){
-			sb.append("		    and a.xb_DM="+qury.get("xb"));
-		}
-		if(qury.containsKey("xl")){
-			sb.append("		    and a.xl_dm="+qury.get("xl"));
-		}
-		
 		if(qury.containsKey("sorder")){
-			
 			Boolean asc = qury.get("sorder").toString().equals("ascend");
 			switch (qury.get("sfield").toString()) {
 			case "xm":
@@ -99,45 +90,60 @@ public class RyglDao extends BaseDao{
 				}
 				break;
 			}
-		} 
 		}
 		sb.append("		    LIMIT ?, ? ");
-		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{(pn-1)*ps,(pn-1)*ps,ps});
-		List<Map<String,Object>> fl = new ArrayList<Map<String,Object>>();
-		for(Map<String, Object> rec : ls){
-			Map<String,Object> link = new HashMap<>();
-			Hashids hashids = new Hashids("project-zs",6);
-			String id = hashids.encode(Integer.parseInt(rec.get("yid").toString()));
-			switch (rec.get("rysfdm").toString()) {
-			case "1":
-				link.put("herf_xxzl", url+"/ryxx/zyryxx/"+id);
-				link.put("herf_bgjl", url+"/ryxx/zyrybgjl/"+id);
-				link.put("herf_zsjl", url+"/ryxx/zyryzsjl/"+id);
-				link.put("herf_zjjl", url+"/ryxx/zyryzjjl/"+id);
-				link.put("herf_zzjl", url+"/ryxx/zyryzzjl/"+id);
-				link.put("herf_spzt", url+"/ryxx/zyryspzt/"+id);
-				link.put("herf_njjl", url+"/ryxx/zyrynjjl/"+id);
-				break;
-			case "2":
-				link.put("herf_xxzl", url+"/ryxx/fzyryxx/"+id);
-				link.put("herf_bgjl", url+"/ryxx/fzyrybgjl/"+id);
-				link.put("herf_zsjl", url+"/ryxx/fzyryzxjl/"+id);
-				link.put("herf_zjjl", url+"/ryxx/fzyryzjjl/"+id);
-				link.put("herf_zzjl", url+"/ryxx/fzyryzfjl/"+id);
-				break;
-			case "3":
-				link.put("herf_xxzl", url+"/ryxx/cyryxx/"+id);
-				link.put("herf_bgjl", url+"/ryxx/cyrybgjl/"+id);
-				break;
-			
-			}
-			
-			rec.put("_links", link);
-			fl.add(rec);
-		}
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String,Object>> ls = this.jdbcTemplate.query(sb.toString(),params.toArray(),
+				new RowMapper<Map<String,Object>>(){
+			public Map<String,Object> mapRow(ResultSet rs, int arg1) throws SQLException{
+				Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
+				Map<String,Object> map = new HashMap<String,Object>();
+				Map<String,Object> link = new HashMap<>();
+				String id = hashids.encode(rs.getLong("yid"));
+				switch (rs.getObject("rysfdm").toString()) {
+				case "1":
+					link.put("herf_xxzl", url+"/ryxx/zyryxx/"+id);
+					link.put("herf_bgjl", url+"/ryxx/zyrybgjl/"+id);
+					link.put("herf_zsjl", url+"/ryxx/zyryzsjl/"+id);
+					link.put("herf_zjjl", url+"/ryxx/zyryzjjl/"+id);
+					link.put("herf_zzjl", url+"/ryxx/zyryzzjl/"+id);
+					link.put("herf_spzt", url+"/ryxx/zyryspzt/"+id);
+					link.put("herf_njjl", url+"/ryxx/zyrynjjl/"+id);
+					break;
+				case "2":
+					link.put("herf_xxzl", url+"/ryxx/fzyryxx/"+id);
+					link.put("herf_bgjl", url+"/ryxx/fzyrybgjl/"+id);
+					link.put("herf_zsjl", url+"/ryxx/fzyryzxjl/"+id);
+					link.put("herf_zjjl", url+"/ryxx/fzyryzjjl/"+id);
+					link.put("herf_zzjl", url+"/ryxx/fzyryzfjl/"+id);
+					break;
+				case "3":
+					link.put("herf_xxzl", url+"/ryxx/cyryxx/"+id);
+					link.put("herf_bgjl", url+"/ryxx/cyrybgjl/"+id);
+					break;
+				
+				}
+				map.put("key", rs.getObject("key"));
+				map.put("xh", rs.getObject("key"));
+				map.put("_links", link);
+				map.put("xm", rs.getObject("xm"));
+				map.put("xb", rs.getObject("xb"));
+				map.put("cs", rs.getObject("cs"));
+				map.put("srrq", rs.getObject("srrq"));
+				map.put("sfzh", rs.getObject("sfzh"));
+				map.put("rysfdm", rs.getObject("rysfdm"));
+				map.put("rysf", rs.getObject("rysf"));
+				map.put("mz", rs.getObject("mz"));
+				map.put("xl", rs.getObject("xl"));
+				return map;
+				}
+	});
 		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
 		Map<String,Object> ob = new HashMap<>();
-		ob.put("data", fl);
+		ob.put("data", ls);
 		Map<String, Object> meta = new HashMap<>();
 		meta.put("pageNum", pn);
 		meta.put("pageSize", ps);

@@ -3,6 +3,7 @@ package gov.gdgs.zs.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.dao.RyglDao;
 
 import javax.annotation.Resource;
@@ -36,7 +37,7 @@ public class RyglService {
 	
 	public Map<String, Object> kzxx(String xqTab,String gid) {
 		Map<String, Object> sb = new HashMap<>();
-		Hashids hashids = new Hashids("project-zs",6);
+		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
 		int ryid = (int)hashids.decode(gid)[0];
 		switch (xqTab) {
 		case "zyryxx":

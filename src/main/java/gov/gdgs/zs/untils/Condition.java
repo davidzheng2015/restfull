@@ -20,21 +20,38 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Condition {
 
-	private static final String EQUAL = "EQUAL"; // 相等
-
-	private static final String NOT_EQUAL = "NOT_EQUAL"; // 不相等
-
-	private static final String LESS_THEN = "LESS_THEN"; // 小于
-
-	private static final String LESS_EQUAL = "LESS_EQUAL"; // 小于等于
-
-	private static final String GREATER_EQUAL = "GREATER_EQUAL"; // 大于等于
-
-	private static final String GREATER_THEN = "GREATER_THEN"; // 大于
-
-	private static final String FUZZY = "FUZZY"; // 模糊匹配 %xxx%
-
-	private static final String FUZZY_LEFT = "FUZZY_LEFT"; // 左模糊 %xxx
+	/**
+	 * 相等
+	 */
+	public static final String EQUAL = "EQUAL"; // 相等
+	/**
+	 * 不相等
+	 */
+	public static final String NOT_EQUAL = "NOT_EQUAL"; // 不相等
+	/**
+	 * 小于
+	 */
+	public static final String LESS_THEN = "LESS_THEN"; // 小于
+	/**
+	 * 小于等于
+	 */
+	public static final String LESS_EQUAL = "LESS_EQUAL"; // 小于等于
+	/**
+	 *  大于等于
+	 */
+	public static final String GREATER_EQUAL = "GREATER_EQUAL"; // 大于等于
+	/**
+	 * 大于
+	 */
+	public static final String GREATER_THEN = "GREATER_THEN"; // 大于
+	/**
+	 * 模糊匹配 %xxx%
+	 */
+	public static final String FUZZY = "FUZZY"; // 模糊匹配 %xxx%
+	/**
+	 * 左模糊 %xxx
+	 */
+	public static final String FUZZY_LEFT = "FUZZY_LEFT"; // 左模糊 %xxx
 
 	private static final String FUZZY_RIGHT = "FUZZY_RIGHT"; // 右模糊 xxx%
 
