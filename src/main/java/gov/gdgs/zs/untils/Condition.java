@@ -53,15 +53,15 @@ public class Condition {
 	 */
 	public static final String FUZZY_LEFT = "FUZZY_LEFT"; // 左模糊 %xxx
 
-	private static final String FUZZY_RIGHT = "FUZZY_RIGHT"; // 右模糊 xxx%
+	public static final String FUZZY_RIGHT = "FUZZY_RIGHT"; // 右模糊 xxx%
 
-	private static final String NOT_EMPTY = "NOT_EMPTY"; // 不为空值的情况
+	public static final String NOT_EMPTY = "NOT_EMPTY"; // 不为空值的情况
 
-	private static final String EMPTY = "EMPTY"; // 空值的情况
+	public static final String EMPTY = "EMPTY"; // 空值的情况
 
-	private static final String IN = "IN"; // 在范围内
+	public static final String IN = "IN"; // 在范围内
 
-	private static final String NOT_IN = "NOT_IN"; // 不在范围内
+	public static final String NOT_IN = "NOT_IN"; // 不在范围内
 
 	private final StringBuffer sb;
 
