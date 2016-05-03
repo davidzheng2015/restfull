@@ -22,8 +22,8 @@ public class CWBBService {
 
 	@Resource
 	private CWBBDao cwbbDao;
-
-	public Map<String, Object> zcmx(int page, int pageSize, String where) {
+   //支出明细表
+	public Map<String, Object> getZcmxb(int page, int pageSize, String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (where != null) {
 			try {
@@ -35,17 +35,36 @@ public class CWBBService {
 			} catch (Exception e) {
 			}
 		}		
-		Map<String,Object> rs = cwbbDao.getZcmx(page, pageSize, map);
-		Hashids hashids = new Hashids(Config.HASHID_SALT);
-		ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) rs.get("data");
-		for (Map<String,Object> item : ls){
-			String id = hashids.encode() ;
-			System.out.println(id);
-		}
-
+		Map<String, Object> rs = cwbbDao.getZcmxb(page, pageSize, map);
 		return rs;
 	}
-
+	//支出明细表id
+	public Map<String, Object> getZcmxbById(String id) {
+		Map<String,Object> obj = cwbbDao.getZcmxbById(id);
+		return obj;
+	}
+	 //利润分配表
+		public Map<String, Object> getLrfpb(int page, int pageSize, String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}		
+			Map<String, Object> rs = cwbbDao.getLrfpb(page, pageSize, map);
+			return rs;
+		}
+		//利润分配表id
+		public Map<String, Object> getLrfpbById(String id) {
+			Map<String,Object> obj = cwbbDao.getLrfpbById(id);
+			return obj;
+		}
+   //利润表
 	public Map<String, Object> getLrb(int page, int pageSize,
 			String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -62,15 +81,36 @@ public class CWBBService {
 		Map<String, Object> rs = cwbbDao.getLrb(page, pageSize, map);
 		return rs;
 	}
-
+    //利润表id
 	public Map<String, Object> getLrbById(String id) {
 		Map<String,Object> obj = cwbbDao.getLrbById(id);
 		return obj;
 	}
-
-	public Object getZcmxById(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
+	//现金流量表
+		public Map<String, Object> getXjllb(int page, int pageSize,
+				String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}
+			Map<String, Object> rs = cwbbDao.getXjllb(page, pageSize, map);
+			return rs;
+		}
+	    //现金流量表信息
+		public Map<String, Object> getXjllbById(String id) {
+			Map<String,Object> obj = cwbbDao.getXjllbById(id);
+			return obj;
+		}
+       
+	
 
 }
