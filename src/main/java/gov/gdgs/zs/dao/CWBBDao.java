@@ -314,7 +314,7 @@ public class CWBBDao extends BaseJdbcDao{
 	    //获取现金流量信息
 		public Map<String,Object> getXjllbById(String id){
 			StringBuffer sb = new StringBuffer();
-			sb.append("	 SELECT a.ID,b.DWMC,c.MC AS CS,a.*");
+			sb.append("	 SELECT a.ID,b.DWMC,c.MC AS CS,DATE_FORMAT(a.JSSJ,'%Y-%m-%d') AS TJSJ,a.*");
 			sb.append("	FROM "+Config.PROJECT_SCHEMA+"zs_cwbb_xjll a, zs_jg b,dm_cs c");
 			sb.append("	WHERE a.JG_ID=b.ID AND a.ZTBJ=1 AND b.CS_DM=c.ID AND a.id=?");
 			 Map<String,Object> rs = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});

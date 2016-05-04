@@ -71,6 +71,7 @@ public class CWBBController {
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 	
+
 	//现金流量表
 		@RequestMapping(value = "/cwbb/xjllb", method = RequestMethod.GET) 
 		 	public  ResponseEntity<Map<String,Object>> getXjllb( 
@@ -85,6 +86,24 @@ public class CWBBController {
 			Map<String,Object> obj = cwbbService.getXjllbById(id);
 			return new ResponseEntity<>(obj,HttpStatus.OK);
 		 }
+
+
+	@RequestMapping(value = "/cwbb/zcfzb", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getZcfzb(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@RequestParam(value = "where", required = false) String where) {
+		Map<String,Object> obj = cwbbService.getZcfzb(page,pageSize,where);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
+
+	}
+	
+	@RequestMapping(value = "/cwbb/zcfzb/{id}", method = RequestMethod.GET)
+	public  ResponseEntity<Map<String,Object>> getZcfzbById(@PathVariable("id") String id){ 
+		
+		Map<String,Object> obj = cwbbService.getZcfzbById(id);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
+	}
 
 
 
