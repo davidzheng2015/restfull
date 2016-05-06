@@ -133,5 +133,52 @@ public class CWBBService {
 		Map<String,Object> obj = cwbbDao.getZcfzbById(id);
 		return obj;
 	}
+	
+	
+	//鉴证业务统计表
+			public Map<String, Object> getJzywtjb(int page, int pageSize,
+					String where) {
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				if (where != null) {
+					try {
+						where = java.net.URLDecoder.decode(where, "UTF-8");
+						ObjectMapper mapper = new ObjectMapper();
+						map = mapper.readValue(where,
+								new TypeReference<Map<String, Object>>() {
+								});
+					} catch (Exception e) {
+					}
+				}
+				Map<String, Object> rs = cwbbDao.getJzywtjb(page, pageSize, map);
+				return rs;
+			}
+		    //鉴证业务统计表信息
+			public Map<String, Object> getJzywtjbById(String id) {
+				Map<String,Object> obj = cwbbDao.getJzywtjbById(id);
+				return obj;
+			}
+			
+			//经营规模统计表
+			public Map<String, Object> getJygmtjb(int page, int pageSize,
+					String where) {
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				if (where != null) {
+					try {
+						where = java.net.URLDecoder.decode(where, "UTF-8");
+						ObjectMapper mapper = new ObjectMapper();
+						map = mapper.readValue(where,
+								new TypeReference<Map<String, Object>>() {
+								});
+					} catch (Exception e) {
+					}
+				}
+				Map<String, Object> rs = cwbbDao.getJygmtjb(page, pageSize, map);
+				return rs;
+			}
+		    //经营规模统计表信息
+			public Map<String, Object> getJygmtjbById(String id) {
+				Map<String,Object> obj = cwbbDao.getJygmtjbById(id);
+				return obj;
+			}
 
 }

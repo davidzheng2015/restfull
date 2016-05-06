@@ -104,6 +104,35 @@ public class CWBBController {
 		Map<String,Object> obj = cwbbService.getZcfzbById(id);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
+	//鉴证业务统计表
+			@RequestMapping(value = "/sdsb/jzywtjb", method = RequestMethod.GET) 
+			 	public  ResponseEntity<Map<String,Object>> getJzywtjb( 
+			 			@RequestParam(value = "page", required = true) int page, 
+			 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+			 			@RequestParam(value="where", required=false) String where){ 
+			 		Map<String,Object> obj = cwbbService.getJzywtjb(page,pageSize,where); 
+			 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+			 	} 
+			@RequestMapping(value="/sdsb/jzywtjb/{Id}",method = RequestMethod.GET)
+		      public  ResponseEntity<Map<String,Object>> getJzywtjbById(@PathVariable("Id") String id){ 		
+				Map<String,Object> obj = cwbbService.getJzywtjbById(id);
+				return new ResponseEntity<>(obj,HttpStatus.OK);
+			 }
+			
+			//经营规模统计表
+			@RequestMapping(value = "/sdsb/jygmtjb", method = RequestMethod.GET) 
+			 	public  ResponseEntity<Map<String,Object>> getJygmtjb( 
+			 			@RequestParam(value = "page", required = true) int page, 
+			 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+			 			@RequestParam(value="where", required=false) String where){ 
+			 		Map<String,Object> obj = cwbbService.getJygmtjb(page,pageSize,where); 
+			 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+			 	} 
+			@RequestMapping(value="/sdsb/jygmtjb/{Id}",method = RequestMethod.GET)
+		      public  ResponseEntity<Map<String,Object>> getJygmtjbById(@PathVariable("Id") String id){ 		
+				Map<String,Object> obj = cwbbService.getJygmtjbById(id);
+				return new ResponseEntity<>(obj,HttpStatus.OK);
+			 }
 
 
 

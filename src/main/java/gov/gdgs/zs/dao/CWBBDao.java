@@ -310,9 +310,9 @@ public class CWBBDao extends BaseJdbcDao{
 			obj.put("current", page);
 
 			return obj;
-		}
-	    //获取现金流量信息
-		public Map<String,Object> getXjllbById(String id){
+		 }
+	     //获取现金流量信息
+		 public Map<String,Object> getXjllbById(String id){
 			StringBuffer sb = new StringBuffer();
 			sb.append("	 SELECT a.ID,b.DWMC,c.MC AS CS,DATE_FORMAT(a.JSSJ,'%Y-%m-%d') AS TJSJ,a.*");
 			sb.append("	FROM "+Config.PROJECT_SCHEMA+"zs_cwbb_xjll a, zs_jg b,dm_cs c");
@@ -323,5 +323,151 @@ public class CWBBDao extends BaseJdbcDao{
 			 
 			 return ob;
 		}
+		//鉴证业务统计表
+      public Map<String, Object> getJzywtjb(int page, int pageSize, Map<String,Object> where) {
+			
+			Condition condition = new Condition();
+			condition.add("a.nd", Condition.EQUAL, where.get("nd"));
+			condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
+			//condition.add("a.ZTBJ", Condition.EQUAL, where.get("bbzt"));
+
+
+			StringBuffer sb = new StringBuffer();
+			sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.* ");
+			sb.append(" from   ( select a.id,a.nd,b.dwmc,a.HSQJJE_HS,a.HSQJJE_JE,");
+			sb.append(" a.TZYNSDSE_HS,a.TZYNSDSE_JE,");
+			sb.append(" a.TJYNSDSE_HS,a.TJYNSDSE_JE,");
+			sb.append(" CASE a.ZTBJ WHEN 0 THEN '保存' WHEN 1 THEN '提交' WHEN 2 THEN '通过' WHEN 3 THEN '退回' ELSE NULL END AS ZTBJ");
+			sb.append(" from "+Config.PROJECT_SCHEMA+"zs_sdsb_jzywqktjb a,zs_jg b,(SELECT @rownum:=?) temp");
+			sb.append(condition.getSql());//相当元 where x.xx like '%%'
+			sb.append(" and a.JG_ID=b.ID ) as t");
+			sb.append("    LIMIT ?, ? ");
+			// 装嵌传值数组
+			int startIndex = pageSize * (page - 1);
+			ArrayList<Object> params = condition.getParams();
+			params.add(0, pageSize * (page - 1));
+			params.add(startIndex);
+			params.add(pageSize);
+
+			// 获取符合条件的记录
+			List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+					params.toArray());
+
+			// 获取符合条件的记录数
+
+			int total = jdbcTemplate.queryForObject("SELECT FOUND_ROWS()",
+					Integer.class);
+
+			Map<String, Object> obj = new HashMap<String, Object>();
+			obj.put("data", ls);
+			obj.put("total", total);
+			obj.put("pageSize", pageSize);
+			obj.put("current", page);
+
+			return obj;
+		}
+      
+      public Map<String,Object> getJzywtjbById(String id){
+			StringBuffer sb = new StringBuffer();
+			sb.append("	 SELECT a.ID,b.dwmc,a.nd,DATE_FORMAT(a.SBRQ,'%Y年%m月%d日') AS SBRQ,");
+			sb.append("	a.HSQJJE_HS0,a.HSQJJE_JE0,a.HSQJJE_HS,a.HSQJJE_JE,");
+			sb.append("	(a.HSQJJE_HS-a.HSQJJE_HS0) AS HSZJE2,(a.HSQJJE_JE-a.HSQJJE_JE0) AS JEZJE2,");
+			sb.append(" CONCAT((a.HSQJJE_HS-a.HSQJJE_HS0)/a.HSQJJE_HS0*100,'%') HSZZB2,CONCAT((a.HSQJJE_JE-a.HSQJJE_JE0)/a.HSQJJE_JE0*100,'%') JEZZB2,");
+			sb.append(" a.TZYNSDSE_HS0,a.TZYNSDSE_JE0,a.TZYNSDSE_HS,a.TZYNSDSE_JE,");
+			sb.append(" (a.TZYNSDSE_HS-a.TZYNSDSE_HS0) AS HSZJE3,(a.TZYNSDSE_JE-a.TZYNSDSE_JE0) AS JEZJE3,");
+			sb.append(" CONCAT((a.TZYNSDSE_HS-a.TZYNSDSE_HS0)/a.TZYNSDSE_HS0*100,'%') HSZZB3,CONCAT((a.TZYNSDSE_JE-a.TZYNSDSE_JE0)/a.TZYNSDSE_JE0*100,'%') JEZZB3,");
+			sb.append(" a.TJYNSDSE_HS0,a.TJYNSDSE_JE0,a.TJYNSDSE_HS,a.TJYNSDSE_JE,");
+			sb.append(" (a.TJYNSDSE_HS-a.TJYNSDSE_HS0) AS HSZJE4,(a.TJYNSDSE_JE-a.TJYNSDSE_JE0) AS JEZJE4,");
+			sb.append(" CONCAT((a.TJYNSDSE_HS-a.TJYNSDSE_HS0)/a.TJYNSDSE_HS0*100,'%') HSZZB4,CONCAT((a.TJYNSDSE_JE-a.TJYNSDSE_JE0)/a.TJYNSDSE_JE0*100,'%') JEZZB4,");
+			sb.append(" a.MBKSJE_HS0,a.MBKSJE_JE0,a.MBKSJE_HS,a.MBKSJE_JE,");
+			sb.append(" (a.MBKSJE_HS-a.MBKSJE_HS0) AS HSZJE5,(a.MBKSJE_JE-a.MBKSJE_JE0) AS JEZJE5,");
+			sb.append(" CONCAT((a.MBKSJE_HS-a.MBKSJE_HS0)/a.MBKSJE_HS0*100,'%') HSZZB5,CONCAT((a.MBKSJE_JE-a.MBKSJE_JE0)/a.MBKSJE_JE0*100,'%') JEZZB5,");
+			sb.append(" a.CCSSKC_HS0,a.CCSSKC_JE0,a.CCSSKC_HS,a.CCSSKC_JE,");
+			sb.append(" (a.CCSSKC_HS-a.CCSSKC_HS0) AS HSZJE6,(a.CCSSKC_JE-a.CCSSKC_JE0) AS JEZJE6,");
+			sb.append(" CONCAT((a.CCSSKC_HS-a.CCSSKC_HS0)/a.CCSSKC_HS0*100,'%') HSZZB6,CONCAT((a.CCSSKC_JE-a.CCSSKC_JE0)/a.CCSSKC_JE0*100,'%') JEZZB6,");
+			sb.append(" a.TDZZSQSJZ_HS0,a.TDZZSQSJZ_JE0,a.TDZZSQSJZ_HS,a.TDZZSQSJZ_JE,");
+			sb.append(" (a.TDZZSQSJZ_HS-a.TDZZSQSJZ_HS0) AS HSZJE7,(a.TDZZSQSJZ_JE-a.TDZZSQSJZ_JE0) AS JEZJE7,");
+			sb.append(" CONCAT((a.TDZZSQSJZ_HS-a.TDZZSQSJZ_HS0)/a.TDZZSQSJZ_HS0*100,'%') HSZZB7,CONCAT((a.TDZZSQSJZ_JE-a.TDZZSQSJZ_JE0)/a.TDZZSQSJZ_JE0*100,'%') JEZZB7,");
+			sb.append(" a.QTJZ_HS0,a.QTJZ_JE0,a.QTJZ_HS,a.QTJZ_JE,");
+			sb.append(" (a.QTJZ_HS-a.QTJZ_HS0) AS HSZJE8,(a.QTJZ_JE-a.QTJZ_JE0) AS JEZJE8,");
+			sb.append(" CONCAT((a.QTJZ_HS-a.QTJZ_HS0)/a.QTJZ_HS0*100,'%') HSZZB8,CONCAT((a.QTJZ_JE-a.QTJZ_JE0)/a.QTJZ_JE0*100,'%') JEZZB8,");
+			sb.append(" a.GXJSQYRDQZYW_HS0,a.GXJSQYRDQZYW_JE0,a.GXJSQYRDQZYW_HS,a.GXJSQYRDQZYW_JE,");
+			sb.append(" (a.GXJSQYRDQZYW_HS-a.GXJSQYRDQZYW_HS0) AS HSZJE9,(a.GXJSQYRDQZYW_JE-a.GXJSQYRDQZYW_JE0) AS JEZJE9,");
+			sb.append(" CONCAT((a.GXJSQYRDQZYW_HS-a.GXJSQYRDQZYW_HS0)/a.GXJSQYRDQZYW_HS0*100,'%') HSZZB9,CONCAT((a.GXJSQYRDQZYW_JE-a.GXJSQYRDQZYW_JE0)/a.GXJSQYRDQZYW_JE0*100,'%') JEZZB9,");
+			sb.append(" a.QYZXSWDESKJSJZYW_HS0,a.QYZXSWDESKJSJZYW_JE0,a.QYZXSWDESKJSJZYW_HS,a.QYZXSWDESKJSJZYW_JE,");
+			sb.append(" (a.QYZXSWDESKJSJZYW_HS-a.QYZXSWDESKJSJZYW_HS0) AS HSZJE10,(a.QYZXSWDESKJSJZYW_JE-a.QYZXSWDESKJSJZYW_JE0) AS JEZJE10,");
+			sb.append(" CONCAT((a.QYZXSWDESKJSJZYW_HS-a.QYZXSWDESKJSJZYW_HS0)/a.QYZXSWDESKJSJZYW_HS0*100,'%') HSZZB10,CONCAT((a.QYZXSWDESKJSJZYW_JE-a.QYZXSWDESKJSJZYW_JE0)/a.QYZXSWDESKJSJZYW_JE0*100,'%') JEZZB10,");
+			sb.append(" a.YFFJJKCJZYW_HS0,a.YFFJJKCJZYW_JE0,a.YFFJJKCJZYW_HS,a.YFFJJKCJZYW_JE,");
+			sb.append(" (a.YFFJJKCJZYW_HS-a.YFFJJKCJZYW_HS0) AS HSZJE11,(a.YFFJJKCJZYW_JE-a.YFFJJKCJZYW_JE0) AS JEZJE11,");
+			sb.append(" CONCAT((a.YFFJJKCJZYW_HS-a.YFFJJKCJZYW_HS0)/a.YFFJJKCJZYW_HS0*100,'%') HSZZB11,CONCAT((a.YFFJJKCJZYW_JE-a.YFFJJKCJZYW_JE0)/a.YFFJJKCJZYW_JE0*100,'%') JEZZB11,");
+			sb.append(" a.QT_HS0,a.QT_JE0,a.QT_HS,a.QT_JE,");
+			sb.append(" (a.QT_HS-a.QT_HS0) AS HSZJE12,(a.QT_JE-a.QT_JE0) AS JEZJE12,");
+			sb.append(" CONCAT((a.QT_HS-a.QT_HS0)/a.QT_HS0*100,'%') HSZZB12,CONCAT((a.QT_JE-a.QT_JE0)/a.QT_JE0*100,'%') JEZZB12,");
+			sb.append(" a.TIANBIAOREN,a.SUOZHANG");
+			sb.append("  FROM zs_sdsb_jzywqktjb a,zs_jg b WHERE a.JG_ID=b.ID and a.ID=?");
+			 Map<String,Object> rs = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});
+			 Map<String, Object> ob = new HashMap<>();
+				ob.put("data", rs);
+			 
+			 return ob;
+		}
+      
+    //经营规模统计表
+      public Map<String, Object> getJygmtjb(int page, int pageSize, Map<String,Object> where) {
+			
+			Condition condition = new Condition();
+			condition.add("a.nd", Condition.EQUAL, where.get("nd"));
+			condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
+			//condition.add("a.ZTBJ", Condition.EQUAL, where.get("bbzt"));
+
+
+			StringBuffer sb = new StringBuffer();
+			sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.*");
+			sb.append(" from	(select a.id,b.dwmc,a.nd,a.BNSRZE_HJ,a.BNSRZE_SSFW,");
+			sb.append(" a.BNSRZE_SSJZ,a.BNSRZE_QTYW,a.SNSRZE,");
+			sb.append(" CASE a.ZTBJ WHEN 0 THEN '保存' WHEN 1 THEN '提交' WHEN 2 THEN '通过' WHEN 3 THEN '退回' ELSE NULL END AS ZTBJ");
+			sb.append(" from "+Config.PROJECT_SCHEMA+"zs_sdsb_jygmtjb a, zs_jg b,(SELECT @rownum:=?) temp");
+			sb.append(condition.getSql());//相当元 where x.xx like '%%'
+			sb.append(" and a.JG_ID=b.ID ) as t");
+			sb.append("    LIMIT ?, ? ");
+			// 装嵌传值数组
+			int startIndex = pageSize * (page - 1);
+			ArrayList<Object> params = condition.getParams();
+			params.add(0, pageSize * (page - 1));
+			params.add(startIndex);
+			params.add(pageSize);
+
+			// 获取符合条件的记录
+			List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+					params.toArray());
+
+			// 获取符合条件的记录数
+
+			int total = jdbcTemplate.queryForObject("SELECT FOUND_ROWS()",
+					Integer.class);
+
+			Map<String, Object> obj = new HashMap<String, Object>();
+			obj.put("data", ls);
+			obj.put("total", total);
+			obj.put("pageSize", pageSize);
+			obj.put("current", page);
+
+			return obj;
+		}
+      
+      public Map<String,Object> getJygmtjbById(String id){
+			StringBuffer sb = new StringBuffer();
+			sb.append("	select a.id,a.nd,b.dwmc,DATE_FORMAT(a.SBRQ,'%Y年%m月%d日') AS SBRQ,");
+			sb.append("	a.BNSRZE_HJ,a.BNSRZE_SSFW,a.BNSRZE_SSJZ,a.BNSRZE_QTYW,a.SNSRZE,");
+			sb.append("	CONCAT((a.BNSRZE_HJ-a.SNSRZE)/a.SNSRZE*100,'%') AS ZZB,a.TBR,a.SZ");
+			sb.append("	from zs_sdsb_jygmtjb a, zs_jg b");
+			sb.append("	where a.JG_ID=b.ID and a.id=?");
+			 Map<String,Object> rs = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{id});
+			 Map<String, Object> ob = new HashMap<>();
+				ob.put("data", rs);
+			 
+			 return ob;
+		}
+      
 
 }
