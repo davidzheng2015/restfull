@@ -52,11 +52,6 @@
 			<artifactId>spring-security-cas</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-        	<groupId>org.springframework.security.oauth</groupId>
-        	<artifactId>spring-security-oauth2</artifactId>
-       		<version>2.0.9.RELEASE</version>
-    	</dependency>
 
 		<!-- 连接MySQL数据库需要的jar包 -->
 		<dependency>
