@@ -1,6 +1,5 @@
 package gov.gdgs.zs.untils;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -11,15 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 /**
  * 简陋的JDBC连接
  * @author Administrator
  *
  */
-@Repository
 public class DbToDb {
+	
 	/**
 	 * 事务所基本表(zs_jg)插入数据方法
 	 */
@@ -185,6 +182,292 @@ public class DbToDb {
 			conn.close();
 		}
 		return null;
+		
+	}
+	public  List<Map<String,Object>> query11111() throws Exception {
+		Connection conn = null;
+		String url = "jdbc:mysql://localhost:3306/gdzs?"
+				+ "user=root&password=my123&useUnicode=true&characterEncoding=UTF8"; 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");// 动态加载mysql驱动
+			conn = DriverManager.getConnection(url);
+			Statement stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("select* from zs_jg");
+			ResultSetMetaData md = rs.getMetaData();
+			int num = md.getColumnCount();
+			@SuppressWarnings("rawtypes")
+			List<Map<String,Object>> listOfRows = new ArrayList();
+			while (rs.next()) {
+				@SuppressWarnings("rawtypes")
+				Map mapOfColValues = new HashMap(num);
+				for (int i = 1; i <= num; i++) {
+					mapOfColValues.put(md.getColumnName(i), rs.getObject(i));
+				}
+				listOfRows.add(mapOfColValues);
+			}
+			
+			return listOfRows;
+		} catch (SQLException e) {
+			System.out.println("MySQL操作错误");
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+		}
+		return null;
+		
+	}
+	public  void insert11111(Map<String,Object> swxx,String id) throws Exception {
+		Connection conn = null;
+		String url = "jdbc:mysql://localhost:3306/gdzs?"
+				+ "user=root&password=my123&useUnicode=true&characterEncoding=UTF8"; 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");// 动态加载mysql驱动
+			conn = DriverManager.getConnection(url);
+			Statement stmt = conn.createStatement();
+			StringBuffer sb = new StringBuffer();
+			sb.append("insert into zs_jg_kzxx(JG_ID,BGDZ,SGLZXSBWH,ZCDZ,SGLZXSBSJ,ZJPZSJ,YZBM,ZJPZWH,CZHM,DHHM,SZYX,TXYXM,TXYYX,TXYYDDH,ZSBH,JYFW,SZYDDH,GSYHBH,DZYJ,YHDW,YHSJ,GZBH,GZDW,GZRY,GZSJ,YZBH,YZDW,YZRY,YZSJ,TTHYZCBH,RHSJ,KHYH,KHYHZH,FJ,SWDJHM,QKJJ,SWSNBGLZD,DYCGDDH,BGCSCQZM,YXBZ,LRRQ) values('"
+			+id+"',");
+			if(swxx.get("dzhi")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("dzhi").toString()+"',");
+			}
+			if(swxx.get("sjlzxsbwh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("sjlzxsbwh").toString()+"',");
+			}
+			if(swxx.get("zcdz")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("zcdz").toString()+"',");
+			}
+			if(swxx.get("sglzxsbsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("sglzxsbsj").toString()+"',");
+			}
+			if(swxx.get("zjpzsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("zjpzsj").toString()+"',");
+			}
+			if(swxx.get("yzbm")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yzbm").toString()+"',");
+			}
+			if(swxx.get("zjpzwh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("zjpzwh").toString()+"',");
+			}
+			if(swxx.get("czhen")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("czhen").toString()+"',");
+			}
+			if(swxx.get("dhua")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("dhua").toString()+"',");
+			}
+			if(swxx.get("szyx")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("szyx").toString()+"',");
+			}
+			if(swxx.get("txyxming")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("txyxming").toString()+"',");
+			}
+			if(swxx.get("xtyyx")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("xtyyx").toString()+"',");
+			}
+			if(swxx.get("xtyphone")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("xtyphone").toString()+"',");
+			}
+			if(swxx.get("zsbh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("zsbh").toString()+"',");
+			}
+			if(swxx.get("jyfw")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("jyfw").toString()+"',");
+			}
+			if(swxx.get("szphone")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("szphone").toString()+"',");
+			}
+			if(swxx.get("gsyhmcbh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gsyhmcbh").toString()+"',");
+			}
+			if(swxx.get("dzyj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("dzyj").toString()+"',");
+			}
+			if(swxx.get("yhdw")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yhdw").toString()+"',");
+			}
+			if(swxx.get("yhsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yhsj").toString()+"',");
+			}
+			if(swxx.get("gzbh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gzbh").toString()+"',");
+			}
+			if(swxx.get("gzdw")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gzdw").toString()+"',");
+			}
+			if(swxx.get("gzry")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gzry").toString()+"',");
+			}
+			if(swxx.get("gzsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gzsj").toString()+"',");
+			}
+			if(swxx.get("yzbh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yzbh").toString()+"',");
+			}
+			if(swxx.get("yzdw")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yzdw").toString()+"',");
+			}
+			if(swxx.get("yzry")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yzry").toString()+"',");
+			}
+			if(swxx.get("yzsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("yzsj").toString()+"',");
+			}
+			if(swxx.get("tthybh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("tthybh").toString()+"',");
+			}
+			if(swxx.get("rhsj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("rhsj").toString()+"',");
+			}
+			if(swxx.get("khh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("khh").toString()+"',");
+			}
+			if(swxx.get("khhzh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("khhzh").toString()+"',");
+			}
+			if(swxx.get("fj")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("fj").toString()+"',");
+			}
+			if(swxx.get("swdjhm")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("swdjhm").toString()+"',");
+			}
+			if(swxx.get("jbqk")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("jbqk").toString()+"',");
+			}
+			if(swxx.get("glzd")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("glzd").toString()+"',");
+			}
+			if(swxx.get("gddh")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("gddh").toString()+"',");
+			}
+			if(swxx.get("bgcszczm")==null){
+				sb.append("null,");
+			}else{
+				
+				sb.append("'"+swxx.get("bgcszczm").toString()+"',");
+			}
+			sb.append("'1',sysdate())");
+			stmt.executeUpdate(sb.toString());
+		} catch (SQLException e) {
+			System.out.println("MySQL操作错误");
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+		}
 		
 	}
 	/**
