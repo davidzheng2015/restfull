@@ -59,18 +59,19 @@ public class SDSCBBDao  extends BaseDao{
 	public Map<String,Object> hyryqktjcx(int pn,int ps,Map<String,Object> qury) {
 		Condition condition = new Condition();
 		condition.add("b.dwmc", Condition.FUZZY, qury.get("dwmc"));
+		condition.add("b.cs_dm", Condition.EQUAL, qury.get("cs"));
 		condition.add("a.nd", Condition.EQUAL, qury.get("nd"));
 		condition.add("a.ZTBJ", Condition.EQUAL, qury.get("bbzt"));
 		condition.add("a.sbrq", Condition.GREATER_EQUAL, qury.get("sbsj"));
 		condition.add("a.sbrq", Condition.LESS_EQUAL, qury.get("sbsj2"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("		SELECT 	SQL_CALC_FOUND_ROWS	 ");
-		sb.append("		@rownum:=@rownum+1 AS 'key',b.dwmc,a.*,");
+		sb.append("		@rownum:=@rownum+1 AS 'key',b.dwmc,a.*,c.mc as cs,");
 		sb.append("		case a.ZTBJ when 1 then '提交' when 2 then '通过' when 0 then '保存' when "
 				+ "3 then '退回' else null end as bbzt,DATE_FORMAT(a.sbrq,'%Y年%m月%d日') AS sbsj");
-		sb.append("	 FROM zs_sdsb_hyryqktj a,zs_jg_new b,(SELECT @rownum:=?) zs_jg");
+		sb.append("	 FROM zs_sdsb_hyryqktj a,zs_jg_new b,(SELECT @rownum:=?) zs_jg,dm_cs c");
 		sb.append("		"+condition.getSql()+" ");
-		sb.append("	and a.JG_ID=b.YID ");
+		sb.append("	and a.JG_ID=b.YID and c.id = b.cs_dm");
 		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
@@ -97,18 +98,19 @@ public class SDSCBBDao  extends BaseDao{
 	public Map<String,Object> jysrqktjcx(int pn,int ps,Map<String,Object> qury) {
 		Condition condition = new Condition();
 		condition.add("b.dwmc", Condition.FUZZY, qury.get("dwmc"));
+		condition.add("b.cs_dm", Condition.EQUAL, qury.get("cs"));
 		condition.add("a.nd", Condition.EQUAL, qury.get("nd"));
 		condition.add("a.ZTBJ", Condition.EQUAL, qury.get("bbzt"));
 		condition.add("a.sbrq", Condition.GREATER_EQUAL, qury.get("sbsj"));
 		condition.add("a.sbrq", Condition.LESS_EQUAL, qury.get("sbsj2"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("		SELECT 	SQL_CALC_FOUND_ROWS	 ");
-		sb.append("		@rownum:=@rownum+1 AS 'key',b.dwmc,a.*,");
+		sb.append("		@rownum:=@rownum+1 AS 'key',b.dwmc,a.*,c.mc as cs,");
 		sb.append("		case a.ZTBJ when 1 then '提交' when 2 then '通过' when 0 then '保存' when "
 				+ "3 then '退回' else null end as bbzt,DATE_FORMAT(a.sbrq,'%Y年%m月%d日') AS sbsj");
-		sb.append("	 FROM zs_sdsb_jysrqk a,zs_jg_new b,(SELECT @rownum:=?) zs_jg");
+		sb.append("	 FROM zs_sdsb_jysrqk a,zs_jg_new b,(SELECT @rownum:=?) zs_jg,dm_cs c");
 		sb.append("		"+condition.getSql()+" ");
-		sb.append("	and a.JG_ID=b.YID ");
+		sb.append("	and a.JG_ID=b.YID  and c.id = b.cs_dm");
 		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
