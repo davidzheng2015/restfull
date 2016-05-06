@@ -57,6 +57,11 @@
         	<artifactId>spring-security-oauth2</artifactId>
        		<version>2.0.9.RELEASE</version>
     	</dependency>
+    	<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt</artifactId>
+    		<version>0.6.0</version>
+		</dependency>
 
 		<!-- 连接MySQL数据库需要的jar包 -->
 		<dependency>
