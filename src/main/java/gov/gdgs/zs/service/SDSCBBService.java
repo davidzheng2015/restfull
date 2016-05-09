@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class SDSCBBService {
 	@Resource
-	public SDSCBBDao sdscbbDao;
+	private SDSCBBDao sdscbbDao;
 	public Map<String, Object> swsjbqktjbcx(int pn, int ps, String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (where != null) {
