@@ -12,12 +12,8 @@ public class User implements Serializable {
 	private Integer id;
 	private String userName;
 	private String password;
-	private Date signUpDate;
-	private Date lastActTime;
-	private String ip;
-	private String yxbz;
-	private Integer deptId;
-	private String cname;
+	private Date createTime;
+	private String name;
 	public Integer getId() {
 		return id;
 	}
@@ -36,41 +32,18 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getSignUpDate() {
-		return signUpDate;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setSignUpDate(Date signUpDate) {
-		this.signUpDate = signUpDate;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
-	public Date getLastActTime() {
-		return lastActTime;
+	public String getName() {
+		return name;
 	}
-	public void setLastActTime(Date lastActTime) {
-		this.lastActTime = lastActTime;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	public String getYxbz() {
-		return yxbz;
-	}
-	public void setYxbz(String yxbz) {
-		this.yxbz = yxbz;
-	}
-	public Integer getDeptId() {
-		return deptId;
-	}
-	public void setDeptId(Integer deptId) {
-		this.deptId = deptId;
-	}
-	public String getCname() {
-		return cname;
-	}
-	public void setCname(String cname) {
-		this.cname = cname;
-	}
+	
 	
 }
