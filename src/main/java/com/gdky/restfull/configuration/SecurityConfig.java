@@ -16,6 +16,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	@Override
+	public void configure(WebSecurity web) throws Exception
+    {
+        web
+            .ignoring()
+                // All of Spring Security will ignore the requests
+                .antMatchers("/resources/**")
+                .antMatchers(HttpMethod.POST, "/login");
+    }
 		
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
