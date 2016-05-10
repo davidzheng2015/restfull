@@ -21,9 +21,9 @@ public class JDJCDao extends BaseDao{
 		condition.add("b.dwmc", Condition.FUZZY, qury.get("dwmc"));
 		condition.add("b.cs_dm", Condition.EQUAL, qury.get("cs"));
 		condition.add("a.nd", Condition.EQUAL, qury.get("nd"));
-		condition.add("a.ZTBJ", Condition.EQUAL, qury.get("bbzt"));
-		condition.add("a.sbrq", Condition.GREATER_EQUAL, qury.get("sbsj"));
-		condition.add("a.sbrq", Condition.LESS_EQUAL, qury.get("sbsj2"));
+		condition.add("a.njcl", Condition.EQUAL, qury.get("bbzt"));
+		condition.add("a.zjrq", Condition.GREATER_EQUAL, qury.get("sbsj"));
+		condition.add("a.zjrq", Condition.LESS_EQUAL, qury.get("sbsj2"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',v.* from ( SELECT ");
 		sb.append("		b.dwmc,b.zsbh,d.mc as jgxz,c.yzbm,c.bgdz,c.dhhm,a.*,");
@@ -39,7 +39,7 @@ public class JDJCDao extends BaseDao{
 		sb.append("	 ) as v ,(SELECT @rownum:=?) zs_jg");
 		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
-		params.add(0,(pn-1)*ps);
+		params.add((pn-1)*ps);
 		params.add((pn-1)*ps);
 		params.add(ps);
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
