@@ -30,11 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
             http   
                 .authorizeRequests()   
-    			.antMatchers("/api/auth/**")
+    			.antMatchers("/api/**")
     			.permitAll()
     		.and()
                 .authorizeRequests()   
-    			.antMatchers("/api/**")
+    			.antMatchers("/api/auth/**")
     			.authenticated()
     		.and()
     			.authorizeRequests()   
@@ -48,17 +48,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
               	.formLogin()
             .and()
-                .csrf()
-                .disable();
+                .csrf().disable();
 	}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
 		auth.inMemoryAuthentication()
                     .passwordEncoder(passwordEncoder())
-                    .withUser("admin").password("test123").authorities("ROLE_ADMIN")
+                    .withUser("admin").password("test").authorities("ROLE_ADMIN")
                     .and()
-                        .withUser("test").password("test123").authorities("ROLE_USER");
+                        .withUser("user").password("test").authorities("ROLE_USER");
 	}
 
 
