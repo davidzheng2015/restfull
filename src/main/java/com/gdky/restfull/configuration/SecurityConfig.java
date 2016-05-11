@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,8 @@ import com.gdky.restfull.security.CustomUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private CustomUserDetailsService userDetailsService;
+	
+	private AuthenticationProvider authProvider;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception
@@ -73,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	        auth.userDetailsService(userDetailsService);  
 	        //加载授权信息  
-	        auth.authenticationProvider(authenticationProvider);  
+	        auth.authenticationProvider(authProvider);  
 	    }  
 
 

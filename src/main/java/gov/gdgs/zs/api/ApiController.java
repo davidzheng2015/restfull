@@ -46,4 +46,18 @@ public class ApiController {
 		return new ResponseEntity<>("api responed OK",HttpStatus.CREATED);
 	}
     
+    @RequestMapping(value = "/auth/api", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getAuthApi() {
+
+
+    	Authentication userName = SecurityContextHolder.getContext().getAuthentication();
+    	System.out.println(userName.toString());
+
+		Map<String, Object> obj = new HashMap<String,Object>();
+		obj.put("security", "auth path");
+		obj.put("project", "gd_zs_mis");
+		obj.put("version", "1.0");
+		obj.put("apis", "12");
+		return new ResponseEntity<>(obj, HttpStatus.OK);
+	}
 }

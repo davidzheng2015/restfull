@@ -10,21 +10,27 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 3365405747302906236L;
 	private Integer id;
-	private String userName;
+	private String username;
 	private String password;
 	private Date createTime;
 	private String name;
+	private Integer accountEnabled;
+	private Integer accountExpired;
+	private Integer accountLocked;
+	private Integer credentialsExpired;
+	
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -37,6 +43,30 @@ public class User implements Serializable {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public Integer getAccountEnabled() {
+		return accountEnabled;
+	}
+	public void setAccountEnabled(Integer accountEnabled) {
+		this.accountEnabled = accountEnabled;
+	}
+	public Integer getAccountExpired() {
+		return accountExpired;
+	}
+	public void setAccountExpired(Integer accountExpired) {
+		this.accountExpired = accountExpired;
+	}
+	public Integer getAccountLocked() {
+		return accountLocked;
+	}
+	public void setAccountLocked(Integer accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+	public Integer getCredentialsExpired() {
+		return credentialsExpired;
+	}
+	public void setCredentialsExpired(Integer credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
 	}
 	public String getName() {
 		return name;

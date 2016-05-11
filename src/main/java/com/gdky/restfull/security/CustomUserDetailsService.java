@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdky.restfull.api.RestExceptionHandler;
+import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.service.UserService;
 
@@ -36,18 +38,16 @@ public class CustomUserDetailsService implements UserDetailsService {
            throw new UsernameNotFoundException("user not found");
        }
        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),  
-               user.getStatus().equalsIgnoreCase("active"), true, true, true, getGrantedAuthorities(user));
-       
-        return null;  
+               getGrantedAuthorities(user));
     }  
     
     protected List<GrantedAuthority> getGrantedAuthorities(User user){  
-        List<GrantedAuthority> authorities = new ArrayList();  
-        for (Role role :user.getRoles()) {  
+        List<GrantedAuthority> authorities = new ArrayList();
+        List<Role> roles = userService.getRolesByUser(user.getUsername());
+        for (Role role :roles) {  
 
             //注意：这里要ROLE_加上前缀，否则在创建角色而的时候统一加上  
             authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));  
-//            authorities.add(new SimpleGrantedAuthority(role.getName()));  
         }  
         return authorities;  
     }  
