@@ -16,7 +16,7 @@ public class UserService {
 	@Resource
 	private UserDao userDao;
 
-	public User getUser(String userName){
+	public List<User> getUser(String userName){
 		return userDao.getUser(userName);
 	}
 

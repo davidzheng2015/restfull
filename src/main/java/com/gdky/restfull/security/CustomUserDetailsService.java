@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gdky.restfull.api.RestExceptionHandler;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.service.UserService;
@@ -24,25 +22,27 @@ import com.gdky.restfull.service.UserService;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Resource(name = "userService")  
+	@Resource 
     private UserService userService;  
 	
 	private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
   
     @Override  @Transactional(readOnly=true)  
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {  
-       User user = userService.getUser(username);  
+       List<User> ls = userService.getUser(username);  
 
-       if (user == null) {
-    	   log.warn("不存在该用户");
+       if (ls == null || ls.size()>1) {
+    	   log.warn("用户不正确");
            throw new UsernameNotFoundException("user not found");
        }
-       return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),  
+       log.warn("获取用户");
+       User user = ls.get(0);
+       return new org.springframework.security.core.userdetails.User(user.getNames(), user.getPasswordHint(),  
                getGrantedAuthorities(user));
     }  
     
     protected List<GrantedAuthority> getGrantedAuthorities(User user){  
-        List<GrantedAuthority> authorities = new ArrayList();
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         List<Role> roles = userService.getRolesByUser(user.getUsername());
         for (Role role :roles) {  
 

@@ -12,8 +12,8 @@ public class User implements Serializable {
 	private Integer id;
 	private String username;
 	private String password;
-	private Date createTime;
-	private String name;
+	private String passwordHint;
+	private String names;
 	private Integer accountEnabled;
 	private Integer accountExpired;
 	private Integer accountLocked;
@@ -38,11 +38,11 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getCreateTime() {
-		return createTime;
+	public String getPasswordHint() {
+		return passwordHint;
 	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setPasswordHint(String passwordHint) {
+		this.passwordHint = passwordHint;
 	}
 	public Integer getAccountEnabled() {
 		return accountEnabled;
@@ -68,11 +68,11 @@ public class User implements Serializable {
 	public void setCredentialsExpired(Integer credentialsExpired) {
 		this.credentialsExpired = credentialsExpired;
 	}
-	public String getName() {
-		return name;
+	public String getNames() {
+		return names;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNames(String name) {
+		this.names = name;
 	}
 	
 	

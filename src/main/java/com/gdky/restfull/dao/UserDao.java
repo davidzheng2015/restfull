@@ -1,9 +1,17 @@
 package com.gdky.restfull.dao;
 
 
-import java.util.List;
+import gov.gdgs.zs.configuration.Config;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hashids.Hashids;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +23,23 @@ import com.gdky.restfull.entity.User;
 @Transactional
 public class UserDao extends BaseJdbcDao{
 
-	public User getUser(String userName) {
+	public List<User> getUser(String userName) {
 		String sql = "select * from fw_users where username = ?";
-		User user = this.jdbcTemplate.queryForObject(sql, User.class, new Object[]{userName});
-		return user;
+		List<User> ls = this.jdbcTemplate.query(sql, new Object[]{userName}, new RowMapper<User>(){
+			public User mapRow(ResultSet rs, int arg1) throws SQLException{
+				User user = new User();
+				user.setAccountEnabled((Integer)rs.getObject("ACCOUNT_ENABLED"));
+				user.setAccountExpired((Integer)rs.getObject("ACCOUNT_EXPIRED"));
+				user.setAccountLocked((Integer)rs.getObject("ACCOUNT_LOCKED"));
+				user.setCredentialsExpired((Integer)rs.getObject("CREDENTIALS_EXPIRED"));
+				user.setId((Integer)rs.getObject("ID"));
+				user.setNames((String)rs.getObject("NAMES"));
+				user.setPassword((String)rs.getObject("PASSWORD_HINT"));
+				user.setUsername((String)rs.getObject("USERNAME"));
+				return user;
+			}
+		});
+		return ls;
 	}
 
 	public List<Role> getRolesByUser(String userName) {
