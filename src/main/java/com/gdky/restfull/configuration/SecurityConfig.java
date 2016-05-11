@@ -1,20 +1,28 @@
 package com.gdky.restfull.configuration;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.*;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.gdky.restfull.security.CustomUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	@Resource
+	private CustomUserDetailsService userDetailsService;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception
@@ -59,6 +67,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                         .withUser("user").password("test").authorities("ROLE_USER");
 	}
+	
+	 @Autowired  
+	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {  
+
+	        auth.userDetailsService(userDetailsService);  
+	        //加载授权信息  
+	        auth.authenticationProvider(authenticationProvider);  
+	    }  
 
 
 	@Bean
