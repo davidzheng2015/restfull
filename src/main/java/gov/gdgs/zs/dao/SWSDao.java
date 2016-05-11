@@ -177,18 +177,18 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> zyryxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select @rownum:=@rownum+1 as 'key',@rownum AS xh,c.xming, ");
+		sb.append("		select @rownum:=@rownum+1 as 'key',@rownum AS xh,c.xm as xming, ");
 		sb.append("		case a.czr_dm when 1 then \"是\"  when 2 then \"否\" else null end as czr,");
 		sb.append("		case a.fqr_dm when 1 then \"是\"  when 2 then \"否\" else null end as fqr,");
 		sb.append("	 case a.sz_dm when 1 then \"是\"  when 2 then \"否\" else null end as sz ");
 		sb.append("		from ");
-		sb.append("	zs_zysws a,zs_jg b ,");
-		sb.append("		zs_ryjbxx c,(select @rownum:=0) zs_jg ");
+		sb.append("	zs_ry_zykz a,zs_jg_new b ,");
+		sb.append("		zs_ry c,(select @rownum:=0) zs_jg ");
 		sb.append("		where");
 		sb.append("		 b.id =?");
 		sb.append("		and b.id=a.jg_id");
 		sb.append("		 and a.ry_id = c.id");
-		sb.append("		 and a.zyzt_dm = '1'");
+		sb.append("		 and a.yxbz = '1'");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 	/**
@@ -198,14 +198,14 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> cyryxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select @rownum:=@rownum+1 as 'key', c.xming, ");
+		sb.append("		select @rownum:=@rownum+1 as 'key', c.xm as xming, ");
 		sb.append("		 d.mc as xl, ");
 		sb.append("		c.sfzh,");
 		sb.append("		e.mc as zc,");
 		sb.append("		a.id");
-		sb.append("		from zs_cyry a,");
-		sb.append("		zs_jg b");
-		sb.append("		,zs_ryjbxx c,");
+		sb.append("		from zs_ry_cykz a,");
+		sb.append("		zs_jg_new b");
+		sb.append("		,zs_ry c,");
 		sb.append("		dm_xl d,");
 		sb.append("		dm_zw e,(select @rownum:=0) zs_jg");
 		sb.append("		where b.id =?");
@@ -222,13 +222,13 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> czrylb(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select @rownum:=@rownum+1 as 'key',c.xming,");
+		sb.append("		select @rownum:=@rownum+1 as 'key',c.xm as xming,");
 		sb.append("		a.cze,");
 		sb.append("		b.dwmc,");
 		sb.append("		c.sfzh");
 		sb.append("		from ");
-		sb.append("		zs_zysws a,zs_jg b ,");
-		sb.append("			zs_ryjbxx c,(select @rownum:=0) zs_jg ");
+		sb.append("		zs_ry_zykz a,zs_jg_new b ,");
+		sb.append("			zs_ry c,(select @rownum:=0) zs_jg ");
 		sb.append("			where");
 		sb.append("			 b.id =? ");
 		sb.append("		and b.id=a.jg_id");
@@ -243,10 +243,10 @@ public class SWSDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> swsbgxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select * from (select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg a,zs_jglsbgxxb b,(select @rownum:=0) zs_jg where a.id = ? and b.jgb_id = a.id ");
+		sb.append("		select * from (select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg_new a,zs_jglsbgxxb b,(select @rownum:=0) zs_jg where a.id = ? and b.jgb_id = a.yid ");
 		sb.append("				union ");
-		sb.append("				select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg a,zs_jgbgxxb b,zs_jgbgspb c where a.id = ? and b.jgbgspb_id = c.id and c.jg_id = a.id) as g where g.jgb_id = ? ");
-		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id,id,id});
+		sb.append("				select @rownum:=@rownum+1 as 'key',date_format(b.gxsj,'%Y-%m-%d') as xgxsj,b.* from zs_jg_new a,zs_jgbgxxb b,zs_jgbgspb c where a.id = ? and b.jgbgspb_id = c.id and c.jg_id = a.yid) as g ");
+		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id,id});
 	}
 	/**
 	 * 
@@ -263,15 +263,15 @@ public class SWSDao extends BaseDao{
 		sb.append("		case f.ztdm when 1 then \"保存\"  when 2 then \"自检\" when 0 then \"退回\" when 3 then \"年检\" else null end as njzt,	");	 
 		sb.append("		date_format( c.spsj,'%Y-%m-%d') as spsj ");
 		sb.append("		from		");
-		sb.append("		 zs_jg a,");
+		sb.append("		 zs_jg_new a,");
 		sb.append("		 zs_spzx b,");
 		sb.append("		 zs_spxx c,");
 		sb.append("		 zs_splcbz d,");
 		sb.append("		 zs_splc e,");
-		sb.append("		zs_jgnj f,(select @rownum:=0) zs_jg");
+		sb.append("		zs_jg_njb f,(select @rownum:=0) zs_jg");
 		sb.append("		where		 ");
 		sb.append("		a.id = ?");
-		sb.append("			and b.zsjg_id = a.id ");
+		sb.append("			and b.zsjg_id = a.yid ");
 		sb.append("		and c.spid = b.id ");
 		sb.append("		and c.ispass = 'y' ");
 		sb.append("		 and d.id = c.lcbzid ");
@@ -279,8 +279,8 @@ public class SWSDao extends BaseDao{
 		sb.append("		  and e.lclxid ='11'");
 		sb.append("		and f.ztdm = 3");
 		sb.append("		and f.id = b.sjid");
-		sb.append("		and a.id = f.zsjg_id");
-		sb.append("		order by f.nd ");
+		sb.append("		and a.id = f.jg_id");
+		sb.append("		order by f.nd desc ");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 
