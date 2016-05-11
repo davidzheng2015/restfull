@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,76 +25,47 @@ import com.gdky.restfull.security.CustomUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private CustomUserDetailsService userDetailsService;
-	
+
 	private AuthenticationProvider authProvider;
-	
+
 	@Override
-	public void configure(WebSecurity web) throws Exception
-    {
-        web
-            .ignoring()
-                // All of Spring Security will ignore the requests
-                .antMatchers("/resources/**")
-                .antMatchers(HttpMethod.POST, "/login");
-    }
-		
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+				// All of Spring Security will ignore the requests
+				.antMatchers("/resources/**")
+				.antMatchers(HttpMethod.POST, "/login");
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-            http   
-                .authorizeRequests()   
-    			.antMatchers("/api/**")
-    			.permitAll()
-    		.and()
-                .authorizeRequests()   
-    			.antMatchers("/api/auth/**")
-    			.authenticated()
-    		.and()
-    			.authorizeRequests()   
-    			.anyRequest()
-    			.permitAll()
-            .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-                .httpBasic()
-            .and()
-              	.formLogin()
-            .and()
-                .csrf().disable();
+		http.authorizeRequests().antMatchers("/api/**").permitAll().and()
+				.authorizeRequests().antMatchers("/auth/api/**")
+				.authenticated().and().authorizeRequests().anyRequest()
+				.permitAll().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.httpBasic().and().formLogin().and().csrf().disable();
 	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
-		auth.inMemoryAuthentication()
-                    .passwordEncoder(passwordEncoder())
-                    .withUser("admin").password("test").authorities("ROLE_ADMIN")
-                    .and()
-                        .withUser("user").password("test").authorities("ROLE_USER");
+		auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
+				.withUser("admin").password("test").authorities("ROLE_ADMIN")
+				.and().withUser("user").password("test").authorities("ROLE_USER");
 	}
-	
-	 @Autowired  
-	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {  
 
-	        auth.userDetailsService(userDetailsService);  
-	        //加载授权信息  
-	        auth.authenticationProvider(authProvider);  
-	    }  
-
-
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	@Autowired
+	public void configureGloba(AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(
+				passwordEncoder());
+		// 加载授权信息
+		auth.authenticationProvider(authProvider);
 	}
 
 	@Bean
-	@Override
-	public UserDetailsService userDetailsServiceBean() throws Exception {
-		return super.userDetailsServiceBean();
+	public ShaPasswordEncoder passwordEncoder() {
+		return new ShaPasswordEncoder();
 	}
 
-	@Bean
-	public PlaintextPasswordEncoder passwordEncoder() {
-		return new PlaintextPasswordEncoder();
-	}
 }
