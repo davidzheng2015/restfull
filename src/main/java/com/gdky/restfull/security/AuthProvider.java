@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthProvider implements AuthenticationProvider {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(AuthProvider.class);
-
 	@Resource
 	private CustomUserDetailsService userDetailsService;
 
@@ -25,11 +22,12 @@ public class AuthProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication auth)
 			throws AuthenticationException {
 		String username = auth.getName();
+		System.out.println(username);
 		String password = auth.getCredentials().toString();
-		log.debug("username:{} ,\tpassword:{}", username, password);
+
 
 		UserDetails user = userDetailsService.loadUserByUsername(username);
-		log.debug(ReflectionToStringBuilder.toString(user));
+
 		if (user != null) {
 			Authentication token = new UsernamePasswordAuthenticationToken(
 					username, password, user.getAuthorities());

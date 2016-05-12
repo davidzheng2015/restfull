@@ -2,6 +2,7 @@ package com.gdky.restfull.configuration;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private CustomUserDetailsService userDetailsService;
 
-    @Resource
+    @Resource(name="authProvider")
     private AuthenticationProvider authProvider;
 
     @Override
@@ -58,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             	.csrf().disable();
     }
-
+    
+    @Autowired
     @Override
     public void configure(AuthenticationManagerBuilder auth)
             throws Exception {
