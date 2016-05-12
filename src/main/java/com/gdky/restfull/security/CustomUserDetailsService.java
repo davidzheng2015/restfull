@@ -42,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		User user = ls.get(0);
 		log.warn("获取用户");
 		return new org.springframework.security.core.userdetails.User(
-				user.getNames(), user.getPasswordHint(),
+				user.getUsername(), user.getPassword(),
 				getGrantedAuthorities(user));
 	}
 

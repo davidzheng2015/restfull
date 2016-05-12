@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.gdky.restfull.security.CustomUserDetailsService;
 
@@ -25,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService userDetailsService;
 
     @Resource(name="authProvider")
-    private AuthenticationProvider authProvider;
+    private AuthenticationProvider authenticationProvider;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -65,9 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(
-                plaintextPasswordEncoder());
+        		shaPasswordEncoder());
         // 加载授权信息
-        auth.authenticationProvider(authProvider);
+        auth.authenticationProvider(authenticationProvider);
+        
     }
 
     /*@Override
@@ -84,8 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PlaintextPasswordEncoder plaintextPasswordEncoder() {
+    public PlaintextPasswordEncoder plainTextPasswordEncoder() {
         return new PlaintextPasswordEncoder();
     }
+    
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
 }

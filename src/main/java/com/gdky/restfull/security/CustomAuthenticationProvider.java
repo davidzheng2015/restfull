@@ -26,6 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {  
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;  
         String username = token.getName();  
+        System.out.println(username);
         //从数据库找到的用户  
         UserDetails userDetails = null;  
         if(username != null) {  
