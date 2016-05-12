@@ -22,34 +22,40 @@ import com.gdky.restfull.service.UserService;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Resource 
-    private UserService userService;  
-	
-	private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
-  
-    @Override  @Transactional(readOnly=true)  
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {  
-       List<User> ls = userService.getUser(username);  
+	@Resource
+	private UserService userService;
 
-       if (ls == null || ls.size()>1) {
-    	   log.warn("用户不正确");
-           throw new UsernameNotFoundException("user not found");
-       }
-       log.warn("获取用户");
-       User user = ls.get(0);
-       return new org.springframework.security.core.userdetails.User(user.getNames(), user.getPasswordHint(),  
-               getGrantedAuthorities(user));
-    }  
-    
-    protected List<GrantedAuthority> getGrantedAuthorities(User user){  
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        List<Role> roles = userService.getRolesByUser(user.getUsername());
-        for (Role role :roles) {  
+	private static final Logger log = LoggerFactory
+			.getLogger(CustomUserDetailsService.class);
 
-            //注意：这里要ROLE_加上前缀，否则在创建角色而的时候统一加上  
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));  
-        }  
-        return authorities;  
-    }  
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException {
+		List<User> ls = userService.getUser(username);
+
+		if (ls == null || ls.size() != 1) {
+			log.warn("用户不正确");
+			throw new UsernameNotFoundException("user not found");
+		}
 	
+		User user = ls.get(0);
+		log.warn("获取用户");
+		return new org.springframework.security.core.userdetails.User(
+				user.getNames(), user.getPasswordHint(),
+				getGrantedAuthorities(user));
+	}
+
+	protected List<GrantedAuthority> getGrantedAuthorities(User user) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		List<Role> roles = userService.getRolesByUser(user.getUsername());
+		for (Role role : roles) {
+
+			// 注意：这里要ROLE_加上前缀，否则在创建角色而的时候统一加上
+			authorities
+					.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+		}
+		return authorities;
+	}
+
 }

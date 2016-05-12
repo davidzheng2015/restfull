@@ -25,7 +25,9 @@ public class UserDao extends BaseJdbcDao{
 
 	public List<User> getUser(String userName) {
 		String sql = "select * from fw_users where username = ?";
-		List<User> ls = this.jdbcTemplate.query(sql, new Object[]{userName}, new RowMapper<User>(){
+		List<User> ls = this.jdbcTemplate.query(sql, new Object[]{userName}, new BeanPropertyRowMapper<User>(User.class));
+		
+		/*List<User> ls = this.jdbcTemplate.query(sql, new Object[]{userName}, new RowMapper<User>(){
 			public User mapRow(ResultSet rs, int arg1) throws SQLException{
 				User user = new User();
 				user.setAccountEnabled((Integer)rs.getObject("ACCOUNT_ENABLED"));
@@ -34,11 +36,12 @@ public class UserDao extends BaseJdbcDao{
 				user.setCredentialsExpired((Integer)rs.getObject("CREDENTIALS_EXPIRED"));
 				user.setId((Integer)rs.getObject("ID"));
 				user.setNames((String)rs.getObject("NAMES"));
-				user.setPassword((String)rs.getObject("PASSWORD_HINT"));
+				user.setPassword((String)rs.getObject("PASSWORD"));
+				user.setPasswordHint((String)rs.getObject("PASSWORD_HINT"));
 				user.setUsername((String)rs.getObject("USERNAME"));
 				return user;
 			}
-		});
+		});*/
 		return ls;
 	}
 
