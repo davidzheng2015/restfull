@@ -32,4 +32,27 @@ public class JDJCService {
 		}
 		return jdjcDao.swsnjcx(pn, ps, map);
 	}
+	
+	//执业税务师年检表
+	public Map<String, Object> getZyswsnjb(int page, int pageSize,
+			String where) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			} catch (Exception e) {
+			}
+		}
+		Map<String, Object> rs = jdjcDao.getZyswsnjb(page, pageSize, map);
+		return rs;
+	}
+    //经营规模统计表信息
+	public Map<String, Object> getZyswsnjbById(long id) {
+		Map<String,Object> obj = jdjcDao.getZyswsnjbById(id);
+		return obj;
+	}
 }
