@@ -19,14 +19,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.gdky.restfull.security.CustomUserDetailsService;
+import com.gdky.restfull.security.EntryPointUnauthorizedHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Resource
+	
+	@Autowired
+	private EntryPointUnauthorizedHandler unauthorizedHandler;
+	
+    @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Resource(name="authProvider")
+    @Resource(name="customAuthenticationProvider")
     private AuthenticationProvider authenticationProvider;
 
     @Override
@@ -40,26 +45,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+        	.csrf().disable()
+        	.headers().cacheControl().disable().and()
+            .servletApi().and()
+            
+        	//.exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            
         	.authorizeRequests()
-            .antMatchers("/api/**")
-            .permitAll()
-            .and()
-                .authorizeRequests()
-                .antMatchers("/auth/api/**")
-                .authenticated()
-            .and()
-            	.authorizeRequests()
-            	.anyRequest()
-                .permitAll()
-            .and()
-            	.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        	
+        	//allow all static resources
+        	.antMatchers("/").permitAll()
+            .antMatchers("/favicon.ico").permitAll()
+            .antMatchers("/**/*.html").permitAll()
+            .antMatchers("/**/*.css").permitAll()
+            .antMatchers("/**/*.js").permitAll()
+            
+            // Allow anonymous logins
+            .antMatchers("/auth/**").authenticated()
+            
+            // authenticate REST api 
+            .antMatchers("/api/**").permitAll()
+            
+            // Allow all other request
+            .anyRequest().permitAll()
+            
             .and()
                 .httpBasic()
             .and()
-            	.formLogin()
-            .and()
-            	.csrf().disable();
+            	.formLogin();
     }
     
     @Autowired
