@@ -4,41 +4,37 @@ import java.util.Collection;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 8448626190573075099L;
-	private final User user;
-    private boolean authenticated = true;
+	private final UserDetails userDetails;
+    private boolean authenticated = false;
 
-    public UserAuthentication(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String getName() {
-        return user.getUsername();
+    public UserAuthentication(UserDetails userDetails) {
+        super();
+        this.userDetails = userDetails;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities();
+        return userDetails.getAuthorities();
     }
 
     @Override
     public Object getCredentials() {
-        return user.getPassword();
+        return userDetails.getPassword();
     }
 
     @Override
-    public User getDetails() {
-        return user;
+    public UserDetails getDetails() {
+        return userDetails;
     }
 
     @Override
     public Object getPrincipal() {
-        return user.getUsername();
+        return userDetails;
     }
 
     @Override
@@ -47,7 +43,12 @@ public class UserAuthentication implements Authentication {
     }
 
     @Override
-    public void setAuthenticated(boolean authenticated) {
-        this.authenticated = authenticated;
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        this.authenticated = isAuthenticated;
+    }
+
+    @Override
+    public String getName() {
+        return userDetails.getUsername();
     }
 }

@@ -75,5 +75,16 @@ public class User implements Serializable {
 		this.names = name;
 	}
 	
+	public User(User u){
+		this.id = u.id;
+		this.username = u.username;
+		this.names = u.names;
+		this.password = u.password;
+		this.passwordHint = u.passwordHint;
+		this.accountEnabled = u.accountEnabled;
+		this.accountExpired =  u.accountExpired;
+		this.accountLocked = u.accountLocked;
+		this.credentialsExpired = u.credentialsExpired;
+	}
 	
 }

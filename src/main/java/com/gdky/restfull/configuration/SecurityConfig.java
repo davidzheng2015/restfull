@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,9 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.gdky.restfull.security.CustomUserDetailsService;
 import com.gdky.restfull.security.EntryPointUnauthorizedHandler;
+import com.gdky.restfull.security.StatelessAuthenticationFilter;
+import com.gdky.restfull.security.StatelessLoginFilter;
+import com.gdky.restfull.security.TokenAuthenticationService;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private EntryPointUnauthorizedHandler unauthorizedHandler;
+	
+	@Autowired
+	private TokenAuthenticationService tokenAuthenticationService;
+
 	
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -68,12 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/**").permitAll()
             
             // Allow all other request
-            .anyRequest().permitAll()
-            
-            .and()
-                .httpBasic()
-            .and()
-            	.formLogin();
+            .anyRequest().permitAll().and()
+            // custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
+            .addFilterBefore(new StatelessLoginFilter("/api/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+
+            // custom Token based authentication based on the header previously given to the client
+            .addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);;
     }
     
     @Autowired
@@ -94,6 +101,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("test").authorities("ROLE_ADMIN")
                 .and().withUser("user").password("test").authorities("ROLE_USER");
     }*/
+    
+    
 
     @Bean
     public ShaPasswordEncoder shaPasswordEncoder() {

@@ -22,8 +22,8 @@ public class CustomUserDetails extends User implements UserDetails {
 	@Autowired
 	UserService userService;
 	
-	public CustomUserDetails() {
-        super();
+	public CustomUserDetails(User u) {
+        super(u);
     }
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
