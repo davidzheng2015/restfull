@@ -86,5 +86,8 @@ public class User implements Serializable {
 		this.accountLocked = u.accountLocked;
 		this.credentialsExpired = u.credentialsExpired;
 	}
+	public User(){
+		
+	}
 	
 }

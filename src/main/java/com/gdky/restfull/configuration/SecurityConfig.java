@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.headers().cacheControl().disable().and()
             .servletApi().and()
             
-        	//.exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler).and()
+        	.exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             
         	.authorizeRequests()
@@ -89,20 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(
         		shaPasswordEncoder());
-        // 加载授权信息
-        auth.authenticationProvider(authenticationProvider);
         
-    }
-
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(plaintextPasswordEncoder())
-                .withUser("admin").password("test").authorities("ROLE_ADMIN")
-                .and().withUser("user").password("test").authorities("ROLE_USER");
-    }*/
-    
-    
+    }    
 
     @Bean
     public ShaPasswordEncoder shaPasswordEncoder() {
