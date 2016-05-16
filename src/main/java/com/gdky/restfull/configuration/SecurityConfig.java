@@ -38,9 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Resource(name="customAuthenticationProvider")
-    private AuthenticationProvider authenticationProvider;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()

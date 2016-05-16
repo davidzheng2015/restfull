@@ -1,14 +1,12 @@
 package com.gdky.restfull.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
-
 public class User implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3365405747302906236L;
+	private static final long serialVersionUID = 1849013869853717398L;
 	private Integer id;
 	private String username;
 	private String password;

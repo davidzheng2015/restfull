@@ -1,42 +1,30 @@
 package com.gdky.restfull.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
-import com.gdky.restfull.service.UserService;
 
 public class CustomUserDetails extends User implements UserDetails {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1587641375417912954L;
-	@Resource
-	UserService userService;
+	private static final long serialVersionUID = 9094631563587476893L;
+	private  Collection<? extends GrantedAuthority> authorities;
 	
 	public CustomUserDetails(User u) {
         super(u);
     }
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities){
+		this.authorities = authorities;
+	}
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		List<Role> roles = userService.getRolesByUser(this.getUsername());
-		for (Role role : roles) {
-
-			// 注意：这里要ROLE_加上前缀，否则在创建角色而的时候统一加上
-			authorities
-					.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-		}
-        return authorities;
+		
+        return this.authorities;
     }
 
     @Override
