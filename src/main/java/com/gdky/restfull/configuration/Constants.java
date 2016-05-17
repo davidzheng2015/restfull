@@ -17,4 +17,8 @@ public final class Constants {
 	
 	public static final String URI_API_FRAMEWORK_PRIFIX = "/api/fw";
 	
+	public static final String TOKEN_SECRET = "c2VjcmV0IGZvciBnZHpz";
+	
+	public static final Long TOKEN_EXPIRATION = 604800;
+	
 }
