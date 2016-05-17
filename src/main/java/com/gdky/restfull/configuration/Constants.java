@@ -19,6 +19,6 @@ public final class Constants {
 	
 	public static final String TOKEN_SECRET = "c2VjcmV0IGZvciBnZHpz";
 	
-	public static final Long TOKEN_EXPIRATION = 604800;
+	public static final Integer TOKEN_EXPIRATION = 86400;
 	
 }

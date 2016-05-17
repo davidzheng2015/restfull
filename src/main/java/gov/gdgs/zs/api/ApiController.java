@@ -46,7 +46,7 @@ public class ApiController {
 		return new ResponseEntity<>("api responed OK",HttpStatus.CREATED);
 	}
     
-    @RequestMapping(value = "/auth/api", method = RequestMethod.GET)
+    @RequestMapping(value = "/protect/api", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAuthApi() {
 
 

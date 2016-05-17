@@ -24,7 +24,7 @@ public class TokenUtils {
 
 	  private String secret = Constants.TOKEN_SECRET;
 
-	  private Long expiration = Constants.TOKEN_EXPIRATION;
+	  private Integer expiration = Constants.TOKEN_EXPIRATION;
 
 	  public String getUsernameFromToken(String token) {
 	    String username;
