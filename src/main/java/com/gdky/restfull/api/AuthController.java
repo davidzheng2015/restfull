@@ -22,7 +22,7 @@ import com.gdky.restfull.entity.AuthResponse;
 import com.gdky.restfull.security.TokenUtils;
 
 @RestController
-@RequestMapping(value = Constants.URI_API_FRAMEWORK_PRIFIX)
+@RequestMapping(value = Constants.URI_API_PREFIX)
 public class AuthController {
 	
 	  @Autowired

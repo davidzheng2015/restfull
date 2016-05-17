@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.gdky.restfull.security.AuthenticationTokenFilter;
 import com.gdky.restfull.security.CustomUserDetailsService;
 import com.gdky.restfull.security.EntryPointUnauthorizedHandler;
 import com.gdky.restfull.security.StatelessAuthenticationFilter;
@@ -76,11 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             
             // Allow all other request
             .anyRequest().permitAll().and()
-            // custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
-            .addFilterBefore(new StatelessLoginFilter("/api/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-
-            // custom Token based authentication based on the header previously given to the client
-            .addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);;
+           // Custom JWT based authentication
+            .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
     
     @Autowired
@@ -91,6 +90,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		shaPasswordEncoder());
         
     }    
+    
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+      return super.authenticationManagerBean();
+    }
+    
+    @Bean
+    public AuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+      AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter();
+      authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
+      return authenticationTokenFilter;
+    }
 
     @Bean
     public ShaPasswordEncoder shaPasswordEncoder() {

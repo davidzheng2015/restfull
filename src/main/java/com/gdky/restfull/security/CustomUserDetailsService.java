@@ -32,14 +32,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		List<User> ls = userService.getUser(username);
+		User user = userService.getUser(username);
 
-		if (ls == null || ls.size() != 1) {
+		if (user == null) {
 			log.warn("用户不正确");
 			throw new UsernameNotFoundException("User not found");
 		}
-	
-		User user = ls.get(0);
 		log.warn("获取用户");
 		CustomUserDetails u = new CustomUserDetails(user);
 		u.setAuthorities(this.getAuthorities(username));
