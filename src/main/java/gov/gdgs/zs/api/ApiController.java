@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gdky.restfull.security.CustomUserDetails;
+
 @RestController
 public class ApiController {
 	
@@ -45,8 +47,8 @@ public class ApiController {
     @RequestMapping(value = "/protect/api", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAuthApi() {
 
-    	Authentication map = SecurityContextHolder.getContext().getAuthentication();
-    	System.out.println(map.toString());
+    	CustomUserDetails map = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	System.out.println(map.getNames());
 
 		Map<String, Object> obj = new HashMap<String,Object>();
 		obj.put("security", "auth path");
