@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -101,6 +102,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 //        }
     	log.error(ex.getMessage());
         return new ResponseEntity<>(new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+    
+    /*
+     * 处理账户验证异常
+     */
+    @ExceptionHandler(value = {AuthenticationException.class})
+    @ResponseBody
+    public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex) {
+    	
+    	log.error(ex.getMessage());
+    	return new ResponseEntity<>(new ResponseMessage(ResponseMessage.Type.warning,ex.getMessage()),HttpStatus.UNAUTHORIZED);
     }
     
   
