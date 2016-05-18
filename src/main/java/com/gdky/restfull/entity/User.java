@@ -1,34 +1,34 @@
 package com.gdky.restfull.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
-
 public class User implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3365405747302906236L;
+	private static final long serialVersionUID = 1849013869853717398L;
 	private Integer id;
-	private String userName;
+	private String username;
 	private String password;
-	private Date signUpDate;
-	private Date lastActTime;
-	private String ip;
-	private String yxbz;
-	private Integer deptId;
-	private String cname;
+	private String passwordHint;
+	private String names;
+	private Integer accountEnabled;
+	private Integer accountExpired;
+	private Integer accountLocked;
+	private Integer credentialsExpired;
+	
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -36,41 +36,56 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getSignUpDate() {
-		return signUpDate;
+	public String getPasswordHint() {
+		return passwordHint;
 	}
-	public void setSignUpDate(Date signUpDate) {
-		this.signUpDate = signUpDate;
+	public void setPasswordHint(String passwordHint) {
+		this.passwordHint = passwordHint;
 	}
-	public Date getLastActTime() {
-		return lastActTime;
+	public Integer getAccountEnabled() {
+		return accountEnabled;
 	}
-	public void setLastActTime(Date lastActTime) {
-		this.lastActTime = lastActTime;
+	public void setAccountEnabled(Integer accountEnabled) {
+		this.accountEnabled = accountEnabled;
 	}
-	public String getIp() {
-		return ip;
+	public Integer getAccountExpired() {
+		return accountExpired;
 	}
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setAccountExpired(Integer accountExpired) {
+		this.accountExpired = accountExpired;
 	}
-	public String getYxbz() {
-		return yxbz;
+	public Integer getAccountLocked() {
+		return accountLocked;
 	}
-	public void setYxbz(String yxbz) {
-		this.yxbz = yxbz;
+	public void setAccountLocked(Integer accountLocked) {
+		this.accountLocked = accountLocked;
 	}
-	public Integer getDeptId() {
-		return deptId;
+	public Integer getCredentialsExpired() {
+		return credentialsExpired;
 	}
-	public void setDeptId(Integer deptId) {
-		this.deptId = deptId;
+	public void setCredentialsExpired(Integer credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
 	}
-	public String getCname() {
-		return cname;
+	public String getNames() {
+		return names;
 	}
-	public void setCname(String cname) {
-		this.cname = cname;
+	public void setNames(String name) {
+		this.names = name;
+	}
+	
+	public User(User u){
+		this.id = u.id;
+		this.username = u.username;
+		this.names = u.names;
+		this.password = u.password;
+		this.passwordHint = u.passwordHint;
+		this.accountEnabled = u.accountEnabled;
+		this.accountExpired =  u.accountExpired;
+		this.accountLocked = u.accountLocked;
+		this.credentialsExpired = u.credentialsExpired;
+	}
+	public User(){
+		
 	}
 	
 }
