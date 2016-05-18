@@ -22,9 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.gdky.restfull.security.AuthenticationTokenFilter;
 import com.gdky.restfull.security.CustomUserDetailsService;
 import com.gdky.restfull.security.EntryPointUnauthorizedHandler;
-import com.gdky.restfull.security.StatelessAuthenticationFilter;
-import com.gdky.restfull.security.StatelessLoginFilter;
-import com.gdky.restfull.security.TokenAuthenticationService;
 
 @Configuration
 @EnableWebSecurity
@@ -32,10 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private EntryPointUnauthorizedHandler unauthorizedHandler;
-	
-	@Autowired
-	private TokenAuthenticationService tokenAuthenticationService;
-
 	
     @Autowired
     private CustomUserDetailsService userDetailsService;
