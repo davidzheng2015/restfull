@@ -31,4 +31,78 @@ public class LSJLCXController {
 		return new ResponseEntity<>(lsjlcxServcie.swsbglsjlcx(pn, ps, where),HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/swslsjl/yhbsws1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> yhbswscx(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.yhbswscx(pn, ps, where),HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/swslsjl/yzxsws1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> yzxswscx(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.yzxswscx(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snbgjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnbgjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnbgjl(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snzsjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnzsjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnzsjl(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snzzfjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnzzfjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnzzfjl(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snzjjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnzjjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnzjjl(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snzxjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnzxjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnzxjl(pn, ps, where),HttpStatus.OK);
+		
+	}
+	@RequestMapping(value = "/swslsjl/snbdjl1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swssnbdjl(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(lsjlcxServcie.swssnbdjl(pn, ps, where),HttpStatus.OK);
+		
+	}
 }
