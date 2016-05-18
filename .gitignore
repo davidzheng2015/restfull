@@ -73,3 +73,12 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+.project
+
+#jetbrains
+.idea/
+*.xml
+src/main/webapp/WEB-INF/spring/dataSource-context.xml
+src/main/java/gov/gdgs/zs/api/PastController.java
+src/main/java/gov/gdgs/zs/service/PastService.java
+src/main/java/gov/gdgs/zs/dao/PastDao.java
