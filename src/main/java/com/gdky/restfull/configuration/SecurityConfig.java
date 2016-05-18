@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/**").permitAll()
             
             // allow anonymous logins
-            .antMatchers("/api/fw/auth/**").permitAll()
+            .antMatchers("/api/auth/**").permitAll()
             
             // Allow all other request
             .anyRequest().permitAll().and()

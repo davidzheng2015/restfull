@@ -1,6 +1,7 @@
 package com.gdky.restfull.api;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
+import com.gdky.restfull.entity.Role;
+import com.gdky.restfull.security.CustomUserDetails;
 import com.gdky.restfull.security.TokenUtils;
 
 @RestController
@@ -47,13 +51,16 @@ public class AuthController {
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
 
 	    // Reload password post-authentication so we can generate token
-	    UserDetails userDetails = this.userDetailsService.loadUserByUsername(authReq.getUsername());
+	    CustomUserDetails userDetails = (CustomUserDetails) this.userDetailsService.loadUserByUsername(authReq.getUsername());
 	    String token = this.tokenUtils.generateToken(userDetails);
+	    List<GrantedAuthority> roles  = (List<GrantedAuthority>) userDetails.getAuthorities();
+	    
+	    AuthResponse resp = new AuthResponse(token);
+	    resp.setRoles(roles);
+	    resp.setNames(userDetails.getNames());
 
-	    // 返回 token
-	    HashMap<String,String> resp = new HashMap<String,String>();
-	    resp.put("token", token);
-	    return ResponseEntity.ok(new AuthResponse(token));
+	    // 返回 token与账户信息
+	    return ResponseEntity.ok(resp);
 	}
 
 }
