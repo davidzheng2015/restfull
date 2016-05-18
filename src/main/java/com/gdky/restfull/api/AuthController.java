@@ -38,6 +38,14 @@ public class AuthController {
 	  @Autowired
 	  private UserDetailsService userDetailsService;
 	
+	/**
+	 * 身份认证接口，使用jwt验证，以post方式提交{"username":"<name>","password":"<password>"}
+	 * 成功后获取一个hash过的token
+	 * {"token" : "<token hasn>"}
+	 * 访问验证api时，在请求头部加上 x-auth-token: <token hasn>
+	 * 测试验证api /protect/api
+	 * @throws AuthenticationException
+	 */
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody AuthRequest authReq) throws AuthenticationException{
 		//进行验证
