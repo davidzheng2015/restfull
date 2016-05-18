@@ -48,4 +48,13 @@ public class JDJCController {
 		Map<String,Object> obj = jdjcService.getZyswsnjbById(id);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	 }
+	//未上报报表
+		@RequestMapping(value = "/wsbbb", method = RequestMethod.GET) 
+		 	public  ResponseEntity<Map<String,Object>> getWsbbb( 
+		 			@RequestParam(value = "page", required = true) int page, 
+		 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+		 			@RequestParam(value="where", required=false) String where){ 
+		 		Map<String,Object> obj = jdjcService.getWsbbb(page,pageSize,where); 
+		 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+		 	}
 }

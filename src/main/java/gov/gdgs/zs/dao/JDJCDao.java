@@ -63,7 +63,7 @@ public class JDJCDao extends BaseDao{
 			condition.add("a.nd", Condition.EQUAL, where.get("nd"));
 			condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
 			condition.add("a.ZTDM", Condition.EQUAL, where.get("ZTDM"));
-
+            
 
 			StringBuffer sb = new StringBuffer();
 			sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.*");
@@ -119,5 +119,49 @@ public class JDJCDao extends BaseDao{
 			 
 			 return ob;
 		}
+    public Map<String, Object> getWsbbb(int page, int pageSize, Map<String,Object> where) {    	
+    	List<String> arr = new ArrayList<String>();
+    	arr.add("zs_cwbb_lrgd");
+		arr.add("zs_cwbb_zcfzgd");
+		arr.add("zs_cwbb_lrfp");
+		arr.add("zs_cwbb_xjll");
+		arr.add("zs_cwbb_zcmx");
+		Condition condition = new Condition();
+		condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
+
+		
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.*");
+		sb.append(" FROM (select a.id,a.nd,b.DWMC,c.MC as cs,b.DHUA,");
+		sb.append(" '未上报' as ZTBJ,DATE_FORMAT(a.JSSJ,'%Y-%m-%d') AS TJSJ");
+		sb.append(" FROM "+arr.get(Integer.parseInt(where.get("bblx").toString()))+" a,zs_jg b,dm_cs c,(SELECT @rownum:=?) temp");
+		sb.append(condition.getSql());//相当元 where x.xx like '%%'
+		sb.append(" and b.CS_DM=c.ID and a.nd = '"+where.get("nd")+"' AND a.JG_ID=b.ID AND a.ZTBJ=0) as t");
+		sb.append("    LIMIT ?, ? ");
+		// 装嵌传值数组
+		int startIndex = pageSize * (page - 1);
+		ArrayList<Object> params = condition.getParams();
+		params.add(0, pageSize * (page - 1));
+		params.add(startIndex);
+		params.add(pageSize);
+
+		// 获取符合条件的记录
+		List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+				params.toArray());
+
+		// 获取符合条件的记录数
+
+		int total = jdbcTemplate.queryForObject("SELECT FOUND_ROWS()",
+				Integer.class);
+
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("data", ls);
+		obj.put("total", total);
+		obj.put("pageSize", pageSize);
+		obj.put("current", page);
+
+		return obj;
+	}
 	
 }

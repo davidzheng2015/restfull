@@ -55,4 +55,22 @@ public class JDJCService {
 		Map<String,Object> obj = jdjcDao.getZyswsnjbById(id);
 		return obj;
 	}
+	
+	//执业税务师年检表
+		public Map<String, Object> getWsbbb(int page, int pageSize,
+				String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}
+			Map<String, Object> rs = jdjcDao.getWsbbb(page, pageSize, map);
+			return rs;
+		}
 }
