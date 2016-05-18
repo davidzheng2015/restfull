@@ -49,5 +49,14 @@ public class SDSCBBController {
 		return new ResponseEntity<>(sdscbbService.jysrqktjcx(pn, ps, where),HttpStatus.OK);
 		
 	}
+	@RequestMapping(value = "/wsbbbcx1", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> wsbbbcx(
+			@RequestParam(value = "pagenum", required = true) int pn,
+			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value="where", required=false) String where)  {
+		
+		return new ResponseEntity<>(sdscbbService.wsbbbcx(pn, ps, where),HttpStatus.OK);
+		
+	}
 
 }

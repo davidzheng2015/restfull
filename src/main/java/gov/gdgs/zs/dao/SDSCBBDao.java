@@ -129,4 +129,47 @@ public class SDSCBBDao  extends BaseDao{
 		
 		return ob;
 	}
+	/**
+	 * 
+	 * @return 未上交手动报表事务所分页查询
+	 * @throws Exception 
+	 */
+	public Map<String,Object> wsbbbcx(int pn,int ps,Map<String,Object> qury) {
+		List<String> arr = new ArrayList<String>();
+		arr.add("zs_sdsb_swsjbqk");
+		arr.add("zs_sdsb_hyryqktj");
+		arr.add("zs_sdsb_jysrqk");
+		arr.add("zs_sdsb_jygmtjb");
+		arr.add("zs_sdsb_jzywqktjb");
+		Condition condition = new Condition();
+		condition.add("d.dwmc", Condition.FUZZY, qury.get("dwmc"));
+		StringBuffer sb = new StringBuffer();
+		sb.append("		select 	sql_calc_found_rows	 @rownum:=@rownum+1 as 'key','"+qury.get("nd")+"' as nd,'未上报' as sbzt,d.dwmc,d.zsbh,c.mc as cs, a.dhhm,a.txyxm,a.txyyddh");
+		sb.append("		FROM zs_jg_kzxx a,zs_jg_new d,dm_cs c,(SELECT @rownum:=?) zs_jg");
+		sb.append("		 "+condition.getSql()+" ");
+		sb.append("		and d.ID NOT IN (");
+		sb.append("		SELECT d.id");
+		sb.append("		FROM "+arr.get(Integer.parseInt(qury.get("bblx").toString()))+" b");
+		sb.append("		where d.YID =b.jg_id and b.nd = '"+qury.get("nd")+"' ) ");
+		sb.append("		AND d.YXBZ = '1'");
+		sb.append("		and a.JG_ID=d.ID");
+		sb.append("		and d.CS_DM = c.ID");
+		sb.append("		    LIMIT ?, ? ");
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
+		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", ls);
+		Map<String, Object> meta = new HashMap<>();
+		meta.put("pageNum", pn);
+		meta.put("pageSize", ps);
+		meta.put("pageTotal",total);
+		meta.put("pageAll",(total + ps - 1) / ps);
+		ob.put("page", meta);
+		
+		return ob;
+	}
 }
