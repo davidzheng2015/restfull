@@ -324,7 +324,7 @@ public class CWBBDao extends BaseJdbcDao{
 			Condition condition = new Condition();
 			condition.add("a.nd", Condition.EQUAL, where.get("nd"));
 			condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
-			//condition.add("a.ZTBJ", Condition.EQUAL, where.get("bbzt"));
+			condition.add("a.ZTBJ", Condition.EQUAL, where.get("ZTBJ"));
 
 
 			StringBuffer sb = new StringBuffer();
@@ -413,7 +413,7 @@ public class CWBBDao extends BaseJdbcDao{
 			Condition condition = new Condition();
 			condition.add("a.nd", Condition.EQUAL, where.get("nd"));
 			condition.add("b.dwmc",Condition.FUZZY,where.get("dwmc"));
-			//condition.add("a.ZTBJ", Condition.EQUAL, where.get("bbzt"));
+			condition.add("a.ZTBJ", Condition.EQUAL, where.get("ZTBJ"));
 
 
 			StringBuffer sb = new StringBuffer();
