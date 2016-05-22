@@ -11,13 +11,13 @@ public class AuthResponse implements Serializable{
 	private String token;
 	private List<GrantedAuthority> roles;
 	private String names;
-	private Integer userId;
+	private String userId;
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

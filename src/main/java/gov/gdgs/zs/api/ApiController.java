@@ -47,9 +47,6 @@ public class ApiController {
     @RequestMapping(value = "/protect/api", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAuthApi() {
 
-    	CustomUserDetails map = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	System.out.println(map.getNames());
-
 		Map<String, Object> obj = new HashMap<String,Object>();
 		obj.put("security", "auth path");
 		obj.put("project", "gd_zs_mis");
