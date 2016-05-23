@@ -70,7 +70,7 @@ public class AuthController {
 	    
 	    AuthResponse resp = new AuthResponse(token);
 	    resp.setRoles(roles);
-	    resp.setNames(userDetails.getNames());
+	    resp.setNames(passwordEncoder);
 	    resp.setUserId(hashids.encode(userDetails.getId().longValue()));
 
 	    // 返回 token与账户信息
@@ -79,9 +79,7 @@ public class AuthController {
 	
 	@RequestMapping(value = "/auth", method = RequestMethod.GET)
 	public ResponseEntity<?> validateAuth() {
-		Map<String, Object> obj = new HashMap<String,Object>();
-		obj.put("auth", "logged in");
-		return new ResponseEntity<>(obj, HttpStatus.OK);
+		return ResponseEntity.ok("ok");
 	}
 
 }

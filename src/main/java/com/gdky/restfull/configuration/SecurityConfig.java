@@ -60,16 +60,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/**/*.css").permitAll()
             .antMatchers("/**/*.js").permitAll()
             
-            // Allow anonymous logins
-            .antMatchers("/protect/**").authenticated()
-            // allow anonymous logins
+            // 验证测试用api
             .antMatchers(HttpMethod.GET, "/api/auth/**").authenticated()
+            
+            //身份验证api允许匿名访问
             .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()            
             
             // authenticate REST api 
             .antMatchers("/api/**").permitAll()
             
-            // Allow all other request
+            //对外公开api允许匿名访问
+            .antMatchers("/pub/api/**").permitAll()
+            
+            // 其余连接允许匿名访问
             .anyRequest().permitAll().and()
            // Custom JWT based authentication
             .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
