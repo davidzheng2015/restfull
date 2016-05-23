@@ -8,11 +8,13 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AsideMenu;
 
 @Repository
+@Transactional
 public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
