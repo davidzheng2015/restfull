@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,13 +67,12 @@ public class AuthController {
 	    CustomUserDetails userDetails = (CustomUserDetails) this.userDetailsService.loadUserByUsername(authReq.getUsername());
 	    String token = this.tokenUtils.generateToken(userDetails);
 	    List<GrantedAuthority> roles  = (List<GrantedAuthority>) userDetails.getAuthorities();
-	    Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
-	    
 	    
 	    AuthResponse resp = new AuthResponse(token);
+	    resp.setTokenhash(token);
 	    resp.setRoles(roles);
-	    resp.setNames(passwordEncoder);
-	    resp.setUserId(hashids.encode(userDetails.getId().longValue()));
+	    resp.setNames(userDetails.getNames());
+	    resp.setUserId(userDetails.getId());
 
 	    // 返回 token与账户信息
 	    return ResponseEntity.ok(resp);
