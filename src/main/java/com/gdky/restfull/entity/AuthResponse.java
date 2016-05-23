@@ -28,6 +28,7 @@ public class AuthResponse implements Serializable {
 
 	public void setTokenhash(String token) {
 		Md5PasswordEncoder  encoder = new Md5PasswordEncoder();
+		//MD5不加盐hash
 		String pass = encoder.encodePassword(token, null);
 		pass = pass + Constants.SALT;
 		pass = encoder.encodePassword(pass, null);
