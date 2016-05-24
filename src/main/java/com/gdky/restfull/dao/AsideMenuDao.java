@@ -1,6 +1,5 @@
 package com.gdky.restfull.dao;
 
-
 import gov.gdgs.zs.configuration.Config;
 
 import java.util.List;
@@ -18,10 +17,12 @@ import com.gdky.restfull.entity.AsideMenu;
 public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
-	public List<AsideMenu> getAsideMenu(String para,String l) {
-		String sql = "select * from " + Config.PROJECT_SCHEMA 
-				+ "fw_menu  where pid is not null"+para+" and lx = ? order by path,order_no";
-		List<AsideMenu> ls = this.jdbcTemplate.query(sql,new String[]{l},new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
+	public List<AsideMenu> getAsideMenu(String para, String l) {
+		String sql = "select * from " + Config.PROJECT_SCHEMA
+				+ "fw_menu  where pid is not null" + para
+				+ " and lx = ? order by path,order_no";
+		List<AsideMenu> ls = this.jdbcTemplate.query(sql, new String[] { l },
+				new BeanPropertyRowMapper<AsideMenu>(AsideMenu.class));
 		return ls;
 	}
 
@@ -61,7 +62,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 		sb.append("(pid,name,path,visble,lx) ");
 		sb.append("values (?,?,?,?,?)");
 		Object[] arg = new Object[] { item.getPid(), item.getName(),
-				item.getPath(), item.getVisble(),item.getLx() };
+				item.getPath(), item.getVisble(), item.getLx() };
 
 		Number rs = this.insertAndGetKeyByJdbc(sb.toString(), arg,
 				new String[] { "id" });
@@ -71,11 +72,28 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 
 	@Override
 	public int removeMenu(AsideMenu menu) {
-		String sql = "delete from " + Config.PROJECT_SCHEMA
+		String sql = "delete from "
+				+ Config.PROJECT_SCHEMA
 				+ "fw_menu where path like concat(?,'-',lpad(?,3,0),'%') or id = ?";
 		int rs = this.jdbcTemplate.update(sql, new Object[] { menu.getPath(),
 				menu.getId(), menu.getId() });
 		return rs;
+	}
+
+	@Override
+	public List<AsideMenu> getAccoutMenu(int userId) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select m.* ");
+		sb.append(" from fw_users u, fw_user_role ur, fw_role_menu rm, fw_menu m ");
+		sb.append(" where u.ID = ur.USER_ID ");
+		sb.append(" and ur.ROLE_ID = rm.ROLE_ID ");
+		sb.append(" and rm.MENU_ID = m.ID ");
+		sb.append(" and m.VISBLE = 1 ");
+		sb.append(" and u.ID = ? ");
+		List<AsideMenu> ls = this.jdbcTemplate.query(sb.toString(),
+				new Object[] { userId }, new BeanPropertyRowMapper<AsideMenu>(
+						AsideMenu.class));
+		return ls;
 	}
 
 }
