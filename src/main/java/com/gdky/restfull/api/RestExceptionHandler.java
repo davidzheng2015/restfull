@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.gdky.restfull.configuration.ApiErrors;
 import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.exception.InvalidRequestException;
+import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
 import com.gdky.restfull.exception.ResourceNotFoundException;
 
 /**
@@ -51,6 +52,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		ResponseMessage alert = new ResponseMessage(
 				ResponseMessage.Type.danger, "404", ex.getId() + " Not Found ");
 		return new ResponseEntity<>(alert, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(value = { ResourceAlreadyExistsExcepiton.class })
+	public ResponseEntity<ResponseMessage> handleResourceAlreadyExistsException(
+			ResourceAlreadyExistsExcepiton ex, WebRequest request) {
+		if (log.isDebugEnabled()) {
+			log.debug("handling ResourceAlreadyExistsException...");
+		}
+		ResponseMessage alert = new ResponseMessage(
+				ResponseMessage.Type.danger, "identify conflict", "该人员已备案，无法重复备案");
+		return new ResponseEntity<>(alert, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(value = { InvalidRequestException.class })

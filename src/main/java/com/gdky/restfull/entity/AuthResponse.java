@@ -21,6 +21,16 @@ public class AuthResponse implements Serializable {
 	private String names;
 	private String userId;
 	private String tokenhash;
+	private String permission;
+
+
+	public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
 
 	public String getTokenhash() {
 		return tokenhash;
