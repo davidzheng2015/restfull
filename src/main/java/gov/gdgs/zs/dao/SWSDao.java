@@ -146,7 +146,7 @@ public class SWSDao extends BaseDao{
 	 */
 	public Map<String,Object> swsxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("select a.id,	");	 
+		sb.append("select 	");	 
 		sb.append("		a.dwmc,c.mc as cs,	a.fddbr,e.bgdz as dzhi,e.sglzxsbwh as sjlzxsbwh,e.zcdz, ");
 		sb.append("		date_format(e.sglzxsbsj,'%Y-%m-%d') as sglzxsbsj,date_format(e.zjpzsj,'%Y-%m-%d')"
 				+ " as zjpzsj,e.yzbm,e.zjpzwh,e.czhm as czhen,e.dhhm as dhua,e.szyx, ");
@@ -154,7 +154,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		b.mc as swsxz,e.szyddh as szphone,e.gsyhbh as gsyhmcbh,e.dzyj,e.yhdw,date_format(e.yhsj,'%Y-%m-%d') as yhsj, ");
 		sb.append("		e.gzbh,e.gzdw,e.gzry,date_format(e.gzsj,'%Y-%m-%d') as gzsj,e.yzbh,e.yzdw,e.yzry,date_format(e.yzsj,'%Y-%m-%d') as yzsj, ");
 		sb.append("		e.tthyzcbh as tthybh,date_format(e.rhsj,'%Y-%m-%d') as rhsj,e.khyh as khh,e.khyhzh as khhzh,e.fj,e.swdjhm,e.qkjj as jbqk, ");
-		sb.append("		e.swsnbglzd as glzd,e.dycgddh as gddh,e.bgcscqzm as bgcszczm	from		 ");
+		sb.append("		e.swsnbglzd as glzd,e.dycgddh as gddh,e.bgcscqzm as bgcszczm,e.yyzzhm,a.clrq,e.jgdmzh,e.wangzhi	from		 ");
 		sb.append("		 zs_jg_new a,	dm_jgxz b,dm_cs c,	 zs_jg_njb d,zs_jg_kzxx e ");
 		sb.append("		WHERE		 a.JGXZ_DM = b.ID  ");
 		sb.append("		AND a.CS_DM = c.ID  ");
@@ -256,7 +256,7 @@ public class SWSDao extends BaseDao{
 	public List<Map<String,Object>> njjl(int id){
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select 		 ");
-		sb.append("		@rownum:=@rownum+1 as 'key',a.id,");
+		sb.append("		@rownum:=@rownum+1 as 'key',");
 		sb.append("		f.nd,	 ");
 		sb.append("		a.dwmc,");
 		sb.append("		c.spyj,");
