@@ -3,12 +3,10 @@ package com.gdky.restfull.entity;
 import gov.gdgs.zs.configuration.Config;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
 import java.util.List;
 
 import org.hashids.Hashids;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.gdky.restfull.configuration.Constants;
@@ -50,7 +48,7 @@ public class AuthResponse implements Serializable {
 	}
 
 	public void setUserId(Integer userId) {
-		Hashids hashids = new Hashids(Config.HASHID_SALT, Config.HASHID_LEN);
+		Hashids hashids = new Hashids(Constants.HASHID_SALT, Constants.HASHID_LEN);
 		this.userId = hashids.encode(userId.longValue());
 	}
 

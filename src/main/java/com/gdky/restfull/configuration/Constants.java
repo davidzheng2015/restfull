@@ -22,4 +22,8 @@ public final class Constants {
 	
 	public static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
 	
+	public static final String HASHID_SALT = "gdzs & gdky";
+
+	public static final int HASHID_LEN = 6;
+	
 }
