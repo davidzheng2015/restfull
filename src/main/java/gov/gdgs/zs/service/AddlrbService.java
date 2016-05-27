@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdky.restfull.entity.AsideMenu;
 
 
 
@@ -36,6 +37,11 @@ public class AddlrbService implements IAddlrbService{
 		return map;
 
 	}
+	@Override
+	public void updateLrb(Map<String, Object> obj) {
+		lrbDao.updateLrb(obj);
+        
+	}
 	 //利润表
 		public Map<String, Object> getlrb(int page, int pageSize, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -52,6 +58,9 @@ public class AddlrbService implements IAddlrbService{
 			Map<String, Object> rs = lrDao.getlrb(page, pageSize, map);
 			return rs;
 		}
-	
+		public Map<String, Object> getlrbById(String id) {
+			Map<String,Object> obj = lrDao.getLrbById(id);
+			return obj;
+		}
 
 }
