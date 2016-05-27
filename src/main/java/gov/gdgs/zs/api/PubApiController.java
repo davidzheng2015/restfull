@@ -36,8 +36,10 @@ public class PubApiController {
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj){
 		String sfzh = (String)obj.get("sfzh");
 		if(sfzh != null && sfzh.equals("0000")){
+			System.out.println("Invalid sfzh");
 			throw new ResourceAlreadyExistsExcepiton();
 		}
+		System.out.println("Valid sfzh");
 		ResponseMessage rm = new ResponseMessage(
 				ResponseMessage.Type.success, "备案申请提交成功");
 		return new ResponseEntity<>(rm,HttpStatus.CREATED);
