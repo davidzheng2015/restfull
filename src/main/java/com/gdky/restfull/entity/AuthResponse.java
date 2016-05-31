@@ -19,15 +19,15 @@ public class AuthResponse implements Serializable {
 	private String names;
 	private String userId;
 	private String tokenhash;
-	private String permission;
+	private Integer jgId;
 
 
-	public String getPermission() {
-		return permission;
+	public Integer getJgId() {
+		return jgId;
 	}
 
-	public void setPermission(String permission) {
-		this.permission = permission;
+	public void setJgId(Integer jgId) {
+		this.jgId = jgId;
 	}
 
 	public String getTokenhash() {
@@ -37,9 +37,8 @@ public class AuthResponse implements Serializable {
 	public void setTokenhash(String token) {
 		Md5PasswordEncoder  encoder = new Md5PasswordEncoder();
 		//MD5不加盐hash
-		String pass = encoder.encodePassword(token, null);
-		pass = pass + Constants.SALT;
-		pass = encoder.encodePassword(pass, null);
+		String last = token.substring(token.length()-1);
+		String pass = encoder.encodePassword(last+token, null);
 		this.tokenhash = pass;
 	}
 

@@ -63,9 +63,8 @@ public class AuthController {
 	    
 	    AuthResponse resp = new AuthResponse(token);
 	    resp.setTokenhash(token);
-	    resp.setRoles(roles);
-	    resp.setNames(userDetails.getNames());
 	    resp.setUserId(userDetails.getId());
+	    resp.setJgId(userDetails.getJgId());
 
 	    // 返回 token与账户信息
 	    return ResponseEntity.ok(resp);

@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import com.gdky.restfull.api.RestExceptionHandler;
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.entity.User;
+import com.gdky.restfull.service.UserService;
 
 @Component
 public class TokenUtils {
@@ -25,6 +31,10 @@ public class TokenUtils {
 	private String secret = Constants.TOKEN_SECRET;
 
 	private Integer expiration = Constants.TOKEN_EXPIRATION;
+	
+	
+	@Resource
+	private UserService userService;
 
 	public String getUsernameFromToken(String token) {
 		String username;
@@ -46,6 +56,17 @@ public class TokenUtils {
 			password = null;
 		}
 		return password;
+	}
+	
+	public Integer getUserIdFromToken(String token) {
+		Integer userId ;
+		try {
+			final Claims claims = this.getClaimsFromToken(token);
+			userId = (Integer) claims.get("userId");
+		} catch (Exception e) {
+			userId = null;
+		}
+		return userId;
 	}
 
 	public Date getCreatedDateFromToken(String token) {
@@ -110,7 +131,7 @@ public class TokenUtils {
 		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}
 
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(CustomUserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("sub", userDetails.getUsername());
 		claims.put("created", this.generateCurrentDate());

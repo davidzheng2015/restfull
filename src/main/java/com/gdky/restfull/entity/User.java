@@ -16,8 +16,15 @@ public class User implements Serializable {
 	private Integer accountExpired;
 	private Integer accountLocked;
 	private Integer credentialsExpired;
+	private Integer jgId;
 	
 	
+	public Integer getJgId() {
+		return jgId;
+	}
+	public void setJgId(Integer jgId) {
+		this.jgId = jgId;
+	}
 	public Integer getId() {
 		return id;
 	}
