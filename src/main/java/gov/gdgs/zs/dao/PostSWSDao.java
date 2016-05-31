@@ -23,7 +23,6 @@ public class PostSWSDao extends BaseDao{
 	       };
 		try {
 			String sql ="update zs_jg_kzxx set dhhm=?,czhm=?,jyfw=?,yzbm=?,szyddh=?,swdjhm=?,jgdmzh=?,gsyhbh=?,khyh=?,khyhzh=?,txyxm=?,txyyddh=?,txyyx=?,szyx=?,wangzhi=?,dzyj=?,yhdw=?,yhsj=?,gzbh=?,gzdw=?,gzry=?,gzsj=?,yzbh=?,yzdw=?,yzry=?,yzsj=?,tthyzcbh=?,rhsj=?,qkjj=?,swsnbglzd=?,dycgddh=?,bgcscqzm=? where id =?";
-//			String sql2 ="insert into zs_jg_ptbgxmjl (dhhm,czhm,jyfw,yzbm,szyddh,swdjhm,jgdmzh,gsyhbh,khyh,khyhzh,txyxm,txyyddh,txyyx,szyx,wangzhi,dzyj,yhdw,yhsj,gzbh,gzdw,gzry,gzsj,yzbh,yzdw,yzry,yzsj,tthyzcbh,rhsj,qkjj,swsnbglzd,dycgddh,bgcscqzm,lrrq,jg_id ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,sysdate()) ";
 			String sql2 ="insert into zs_jglsbgxxb (MC,JZHI,XZHI,GXSJ,JGB_ID) values(?,?,?,sysdate(),?)";
 			this.jdbcTemplate.update(sql,listValue.toArray());
 			for(Map<String, Object> rec:forupdate){
@@ -41,7 +40,6 @@ public class PostSWSDao extends BaseDao{
 	 */
 	public void updatePTXM(Map<String, Object> ptxm){
 		List<Map<String, Object>> forupdate = (List<Map<String, Object>>) ptxm.remove("bgjl");
-		String zsbh = (String) ptxm.remove("zsbh");
 		List listValue = new ArrayList();  
 		Iterator it = ptxm.keySet().iterator();  
 		while (it.hasNext()) {  
@@ -49,8 +47,7 @@ public class PostSWSDao extends BaseDao{
 			listValue.add(ptxm.get(key));  
 		};
 		try {
-			String sql ="update zs_jg_kzxx set dhhm=?,czhm=?,jyfw=?,yzbm=?,szyddh=?,swdjhm=?,jgdmzh=?,gsyhbh=?,khyh=?,khyhzh=?,txyxm=?,txyyddh=?,txyyx=?,szyx=?,wangzhi=?,dzyj=?,yhdw=?,yhsj=?,gzbh=?,gzdw=?,gzry=?,gzsj=?,yzbh=?,yzdw=?,yzry=?,yzsj=?,tthyzcbh=?,rhsj=?,qkjj=?,swsnbglzd=?,dycgddh=?,bgcscqzm=? where id =?";
-//			String sql2 ="insert into zs_jg_ptbgxmjl (dhhm,czhm,jyfw,yzbm,szyddh,swdjhm,jgdmzh,gsyhbh,khyh,khyhzh,txyxm,txyyddh,txyyx,szyx,wangzhi,dzyj,yhdw,yhsj,gzbh,gzdw,gzry,gzsj,yzbh,yzdw,yzry,yzsj,tthyzcbh,rhsj,qkjj,swsnbglzd,dycgddh,bgcscqzm,lrrq,jg_id ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,sysdate()) ";
+			String sql ="update zs_jg set DHUA=?,CZHEN=?,jyfw=?,yzbm=?,SZPHONE=?,JGZCH=?,SWDJHM=?,jgdmzh=?,GSYHMCBH=?,KHH=?,KHHZH=?,TXYXMING=?,XTYPHONE=?,XTYYX=?,SZYX=?,wangzhi=?,dzyj=?,yhdw=?,yhsj=?,gzbh=?,gzdw=?,gzry=?,gzsj=?,yzbh=?,yzdw=?,yzry=?,yzsj=?,TTHYBH=?,rhsj=?,JBQK=?,GLZD=?,GDDH=?,BGCSZCZM=? where id =?";
 			String sql2 ="insert into zs_jglsbgxxb (MC,JZHI,XZHI,GXSJ,JGB_ID) values(?,?,?,sysdate(),?)";
 			this.jdbcTemplate.update(sql,listValue.toArray());
 			for(Map<String, Object> rec:forupdate){

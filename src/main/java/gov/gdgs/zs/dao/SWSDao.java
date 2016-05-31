@@ -162,7 +162,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		and a.YXBZ = 1 ");
 		sb.append("		and d.YXBZ = 1 ");
 		sb.append("		and a.id = ?");
-		String sql = "SELECT @rownum:=@rownum+1 AS 'key',b.* FROM zs_jg_new a,zs_jg_nbjgb b,(SELECT @rownum:=0) zs_jg WHERE a.id = b.jg_id AND a.id = ?";
+		String sql = "SELECT @rownum:=@rownum+1 AS 'key',b.* FROM zs_jg a,zs_nbjgsz b,(SELECT @rownum:=0) zs_jg WHERE a.id = b.jg_id AND a.id = ?";
 		List<Map<String, Object>> tl = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 		Map<String,Object> ll =tl.get(0);
 		ll.put("nbjgsz", this.jdbcTemplate.queryForList(sql,new Object[]{id}));
