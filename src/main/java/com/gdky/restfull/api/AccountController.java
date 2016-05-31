@@ -33,7 +33,7 @@ public class AccountController {
 		User user =  accountService.getUserFromHeaderToken(request);
 		
 		//获取功能菜单
-		List<AsideMenu> menu = accountService.getMenuFromUser(user.getId());
+		List<AsideMenu> menu = accountService.getMenuByUser(user.getId());
 		//获取模块访问权限
 		StringBuffer permission = new StringBuffer();
 		for (int i = 0;i<menu.size();i++){
@@ -45,8 +45,8 @@ public class AccountController {
 		
 		HashMap<String,Object> resp = new HashMap<String,Object>();
 		resp.put("names", user.getNames());
-		resp.put("jgId", user.getJgId());
 		resp.put("menu", menu);
+		resp.put("newMsg", false);
 		return  ResponseEntity.ok(resp);
 	}
 }

@@ -7,6 +7,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gdky.restfull.configuration.Constants;
@@ -31,7 +32,7 @@ public class AccountService {
 	@Autowired
 	private UserService userService;
 	
-	public List<AsideMenu> getMenuFromUser(int userId) {
+	public List<AsideMenu> getMenuByUser(int userId) {
 		List<AsideMenu> ls = menuDao.getAccoutMenu(userId);
 		return ls;
 	}
@@ -42,5 +43,18 @@ public class AccountService {
 		String username = this.tokenUtils.getUsernameFromToken(authToken);
 		User user = userService.getUser(username);		
 		return user;
+	}
+	
+	public String getPermissionByUser (User user){
+		List<AsideMenu> menu = this.getMenuByUser(user.getId());
+		Md5PasswordEncoder  encoder = new Md5PasswordEncoder();
+		StringBuffer permission = new StringBuffer();
+		for (int i = 0;i<menu.size();i++){
+			AsideMenu item = menu.get(i);
+			if (item.getHref()!=null && !item.getHref().equals("")){
+				permission.append(encoder.encodePassword(item.getHref(),null)).append(",");
+			}			
+		}
+		return permission.toString();
 	}
 }
