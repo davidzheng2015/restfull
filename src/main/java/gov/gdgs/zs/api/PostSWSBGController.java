@@ -29,14 +29,19 @@ public class PostSWSBGController {
 	public ResponseEntity<Map<String, Object>> swscx(
 			@RequestParam(value = "jgid", required = true) int jgid)  {
 		return new ResponseEntity<>(poService.swsbgPost(jgid),HttpStatus.OK);
-
 	}
 	
 	@RequestMapping(value = "/swsbg/swsjgPut1", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseMessage> updateMenu(
+	public ResponseEntity<ResponseMessage> updatePTXM(
 			@RequestBody Map<String, Object> ptxm) {
 		poService.updatePTXM(ptxm);
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
-
+	}
+	
+	@RequestMapping(value = "/swsbg/swsjgPost1", method = RequestMethod.POST)
+	public ResponseEntity<ResponseMessage> updateSPXM(
+			@RequestBody Map<String, Object> ptxm) {
+		poService.updatePTXM(ptxm);
+		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
 }
