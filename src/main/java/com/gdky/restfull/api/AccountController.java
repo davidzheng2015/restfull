@@ -15,7 +15,7 @@ import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.service.AccountService;
-import com.gdky.restfull.service.UserService;
+import com.gdky.restfull.service.AuthService;
 
 @RestController
 @RequestMapping(value = Constants.URI_API_PREFIX)
@@ -25,7 +25,7 @@ public class AccountController {
 	AccountService accountService;
 	
 	@Resource
-	UserService userService;
+	AuthService userService;
 
 	@RequestMapping(value="/account")
 	public ResponseEntity<?> getAccount(HttpServletRequest request){

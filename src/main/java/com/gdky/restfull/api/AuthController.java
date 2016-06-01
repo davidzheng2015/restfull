@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
-import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
+import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.security.CustomUserDetails;
 import com.gdky.restfull.security.TokenUtils;
 import com.gdky.restfull.service.AccountService;
+import com.gdky.restfull.service.AuthService;
 
 @RestController
 @RequestMapping(value = Constants.URI_API_PREFIX)
@@ -38,6 +39,9 @@ public class AuthController {
 	  private UserDetailsService userDetailsService;
 	  @Autowired
 	  private AccountService accountService;
+	  
+	  @Autowired
+	  private AuthService authService;
 	  
 	
 	/**
@@ -76,6 +80,12 @@ public class AuthController {
 	@RequestMapping(value = "/auth", method = RequestMethod.GET)
 	public ResponseEntity<?> validateAuth() {
 		return ResponseEntity.ok("ok");
+	}
+	
+	@RequestMapping(value="/roles",method = RequestMethod.GET)
+	public ResponseEntity<?> getRoles(){
+		List<Role> ls = authService.getRoles();
+		return ResponseEntity.ok(ls);
 	}
 
 }

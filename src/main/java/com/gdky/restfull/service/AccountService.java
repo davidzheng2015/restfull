@@ -11,8 +11,8 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.dao.AuthDao;
 import com.gdky.restfull.dao.IAsideMenuDao;
-import com.gdky.restfull.dao.UserDao;
 import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.security.TokenUtils;
@@ -21,7 +21,7 @@ import com.gdky.restfull.security.TokenUtils;
 public class AccountService {
 
 	@Resource
-	private UserDao userDao;
+	private AuthDao authDao;
 	
 	@Resource
 	private IAsideMenuDao menuDao;
@@ -30,7 +30,7 @@ public class AccountService {
 	private TokenUtils tokenUtils;
 	
 	@Autowired
-	private UserService userService;
+	private AuthService userService;
 	
 	public List<AsideMenu> getMenuByUser(int userId) {
 		List<AsideMenu> ls = menuDao.getAccoutMenu(userId);

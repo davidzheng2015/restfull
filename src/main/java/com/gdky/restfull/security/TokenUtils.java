@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import com.gdky.restfull.api.RestExceptionHandler;
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.User;
-import com.gdky.restfull.service.UserService;
+import com.gdky.restfull.service.AuthService;
 
 @Component
 public class TokenUtils {
@@ -34,7 +34,7 @@ public class TokenUtils {
 	
 	
 	@Resource
-	private UserService userService;
+	private AuthService authService;
 
 	public String getUsernameFromToken(String token) {
 		String username;
