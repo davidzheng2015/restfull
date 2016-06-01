@@ -30,7 +30,7 @@ public class AuthDao extends BaseJdbcDao{
 	}
 	
 	public List<Role> getRoles (){
-		String sql = "select * from fw_role t order by t.id";
+		String sql = "select t.id AS 'key',t.* from fw_role t order by t.id";
 		List<Role> ls = this.jdbcTemplate.query(sql, new BeanPropertyRowMapper<Role>(Role.class));
 		return ls;
 	}
