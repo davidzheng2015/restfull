@@ -10,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdky.restfull.configuration.Constants;
-import com.gdky.restfull.dao.UserDao;
+import com.gdky.restfull.dao.AuthDao;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.security.TokenUtils;
 
 @Service
-public class UserService {
+public class AuthService {
 	
 	@Resource
-	private UserDao userDao;
+	private AuthDao authDao;
 	
 	public User getUser(String userName){
-		List<User> ls =  userDao.getUser(userName);
+		List<User> ls =  authDao.getUser(userName);
 		if (ls.size()!=1){
 			return null;
 		}
@@ -30,7 +30,11 @@ public class UserService {
 	}
 
 	public List<Role> getRolesByUser(String userName) {
-		return userDao.getRolesByUser(userName);
+		return authDao.getRolesByUser(userName);
+	}
+	
+	public List<Role> getRoles(){
+		return authDao.getRoles();
 	}
 	
 
