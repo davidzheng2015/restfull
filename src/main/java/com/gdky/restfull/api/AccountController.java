@@ -15,7 +15,7 @@ import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.service.AccountService;
-import com.gdky.restfull.service.UserService;
+import com.gdky.restfull.service.AuthService;
 
 @RestController
 @RequestMapping(value = Constants.URI_API_PREFIX)
@@ -25,7 +25,7 @@ public class AccountController {
 	AccountService accountService;
 	
 	@Resource
-	UserService userService;
+	AuthService userService;
 
 	@RequestMapping(value="/account")
 	public ResponseEntity<?> getAccount(HttpServletRequest request){
@@ -33,7 +33,7 @@ public class AccountController {
 		User user =  accountService.getUserFromHeaderToken(request);
 		
 		//获取功能菜单
-		List<AsideMenu> menu = accountService.getMenuFromUser(user.getId());
+		List<AsideMenu> menu = accountService.getMenuByUser(user.getId());
 		//获取模块访问权限
 		StringBuffer permission = new StringBuffer();
 		for (int i = 0;i<menu.size();i++){
@@ -45,8 +45,8 @@ public class AccountController {
 		
 		HashMap<String,Object> resp = new HashMap<String,Object>();
 		resp.put("names", user.getNames());
-		resp.put("jgId", user.getJgId());
 		resp.put("menu", menu);
+		resp.put("newMsg", false);
 		return  ResponseEntity.ok(resp);
 	}
 }

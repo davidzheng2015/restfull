@@ -6,7 +6,7 @@ public class User implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1849013869853717398L;
+	private static final long serialVersionUID = -4410761482155757494L;
 	private Integer id;
 	private String username;
 	private String password;
@@ -90,6 +90,7 @@ public class User implements Serializable {
 		this.accountExpired =  u.accountExpired;
 		this.accountLocked = u.accountLocked;
 		this.credentialsExpired = u.credentialsExpired;
+		this.jgId=u.jgId;
 	}
 	public User(){
 		
