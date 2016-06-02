@@ -24,4 +24,7 @@ public class PostSWSBGService {
 	public void updatePTXM(Map<String, Object> ptxm) {
 		 this.postSWSDao.updatePTXM(ptxm);
 	}
+	public void updateSPXM(Map<String, Object> ptxm,int id,int jid) {
+		this.postSWSDao.updateSPXM(ptxm,id);
+	}
 }

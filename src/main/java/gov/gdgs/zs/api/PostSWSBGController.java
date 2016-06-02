@@ -3,6 +3,7 @@ package gov.gdgs.zs.api;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.service.PostSWSBGService;
@@ -17,11 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.ResponseMessage;
+import com.gdky.restfull.entity.User;
+import com.gdky.restfull.service.AccountService;
 
 @RestController
 @RequestMapping(value = Constants.URI_API_PREFIX + Config.URI_API_ZS)
 public class PostSWSBGController {
 
+	@Resource
+	AccountService accountService;
+	
 	@Resource
 	private PostSWSBGService poService;
 	
@@ -39,9 +45,10 @@ public class PostSWSBGController {
 	}
 	
 	@RequestMapping(value = "/swsbg/swsjgPost1", method = RequestMethod.POST)
-	public ResponseEntity<ResponseMessage> updateSPXM(
-			@RequestBody Map<String, Object> ptxm) {
-		poService.updatePTXM(ptxm);
+	public ResponseEntity<ResponseMessage> updateSPXM(HttpServletRequest request,
+			@RequestBody Map<String, Object> ptxm ) {
+		User user =  accountService.getUserFromHeaderToken(request);
+		poService.updateSPXM(ptxm,user.getId(),user.getJgId());
 		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
 }
