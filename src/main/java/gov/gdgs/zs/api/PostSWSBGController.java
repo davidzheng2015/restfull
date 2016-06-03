@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -32,23 +31,23 @@ public class PostSWSBGController {
 	private PostSWSBGService poService;
 	
 	@RequestMapping(value = "/swsbg/swsjgGet1", method = { RequestMethod.GET })
-	public ResponseEntity<Map<String, Object>> swscx(
-			@RequestParam(value = "jgid", required = true) int jgid)  {
-		return new ResponseEntity<>(poService.swsbgPost(jgid),HttpStatus.OK);
+	public ResponseEntity<Map<String, Object>> swscx(HttpServletRequest request) {
+		User user =  accountService.getUserFromHeaderToken(request);
+		return new ResponseEntity<>(poService.swsbgPost(user.getJgId()),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/swsbg/swsjgPut1", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updatePTXM(
-			@RequestBody Map<String, Object> ptxm) {
-		poService.updatePTXM(ptxm);
+			@RequestBody Map<String, Object> ptxm,HttpServletRequest request) {
+		User user =  accountService.getUserFromHeaderToken(request);
+		poService.updatePTXM(ptxm,user.getJgId());
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/swsbg/swsjgPost1", method = RequestMethod.POST)
-	public ResponseEntity<ResponseMessage> updateSPXM(HttpServletRequest request,
-			@RequestBody Map<String, Object> ptxm ) {
+	public ResponseEntity<?> updateSPXM(
+			@RequestBody Map<String, Object> ptxm,HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		poService.updateSPXM(ptxm,user.getId(),user.getJgId());
-		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
+		return new ResponseEntity<>(poService.updateSPXM(ptxm,user.getId(),user.getJgId()),HttpStatus.CREATED);
 	}
 }

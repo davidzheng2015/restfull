@@ -8,6 +8,7 @@ import gov.gdgs.zs.dao.SWSDao;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostSWSBGService {
@@ -21,10 +22,19 @@ public class PostSWSBGService {
 	public Map<String, Object> swsbgPost(int jgid) {
 		return this.swsDao.swsxx(jgid);
 	}
-	public void updatePTXM(Map<String, Object> ptxm) {
+	
+	@Transactional
+	public void updatePTXM(Map<String, Object> ptxm,int jgid) {
+		 ptxm.put("jgid", jgid);
 		 this.postSWSDao.updatePTXM(ptxm);
 	}
-	public void updateSPXM(Map<String, Object> ptxm,int id,int jid) {
-		this.postSWSDao.updateSPXM(ptxm,id);
+	
+	@Transactional
+	public boolean updateSPXM(Map<String, Object> ptxm,int id,int jgid) throws Exception{
+		if(postSWSDao.checkBGing(jgid)){//判断是否审批中
+			this.postSWSDao.updateSPXM(ptxm,id,jgid);
+			return true;
+		}
+		return false;
 	}
 }
