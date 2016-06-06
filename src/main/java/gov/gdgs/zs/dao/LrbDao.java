@@ -21,7 +21,9 @@ import gov.gdgs.zs.untils.Condition;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.gdky.restfull.dao.BaseJdbcDao;
 
 
@@ -31,53 +33,74 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 	 
 	@Override
 	public String addLrb( Map <String,Object> obj){
-		String uuid = UUID.randomUUID().toString().replace("-", ""); 
+//		String uuid = UUID.randomUUID().toString().replace("-", ""); 
+//		final StringBuffer sb = new StringBuffer("insert into "
+//				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd ");
+//		sb.append("(id,jg_id,nd,timevalue,zgywsr,zgywsr1,zgywcb,zgywcb1,zgywsj,zgywsj1,zgwylr,zgwylr1,qtywlr,qtywlr1,yyfy,yyfy1,glfy,glfy1,");
+//		sb.append(" cwfy,cwfy1,yylr,yylr1,tzsy,tzsy1,btsr,btsr1,yywsr,yywsr1,yywzc,yywzc1,lrze,lrze1,sds,sds1,jlr,jlr1,");
+//		sb.append("  csczsy,csczsy1,zhss,zhss1,zcbglr,zcbglr1,gjbglr,gjbglr1,zwczss,zwczss1,qt,qt1,dlswdjhs,dlswdjsr,");
+//		sb.append("  dlswdjsr1,dlnssbhs,dlnssbsr,dlnssbsr1,dlnsschs,dlnsscsr,dlnsscsr1,dljzjzhs,dljzjzsr,dljzjzsr1,spgwzxhs,");
+//		sb.append("  spgwzxsr,spgwzxsr1,dlsqswfyhs,dlsqswfysr,dlsqswfysr1,pxhs,pxsr,pxsr1,qtzyywsrhs,qtzyywsr,qtzyywsr1,sz,zgkj,zbr,ztbj)");
+//		sb.append("values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,");
+//		sb.append("  ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+//		final Object[] arg = new Object[] {uuid, obj.get("jg_id"),obj.get("nd"),obj.get("timevalue"),obj.get("zgywsr"),
+//				 obj.get("zgywsr1"),obj.get("zgywcb"),obj.get("zgywcb1"),obj.get("zgywsj"),obj.get("zgywsj1"),obj.get("zgwylr"),obj.get("zgwylr1"),
+//				 obj.get("qtywlr"),obj.get("qtywlr1"),obj.get("yyfy"),obj.get("yyfy1"),obj.get("glgy"),obj.get("glfy1"),
+//				 obj.get("cwfy"),obj.get("cwfy1"),obj.get("yylr"),obj.get("yylr1"),obj.get("tzsy"),obj.get("tzsy1"),obj.get("btsr"),obj.get("btsr1"),
+//				 obj.get("yywsr"),obj.get("yywsr1"),obj.get("yywzc"),obj.get("yywzc1"),obj.get("lrze"),obj.get("lrze1"),obj.get("sds"),obj.get("sds1"),
+//				 obj.get("jlr"),obj.get("jlr1"),obj.get("csczsy"),obj.get("csczsy1"),obj.get("zhss"),obj.get("zhss1"),
+//				 obj.get("zcbglr"),obj.get("zcbglr1"),obj.get("gjbglr"),obj.get("gjbglr1"),obj.get("zwczss"),obj.get("zwczss1"),
+//				 obj.get("qt"),obj.get("qt1"),obj.get("dlswdjhs"),obj.get("dlswdjsr"),obj.get("dlswdjsr1"),obj.get("dlnssbhs"),
+//				 obj.get("dlnssbsr"),obj.get("dlnssbsr1"),obj.get("dlnsschs"),obj.get("dlnsscsr"),obj.get("dlnsscsr1"),
+//				 obj.get("dljzjzhs"),obj.get("dljzjzsr"),obj.get("dljzjzsr1"),obj.get("spgwzxhs"),obj.get("spgwzxsr"),obj.get("spgwzxsr1"),
+//				 obj.get("dlsqswfyhs"),obj.get("dlsqswfysr"),obj.get("dlsqswfysr1"),obj.get("pxhs"),obj.get("pxsr"),obj.get("pxsr1"),
+//				 obj.get("qtzyywsrhs"),obj.get("qtzyywsr"),obj.get("qtzyywsr1"),obj.get("sz"),obj.get("zgkj"),obj.get("zbr"),obj.get("ztbj")};
+//		int count=this.jdbcTemplate.update(new PreparedStatementCreator() {
+//			
+//			@Override
+//			public PreparedStatement createPreparedStatement(Connection connection)
+//					throws SQLException {
+//				// TODO Auto-generated method stub
+//				PreparedStatement ps = connection.prepareStatement(
+//						sb.toString());
+//
+//				for (int i = 0; i < arg.length; i++) {
+//					ps.setObject(i + 1, arg[i]);
+//				}
+//				return ps;
+//			}
+//		});
+//		if(count==0){
+//			return null;
+//		}else {
+//			return uuid;
+//		}
+////		Number rs = this.insertAndGetKeyByJdbc(sb.toString(), arg,
+////				new String[] {"id","zgywsr"});
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		obj.put("id", uuid);
+		
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd ");
-		sb.append("(id,nd,timevalue,zgywsr,zgywsr1,zgywcb,zgywcb1,zgywsj,zgywsj1,zgwylr,zgwylr1,qtywlr,qtywlr1,yyfy,yyfy1,glfy,glfy1,");
+		sb.append("(id,jg_id,nd,timevalue,zgywsr,zgywsr1,zgywcb,zgywcb1,zgywsj,zgywsj1,zgwylr,zgwylr1,qtywlr,qtywlr1,yyfy,yyfy1,glfy,glfy1,");
 		sb.append(" cwfy,cwfy1,yylr,yylr1,tzsy,tzsy1,btsr,btsr1,yywsr,yywsr1,yywzc,yywzc1,lrze,lrze1,sds,sds1,jlr,jlr1,");
 		sb.append("  csczsy,csczsy1,zhss,zhss1,zcbglr,zcbglr1,gjbglr,gjbglr1,zwczss,zwczss1,qt,qt1,dlswdjhs,dlswdjsr,");
 		sb.append("  dlswdjsr1,dlnssbhs,dlnssbsr,dlnssbsr1,dlnsschs,dlnsscsr,dlnsscsr1,dljzjzhs,dljzjzsr,dljzjzsr1,spgwzxhs,");
 		sb.append("  spgwzxsr,spgwzxsr1,dlsqswfyhs,dlsqswfysr,dlsqswfysr1,pxhs,pxsr,pxsr1,qtzyywsrhs,qtzyywsr,qtzyywsr1,sz,zgkj,zbr,ztbj)");
-		sb.append("values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,");
-		sb.append("  ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-		final Object[] arg = new Object[] {uuid, obj.get("nd"),obj.get("timevalue"),obj.get("zgywsr"),
-				 obj.get("zgywsr1"),obj.get("zgywcb"),obj.get("zgywcb1"),obj.get("zgywsj"),obj.get("zgywsj1"),obj.get("zgwylr"),obj.get("zgwylr1"),
-				 obj.get("qtywlr"),obj.get("qtywlr1"),obj.get("yyfy"),obj.get("yyfy1"),obj.get("glgy"),obj.get("glfy1"),
-				 obj.get("cwfy"),obj.get("cwfy1"),obj.get("yylr"),obj.get("yylr1"),obj.get("tzsy"),obj.get("tzsy1"),obj.get("btsr"),obj.get("btsr1"),
-				 obj.get("yywsr"),obj.get("yywsr1"),obj.get("yywzc"),obj.get("yywzc1"),obj.get("lrze"),obj.get("lrze1"),obj.get("sds"),obj.get("sds1"),
-				 obj.get("jlr"),obj.get("jlr1"),obj.get("csczsy"),obj.get("csczsy1"),obj.get("zhss"),obj.get("zhss1"),
-				 obj.get("zcbglr"),obj.get("zcbglr1"),obj.get("gjbglr"),obj.get("gjbglr1"),obj.get("zwczss"),obj.get("zwczss1"),
-				 obj.get("qt"),obj.get("qt1"),obj.get("dlswdjhs"),obj.get("dlswdjsr"),obj.get("dlswdjsr1"),obj.get("dlnssbhs"),
-				 obj.get("dlnssbsr"),obj.get("dlnssbsr1"),obj.get("dlnsschs"),obj.get("dlnsscsr"),obj.get("dlnsscsr1"),
-				 obj.get("dljzjzhs"),obj.get("dljzjzsr"),obj.get("dljzjzsr1"),obj.get("spgwzxhs"),obj.get("spgwzxsr"),obj.get("spgwzxsr1"),
-				 obj.get("dlsqswfyhs"),obj.get("dlsqswfysr"),obj.get("dlsqswfysr1"),obj.get("pxhs"),obj.get("pxsr"),obj.get("pxsr1"),
-				 obj.get("qtzyywsrhs"),obj.get("qtzyywsr"),obj.get("qtzyywsr1"),obj.get("sz"),obj.get("zgkj"),obj.get("zbr"),obj.get("ztbj")};
-		int count=this.jdbcTemplate.update(new PreparedStatementCreator() {
-			
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection)
-					throws SQLException {
-				// TODO Auto-generated method stub
-				PreparedStatement ps = connection.prepareStatement(
-						sb.toString());
-
-				for (int i = 0; i < arg.length; i++) {
-					ps.setObject(i + 1, arg[i]);
-				}
-				return ps;
-			}
-		});
+		sb.append("values (:id,:jg_id,:nd,:timevalue,:zgywsr,:zgywsr1,:zgywcb,:zgywcb1,:zgywsj,:zgywsj1,:zgwylr,:zgwylr1,:qtywlr,:qtywlr1,:yyfy,:yyfy1,:glfy,:glfy1,");
+		sb.append("  :cwfy,:cwfy1,:yylr,:yylr1,:tzsy,:tzsy1,:btsr,:btsr1,:yywsr,:yywsr1,:yywzc,:yywzc1,:lrze,:lrze1,:sds,:sds1,:jlr,:jlr1,");
+		sb.append("  :csczsy,:csczsy1,:zhss,:zhss1,:zcbglr,:zcbglr1,:gjbglr,:gjbglr1,:zwczss,:zwczss1,:qt,:qt1,:dlswdjhs,:dlswdjsr,");
+		sb.append("  :dlswdjsr1,:dlnssbhs,:dlnssbsr,:dlnssbsr1,:dlnsschs,:dlnsscsr,:dlnsscsr1,:dljzjzhs,:dljzjzsr,:dljzjzsr1,:spgwzxhs,");
+		sb.append("  :spgwzxsr,:spgwzxsr1,:dlsqswfyhs,:dlsqswfysr,:dlsqswfysr1,:pxhs,:pxsr,:pxsr1,:qtzyywsrhs,:qtzyywsr,:qtzyywsr1,:sz,:zgkj,:zbr,:ztbj)");
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		int count=named.update(sb.toString(), obj);
 		if(count==0){
-			return null;
-		}else {
-			return uuid;
-		}
-//		Number rs = this.insertAndGetKeyByJdbc(sb.toString(), arg,
-//				new String[] {"id","zgywsr"});
-
-
+		return null;
+	}else {
+		return uuid;
 	}
+	}
+
 
 	public Map<String, Object> getlrb(int page, int pageSize,
 			Map<String, Object> where) {
@@ -122,16 +145,28 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		return obj;
 	}
 	public Map<String, Object> getLrbById(String id) {
-		String sql = "select b.DWMC,a.* from "+Config.PROJECT_SCHEMA+"zs_cwbb_lrgd a, zs_jg b where a.jg_id = b.id and a.id = ?";
+		String sql = "select b.DWMC,CASE a.TIMEVALUE WHEN 0 THEN '半年' WHEN 1 THEN '全年' ELSE NULL END AS TIMEVALUE,a.* from "+Config.PROJECT_SCHEMA+"zs_cwbb_lrgd a, zs_jg b where a.jg_id = b.id and a.id = ?";
 		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
 		return rs;
 	}
 	@Override
 	public void updateLrb(Map <String,Object> obj) {
-		String sql = "update "+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd  set nd=?,timevalue=?,sz=? where id=?";
-		this.jdbcTemplate.update(
-				sql,
-				new Object[] {obj.get("nd"), obj.get("timevalue"),obj.get("sz"),obj.get("id") });
+		 StringBuffer sb = new StringBuffer("update "
+				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd ");
+		sb.append(" set jg_id=:jg_id,nd=:nd,timevalue=:timevalue,zgywsr=:zgywsr,zgywsr1=:zgywsr1,zgywcb=:zgywcb,zgywcb1=:zgywcb1,zgywsj=:zgywsj,zgywsj1=:zgywsj1,");
+		sb.append(" zgwylr=:zgwylr,zgwylr1=:zgwylr1,qtywlr=:qtywlr,qtywlr1=:qtywlr1,yyfy=:yyfy,yyfy1=:yyfy1,glfy=:glfy,glfy1=:glfy1,");
+		sb.append(" cwfy=:cwfy,cwfy1=:cwfy1,yylr=:yylr,yylr1=:yylr1,tzsy=:tzsy,tzsy1=:tzsy1,btsr=:btsr,btsr1=:btsr1,yywsr=:yywsr,yywsr1=:yywsr1,");
+		sb.append(" yywzc=:yywzc,yywzc1=:yywzc1,lrze=:lrze,lrze1=:lrze1,sds=:sds,sds1=:sds1,jlr=:jlr,jlr1=:jlr1,");
+		sb.append(" csczsy=:csczsy,csczsy1=:csczsy1,zhss=:zhss,zhss1=:zhss1,zcbglr=:zcbglr,zcbglr1=:zcbglr1,gjbglr=:gjbglr,gjbglr1=:gjbglr1,");
+		sb.append(" zwczss=:zwczss,zwczss1=:zwczss1,qt=:qt,qt1=:qt1,dlswdjhs=:dlswdjhs,dlswdjsr=:dlswdjsr,");
+		sb.append(" dlswdjsr1=:dlswdjsr1,dlnssbhs=:dlnssbhs,dlnssbsr=:dlnssbsr,dlnssbsr1=:dlnssbsr1,dlnsschs=:dlnsschs,dlnsscsr=:dlnsscsr,");
+		sb.append(" dlnsscsr1=:dlnsscsr1,dljzjzhs=:dljzjzhs,dljzjzsr=:dljzjzsr,dljzjzsr1=:dljzjzsr1,spgwzxhs=:spgwzxhs,");
+		sb.append(" spgwzxsr=:spgwzxsr,spgwzxsr1=:spgwzxsr1,dlsqswfyhs=:dlsqswfyhs,dlsqswfysr=:dlsqswfysr,dlsqswfysr1=:dlsqswfysr1,pxhs=:pxhs,pxsr=:pxsr,");
+		sb.append(" pxsr1=:pxsr1,qtzyywsrhs=:qtzyywsrhs,qtzyywsr=:qtzyywsr,qtzyywsr1=:qtzyywsr1,sz=:sz,zgkj=:zgkj,zbr=:zbr,ztbj=:ztbj where id=:id");
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		named.update(sb.toString(), obj);
+		
+	
 	}
 
 
