@@ -59,5 +59,36 @@ public class LrbController {
 		return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/add/lrfpb", method = RequestMethod.GET) 
+ 	public  ResponseEntity<Map<String,Object>> getLrfpb( 
+ 			@RequestParam(value = "page", required = true) int page, 
+ 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+ 			@RequestParam(value="where", required=false) String where){ 
+ 		Map<String,Object> obj = addlrService.getlrfpb(page,pageSize,where); 
+ 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+ 	} 
+	@RequestMapping(value = "/add/lrfpb/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getLrfpbById(
+			@PathVariable("id") String id) {
+
+		Map<String, Object> obj = addlrService.getlrfpbById(id);
+		return new ResponseEntity<>(obj, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/addlrfpb", method = RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> addLrfpb(@RequestBody  Map<String ,Object> obj) {
+		Map<String,Object> rs = addlrbService.addLrfpb(obj);
+		return new ResponseEntity<>(rs,HttpStatus.CREATED);
+	}
+	@RequestMapping(value = "/addlrfpb/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<ResponseMessage> updateLrfpb(@PathVariable("id") String id,
+			@RequestBody Map <String,Object> obj) {
+		
+		addlrService.updateLrfpb(obj);
+		return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+	}
+	
 
 }

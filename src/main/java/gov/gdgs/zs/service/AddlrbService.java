@@ -62,5 +62,44 @@ public class AddlrbService implements IAddlrbService{
 			Map<String,Object> obj = lrDao.getLrbById(id);
 			return obj;
 		}
+		
+		@Override
+		public Map<String, Object> addLrfpb (Map<String, Object> obj) {
+			
+			
+			
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+			
+			String rs =  lrbDao.addLrfpb(obj);
+			map.put("id", rs);
+			return map;
+
+		}
+		@Override
+		public void updateLrfpb(Map<String, Object> obj) {
+			lrbDao.updateLrfpb(obj);
+	        
+		}
+		
+		 //利润分配表
+		public Map<String, Object> getlrfpb(int page, int pageSize, String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}		
+			Map<String, Object> rs = lrDao.getLrfpb(page, pageSize, map);
+			return rs;
+		}
+		public Map<String, Object> getlrfpbById(String id) {
+			Map<String,Object> obj = lrDao.getLrfpbById(id);
+			return obj;
+		}
 
 }
