@@ -23,5 +23,7 @@ public interface IAsideMenuDao {
 	public String getPathById(Integer id);
 
 	public int removeMenu(AsideMenu menu);
+	
+	public List<AsideMenu> getAccoutMenu (int userId);
 
 }

@@ -17,7 +17,7 @@ public class LSJLCXDao extends BaseDao{
 	
 	/**
 	 * 
-	 * @return 事务所历史记录——变更记录查询
+	 * @return 事务所历史记录——变更记录查询(审批记录)
 	 * @throws Exception 
 	 */
 	public Map<String,Object> swsbglsjlcx(int pn,int ps,Map<String,Object> qury) {
@@ -87,13 +87,13 @@ public class LSJLCXDao extends BaseDao{
 	public Map<String,Object> yzxswscx(int pn,int ps,Map<String,Object> qury) {
 		Condition condition = new Condition();
 		condition.add("b.dwmc", Condition.FUZZY, qury.get("dwmc"));
-		condition.add("b.zxrq", Condition.GREATER_EQUAL, qury.get("zxrq"));
-		condition.add("b.zxrq", Condition.LESS_EQUAL, qury.get("zxrq2"));
+		condition.add("a.zxrq", Condition.GREATER_EQUAL, qury.get("zxrq"));
+		condition.add("a.zxrq", Condition.LESS_EQUAL, qury.get("zxrq2"));
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',DATE_FORMAT(a.zxrq,'%Y-%m-%d') AS zxrq ,b.dwmc,b.fddbr,b.zsbh ");
-		sb.append("		FROM zs_jgzx a,zs_jg_new b,(SELECT @rownum:=?) zs_jg ");
+		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',DATE_FORMAT(a.zxrq,'%Y-%m-%d') AS zxrq ,b.dwmc,b.fddbr,b.JGZCH as zsbh ");
+		sb.append("		FROM zs_jgzx a,zs_jg b,(SELECT @rownum:=?) zs_jg ");
 		sb.append("		"+condition.getSql()+" ");
-		sb.append("		   and a.JG_ID = b.yid order by a.zxrq desc");
+		sb.append("		   and a.JG_ID = b.id order by a.zxrq desc");
 		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
@@ -120,15 +120,15 @@ public class LSJLCXDao extends BaseDao{
 	public Map<String,Object> swssnbgjl(int pn,int ps,Map<String,Object> qury) {
 		Condition condition = new Condition();
 		condition.add("e.dwmc", Condition.FUZZY, qury.get("dwmc"));
-		condition.add("d.xm", Condition.FUZZY, qury.get("xm"));
+		condition.add("d.xming", Condition.FUZZY, qury.get("xm"));
 		condition.add("b.spzt_dm", Condition.EQUAL, qury.get("spzt"));
 		condition.add("b.BGRQ", Condition.GREATER_EQUAL, qury.get("sbrq"));
 		condition.add("b.BGRQ", Condition.LESS_EQUAL, qury.get("sbrq2"));
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',b.id,b.spzt_dm,d.xm,e.dwmc,f.mc as xb,g.mc as xl,h.mc as zw,DATE_FORMAT(b.BGRQ,'%Y-%m-%d') AS sbrq,DATE_FORMAT(b.SPRQ,'%Y-%m-%d') AS sprq,i.MC as spzt ");
-		sb.append("		FROM zs_zyswsbgsp b, zs_ry_zykz c,zs_ry d,zs_jg_new e, dm_xb f,dm_xl g,dm_zw h,dm_spzt i,(SELECT @rownum:=?) zs_jg ");
+		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',b.id,b.spzt_dm,d.xming as xm,e.dwmc,f.mc as xb,g.mc as xl,h.mc as zw,DATE_FORMAT(b.BGRQ,'%Y-%m-%d') AS sbrq,DATE_FORMAT(b.SPRQ,'%Y-%m-%d') AS sprq,i.MC as spzt ");
+		sb.append("		FROM zs_zyswsbgsp b, zs_zysws c,zs_ryjbxx d,zs_jg e, dm_xb f,dm_xl g,dm_zw h,dm_spzt i,(SELECT @rownum:=?) zs_jg ");
 		sb.append("		"+condition.getSql()+" ");
-		sb.append("		   and c.yid=b.ZYSWS_ID and d.ID=c.RY_ID and c.JG_ID=e.ID and f.ID=d.XB_DM and g.ID=d.XL_DM and h.ID=c.ZW_DM and i.ID=b.SPZT_DM order by b.SPRQ desc");
+		sb.append("		   and c.id=b.ZYSWS_ID and d.ID=c.RY_ID and c.JG_ID=e.ID and f.ID=d.XB_DM and g.ID=d.XL_DM and h.ID=c.ZW_DM and i.ID=b.SPZT_DM order by b.SPRQ desc");
 		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
@@ -175,16 +175,16 @@ public class LSJLCXDao extends BaseDao{
 	 */
 	public Map<String,Object> swssnzsjl(int pn,int ps,Map<String,Object> qury) {
 		Condition condition = new Condition();
-		condition.add("f.xm", Condition.FUZZY, qury.get("xm"));
+		condition.add("f.xming", Condition.FUZZY, qury.get("xm"));
 		condition.add("a.spzt_dm", Condition.EQUAL, qury.get("spzt"));
 		condition.add("a.tbrq", Condition.GREATER_EQUAL, qury.get("sbrq"));
 		condition.add("a.tbrq", Condition.LESS_EQUAL, qury.get("sbrq2"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',f.xm,j.DWMC as yjg,k.DWMC as xjg, g.MC as xb, h.mc as xl, i.MC as zw, c.mc as spzt,");
 		sb.append("	DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS sbrq,  DATE_FORMAT(e.spsj,'%Y-%m-%d') AS sprq ");
-		sb.append("		FROM zs_zyswssndz a ,(select sjid,id from zs_spzx where lcbzid='402881831be2e6af011be3b60a58001f') d,dm_zw i,dm_xl h,dm_xb g,(select id,xm,xb_dm,xl_dm from zs_ry where rysf_dm='1') f,zs_ry_zykz b,dm_spzt c,zs_spxx e, zs_jg j,zs_jg_new k,(SELECT @rownum:=?) zs_jg ");
+		sb.append("		FROM zs_zyswssndz a ,(select sjid,id from zs_spzx where lcbzid='402881831be2e6af011be3b60a58001f') d,dm_zw i,dm_xl h,dm_xb g,(select id,xming as xm,xb_dm,xl_dm from zs_ryjbxx where rysf_dm='1') f,zs_zysws b,dm_spzt c,zs_spxx e, zs_jg j,zs_jg k,(SELECT @rownum:=?) zs_jg ");
 		sb.append("		"+condition.getSql()+" ");
-		sb.append("		   and a.RY_ID = b.YID ");
+		sb.append("		   and a.RY_ID = b.ID ");
 		sb.append("	and a.spzt_dm = c.ID");
 		sb.append("	and e.spid = d.id");
 		sb.append("	and f.ID=b.RY_ID");
@@ -192,7 +192,7 @@ public class LSJLCXDao extends BaseDao{
 		sb.append("	and h.ID=f.XL_DM");
 		sb.append("	and i.ID =b.ZW_DM");
 		sb.append("	and j.ID=a.YJG_ID");
-		sb.append("	and k.YID=a.XJG_ID");
+		sb.append("	and k.ID=a.XJG_ID");
 		sb.append("	and d.sjid = a.id");
 		sb.append("	order by a.tbrq desc");
 		sb.append("		    LIMIT ?, ? ");
@@ -227,7 +227,7 @@ public class LSJLCXDao extends BaseDao{
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',f.xming,k.dwmc, g.MC as xb, h.mc as xl, i.MC as zw, c.mc as spzt,");
 		sb.append("	DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS sbrq,  DATE_FORMAT(e.spsj,'%Y-%m-%d') AS sprq ");
-		sb.append("		FROM zs_zyswszfzy a ,zs_spzx d,dm_zw i,dm_xl h,dm_xb g,zs_ryjbxx f,zs_zysws b,dm_spzt c,zs_spxx e,zs_jg_new k,(SELECT @rownum:=?) zs_jg ");
+		sb.append("		FROM zs_zyswszfzy a ,zs_spzx d,dm_zw i,dm_xl h,dm_xb g,zs_ryjbxx f,zs_zysws b,dm_spzt c,zs_spxx e,zs_jg k,(SELECT @rownum:=?) zs_jg ");
 		sb.append("		"+condition.getSql()+" ");
 		sb.append("		   and a.ZYSWS_ID = b.ID ");
 		sb.append("	and a.spzt_dm = c.ID");
@@ -236,7 +236,7 @@ public class LSJLCXDao extends BaseDao{
 		sb.append("	and g.ID =f.XB_DM");
 		sb.append("	and h.ID=f.XL_DM");
 		sb.append("	and i.ID =b.ZW_DM");
-		sb.append("	and k.yID=b.JG_ID");
+		sb.append("	and k.ID=b.JG_ID");
 		sb.append("	and d.sjid = a.id");
 		sb.append("	order by a.tbrq desc");
 		sb.append("		    LIMIT ?, ? ");
@@ -272,7 +272,7 @@ public class LSJLCXDao extends BaseDao{
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select  SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1 AS 'key',f.xming,k.dwmc, g.MC as xb, h.mc as xl, i.MC as zw, c.mc as spzt,");
 		sb.append("	DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS sbrq,  DATE_FORMAT(e.spsj,'%Y-%m-%d') AS sprq ");
-		sb.append("		FROM zs_zyswszj a ,zs_spzx d,dm_zw i,dm_xl h,dm_xb g,zs_ryjbxx f,zs_zysws b,dm_spzt c,(select max(spsj) as spsj,spid from zs_spxx,zs_spzx where zs_spxx.spid = zs_spzx.id group by zs_spxx.spid)as e,zs_jg_new k,(SELECT @rownum:=?) zs_jg ");
+		sb.append("		FROM zs_zyswszj a ,zs_spzx d,dm_zw i,dm_xl h,dm_xb g,zs_ryjbxx f,zs_zysws b,dm_spzt c,(select max(spsj) as spsj,spid from zs_spxx,zs_spzx where zs_spxx.spid = zs_spzx.id group by zs_spxx.spid)as e,zs_jg k,(SELECT @rownum:=?) zs_jg ");
 		sb.append("		"+condition.getSql()+" ");
 		sb.append("		   and a.ZYSWS_ID = b.ID ");
 		sb.append("	and a.spzt_dm = c.ID");
@@ -281,7 +281,7 @@ public class LSJLCXDao extends BaseDao{
 		sb.append("	and g.ID =f.XB_DM");
 		sb.append("	and h.ID=f.XL_DM");
 		sb.append("	and i.ID =b.ZW_DM");
-		sb.append("	and k.yID=b.JG_ID");
+		sb.append("	and k.ID=b.JG_ID");
 		sb.append("	and d.sjid = a.id");
 		sb.append("	order by a.tbrq desc");
 		sb.append("		    LIMIT ?, ? ");

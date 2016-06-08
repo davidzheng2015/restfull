@@ -1,13 +1,11 @@
 package com.gdky.restfull.configuration;
 
-import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -60,16 +58,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/**/*.css").permitAll()
             .antMatchers("/**/*.js").permitAll()
             
-            // Allow anonymous logins
-            .antMatchers("/protect/**").authenticated()
+            // 验证测试用api
+            .antMatchers(HttpMethod.GET, "/api/auth/**").authenticated()
+            
+            //身份验证api允许匿名访问
+            .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()            
             
             // authenticate REST api 
             .antMatchers("/api/**").permitAll()
             
-            // allow anonymous logins
-            .antMatchers("/api/auth/**").permitAll()
+            //对外公开api允许匿名访问
+            .antMatchers("/pub/api/**").permitAll()
             
-            // Allow all other request
+            // 其余连接允许匿名访问
             .anyRequest().permitAll().and()
            // Custom JWT based authentication
             .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
