@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.dao.AuthDao;
+import com.gdky.restfull.entity.Privileges;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.security.TokenUtils;
+import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
 public class AuthService {
@@ -35,6 +37,10 @@ public class AuthService {
 	
 	public List<Role> getRoles(){
 		return authDao.getRoles();
+	}
+
+	public List<Privileges> getPrivileges(Integer roleId) {
+		return authDao.getPrivileges(roleId);
 	}
 	
 

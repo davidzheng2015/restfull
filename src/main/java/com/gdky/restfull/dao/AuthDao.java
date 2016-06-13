@@ -6,16 +6,18 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdky.restfull.entity.Privileges;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
 
 @Repository
 @Transactional
-public class AuthDao extends BaseJdbcDao{
-	
+public class AuthDao extends BaseJdbcDao {
+
 	public List<User> getUser(String userName) {
 		String sql = "select * from fw_users where username = ?";
-		List<User> ls = this.jdbcTemplate.query(sql, new Object[]{userName}, new BeanPropertyRowMapper<User>(User.class));
+		List<User> ls = this.jdbcTemplate.query(sql, new Object[] { userName },
+				new BeanPropertyRowMapper<User>(User.class));
 		return ls;
 	}
 
@@ -25,14 +27,26 @@ public class AuthDao extends BaseJdbcDao{
 		sb.append(" where u.ID = ur.USER_ID ");
 		sb.append(" and ur.ROLE_ID = r.ID ");
 		sb.append(" and u.USERNAME =? ");
-		List<Role> ls = this.jdbcTemplate.query(sb.toString(), new Object[]{userName}, new BeanPropertyRowMapper<Role>(Role.class));
+		List<Role> ls = this.jdbcTemplate.query(sb.toString(),
+				new Object[] { userName }, new BeanPropertyRowMapper<Role>(
+						Role.class));
 		return ls;
 	}
-	
-	public List<Role> getRoles (){
+
+	public List<Role> getRoles() {
 		String sql = "select * from fw_role t order by t.id";
-		List<Role> ls = this.jdbcTemplate.query(sql, new BeanPropertyRowMapper<Role>(Role.class));
+		List<Role> ls = this.jdbcTemplate.query(sql,
+				new BeanPropertyRowMapper<Role>(Role.class));
 		return ls;
+	}
+
+	public List<Privileges> getPrivileges(Integer roleId) {
+		String sql = "select * from fw_role_menu where role_id = ?";
+		List<Privileges> ls = this.jdbcTemplate.query(sql,
+				new Object[] { roleId }, new BeanPropertyRowMapper<Privileges>(
+						Privileges.class));
+		return ls;
+
 	}
 
 }

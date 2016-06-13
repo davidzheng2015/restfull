@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
+import com.gdky.restfull.entity.Privileges;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.security.CustomUserDetails;
 import com.gdky.restfull.security.TokenUtils;
@@ -85,6 +87,12 @@ public class AuthController {
 	@RequestMapping(value="/roles",method = RequestMethod.GET)
 	public ResponseEntity<?> getRoles(){
 		List<Role> ls = authService.getRoles();
+		return ResponseEntity.ok(ls);
+	}
+	
+	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
+	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
+		List<Privileges> ls = authService.getPrivileges(roleId);
 		return ResponseEntity.ok(ls);
 	}
 
