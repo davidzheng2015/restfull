@@ -2,6 +2,7 @@ package com.gdky.restfull.api;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -95,5 +96,13 @@ public class AuthController {
 		List<Privileges> ls = authService.getPrivileges(roleId);
 		return ResponseEntity.ok(ls);
 	}
+	
+	@RequestMapping(value="/privileges",method=RequestMethod.PUT)
+	public ResponseEntity<?> updatePrivileges(@RequestBody List<String> privileges){
+		System.out.println(privileges);
+		
+		return ResponseEntity.ok(null);
+	}
+	
 
 }
