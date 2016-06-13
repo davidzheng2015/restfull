@@ -42,6 +42,15 @@ public class AuthService {
 	public List<Privileges> getPrivileges(Integer roleId) {
 		return authDao.getPrivileges(roleId);
 	}
+
+	public void delPrivileges(String roleId) {
+		authDao.delPrivileges(roleId);		
+	}
+
+	public void insertPrivileges(String roleId, List<String> privileges) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

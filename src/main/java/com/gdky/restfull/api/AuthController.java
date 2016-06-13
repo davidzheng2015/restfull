@@ -98,9 +98,12 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value="/privileges",method=RequestMethod.PUT)
-	public ResponseEntity<?> updatePrivileges(@RequestBody List<String> privileges){
+	public ResponseEntity<?> updatePrivileges(@RequestBody Map<String,Object> obj){
+		List<String> privileges = (List<String>) obj.get("privileges");
+		String roleId = (String) obj.get("roleId");
 		System.out.println(privileges);
-		
+		authService.delPrivileges(roleId);
+		authService.insertPrivileges(roleId,privileges);
 		return ResponseEntity.ok(null);
 	}
 	

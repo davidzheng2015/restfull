@@ -49,4 +49,10 @@ public class AuthDao extends BaseJdbcDao {
 
 	}
 
+	public void delPrivileges(String roleId) {
+		String sql = "delete from fw_role_menu where role_id = ?";
+		this.jdbcTemplate.update(sql,new Object[]{roleId});
+		
+	}
+
 }
