@@ -1,5 +1,6 @@
 package com.gdky.restfull.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -53,6 +54,21 @@ public class AuthDao extends BaseJdbcDao {
 		String sql = "delete from fw_role_menu where role_id = ?";
 		this.jdbcTemplate.update(sql,new Object[]{roleId});
 		
+	}
+
+	public Number insertPrivileges(String roleId, List<String> privileges) {
+		int rs = 0;
+		if(privileges.size()>0){
+			List<Object[]> batchValue = new ArrayList<Object[]> ();
+			for(String str : privileges){
+				Object[] obj = new Object[]{roleId,str};
+				batchValue.add(obj);
+			}
+			String sql = "insert into fw_role_menu (role_id,menu_id) values (?,?)";
+			rs = this.jdbcTemplate.batchUpdate(sql, batchValue).length;
+		}
+		
+		return rs;				
 	}
 
 }

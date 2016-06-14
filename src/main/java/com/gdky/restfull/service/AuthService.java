@@ -48,7 +48,7 @@ public class AuthService {
 	}
 
 	public void insertPrivileges(String roleId, List<String> privileges) {
-		// TODO Auto-generated method stub
+		Number rs = authDao.insertPrivileges(roleId, privileges);
 		
 	}
 	
