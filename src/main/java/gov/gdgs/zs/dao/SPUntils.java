@@ -26,7 +26,7 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 	  */
 	 @Transactional
 	public boolean swsSPqq(Map<String,Object> spsq) throws Exception{
-		String sql ="select b.id,b.lcbz,b.roleid from zs_splc a,zs_splcbz b where a.id = b.LCID and a.id =? order by b.LCBZ";
+		String sql ="select b.id,b.lcbz,b.roleid from zs_splcbz b where  b.LCID =? order by b.LCBZ";
 		 List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sql,new Object[]{spsq.get("lclx")});//查询该流程需要步骤
 		List<Object> listValue = new ArrayList<Object>();//设置插入单据表参数
 		String suid = new Common().newUUID();
