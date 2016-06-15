@@ -1,6 +1,7 @@
 package com.gdky.restfull.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
@@ -48,6 +49,10 @@ public class AuthService {
 	}
 
 	public void insertPrivileges(String roleId, List<String> privileges) {
+		List<Map<String,Object>> paths = authDao.getPath(privileges);
+		for(Map<String,Object> path : paths){
+			
+		}
 		Number rs = authDao.insertPrivileges(roleId, privileges);
 		
 	}

@@ -102,9 +102,12 @@ public class AuthController {
 		List<String> privileges = (List<String>) obj.get("privileges");
 		String roleId = (String) obj.get("roleId");
 		System.out.println(privileges);
+		
 		authService.delPrivileges(roleId);
-		authService.insertPrivileges(roleId,privileges);
-		return ResponseEntity.ok(null);
+		if (privileges.size()>0){
+			authService.insertPrivileges(roleId,privileges);
+		}		
+		return ResponseEntity.ok("ok");
 	}
 	
 

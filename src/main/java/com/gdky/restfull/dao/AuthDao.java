@@ -1,7 +1,10 @@
 package com.gdky.restfull.dao;
 
+import gov.gdgs.zs.untils.Condition;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
@@ -69,6 +72,24 @@ public class AuthDao extends BaseJdbcDao {
 		}
 		
 		return rs;				
+	}
+
+	public List<Map<String,Object>> getPath(List<String> menuIds) {
+		Condition condition = new Condition();
+		for (int i = 0; i< menuIds.size();i++){
+			if(i==0){
+				condition.add("id", Condition.EQUAL, menuIds.get(i));
+			}
+			condition.or("id", Condition.EQUAL, menuIds.get(i));
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select path from fw_meun ");
+		sb.append(condition.getSql());
+		sb.append(" group by path ");
+		
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(), condition.getParams()
+				.toArray());
+		return ls;
 	}
 
 }
