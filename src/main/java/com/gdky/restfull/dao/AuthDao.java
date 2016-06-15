@@ -59,9 +59,9 @@ public class AuthDao extends BaseJdbcDao {
 		
 	}
 
-	public Number insertPrivileges(String roleId, List<String> privileges) {
+	public Number insertPrivileges(String roleId, String[] privileges) {
 		int rs = 0;
-		if(privileges.size()>0){
+		if(privileges.length >0){
 			List<Object[]> batchValue = new ArrayList<Object[]> ();
 			for(String str : privileges){
 				Object[] obj = new Object[]{roleId,str};

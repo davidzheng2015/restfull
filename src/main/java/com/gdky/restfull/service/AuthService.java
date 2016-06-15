@@ -1,5 +1,6 @@
 package com.gdky.restfull.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,13 +51,26 @@ public class AuthService {
 	}
 
 	public void insertPrivileges(String roleId, List<String> privileges) {
-		List<Map<String,Object>> paths = authDao.getPath(privileges);
-		for(Map<String,Object> path : paths){
-			
+		List<Map<String,Object>> rows = authDao.getPath(privileges);
+		String[] nodes = new String[0] ;
+		for(Map<String,Object> row : rows){
+			String path = (String)row.get("path");
+			ArrayUtils.addAll(nodes, path.split("-"));			
 		}
-		Number rs = authDao.insertPrivileges(roleId, privileges);
+		nodes = unique(nodes);
+		Number rs = authDao.insertPrivileges(roleId, nodes);
 		
 	}
+	public static String[] unique(String[] a) {  
+	    // array_unique  
+	    List<String> list = new LinkedList<String>();  
+	    for(int i = 0; i < a.length; i++) {  
+	        if(!list.contains(a[i])) {  
+	            list.add(a[i]);  
+	        }  
+	    }  
+	    return (String[])list.toArray(new String[list.size()]);  
+	}  
 	
 
 
