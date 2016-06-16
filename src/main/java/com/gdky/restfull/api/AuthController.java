@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
 import com.gdky.restfull.entity.Privileges;
+import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.security.CustomUserDetails;
 import com.gdky.restfull.security.TokenUtils;
@@ -100,14 +102,13 @@ public class AuthController {
 	@RequestMapping(value="/privileges",method=RequestMethod.PUT)
 	public ResponseEntity<?> updatePrivileges(@RequestBody Map<String,Object> obj){
 		List<String> privileges = (List<String>) obj.get("privileges");
-		String roleId = (String) obj.get("roleId");
-		System.out.println(privileges);
+		Integer roleId = (Integer) obj.get("roleId");
 		
 		authService.delPrivileges(roleId);
 		if (privileges.size()>0){
 			authService.insertPrivileges(roleId,privileges);
 		}		
-		return ResponseEntity.ok("ok");
+		return ResponseEntity.ok(null);
 	}
 	
 

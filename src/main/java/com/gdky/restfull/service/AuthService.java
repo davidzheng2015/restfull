@@ -1,5 +1,8 @@
 package com.gdky.restfull.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,31 +49,44 @@ public class AuthService {
 		return authDao.getPrivileges(roleId);
 	}
 
-	public void delPrivileges(String roleId) {
+	public void delPrivileges(Integer roleId) {
 		authDao.delPrivileges(roleId);		
 	}
 
-	public void insertPrivileges(String roleId, List<String> privileges) {
+	public void insertPrivileges(Integer roleId, List<String> privileges) {
 		List<Map<String,Object>> rows = authDao.getPath(privileges);
 		String[] nodes = new String[0] ;
 		for(Map<String,Object> row : rows){
 			String path = (String)row.get("path");
-			ArrayUtils.addAll(nodes, path.split("-"));			
+			nodes = ArrayUtils.addAll(nodes, path.split("-"));			
 		}
-		nodes = unique(nodes);
-		Number rs = authDao.insertPrivileges(roleId, nodes);
+		List<String> list = Arrays.asList(nodes);
+		list = removeZero(list);
+		privileges.addAll(list);
+		privileges = unique(privileges);
+
+		Number rs = authDao.insertPrivileges(roleId, privileges);
 		
 	}
-	public static String[] unique(String[] a) {  
-	    // array_unique  
-	    List<String> list = new LinkedList<String>();  
-	    for(int i = 0; i < a.length; i++) {  
-	        if(!list.contains(a[i])) {  
-	            list.add(a[i]);  
-	        }  
-	    }  
-	    return (String[])list.toArray(new String[list.size()]);  
-	}  
+	public static List<String> unique(List<String> list) {  
+	    // List_unique  
+		HashSet<String> set = new HashSet<String>(list);
+		list.clear();
+		list.addAll(set);
+		return list;
+	}
+	
+	public static List<String> removeZero(List<String> items){
+		List<String> list = new ArrayList<String>();
+		for(String str : items){
+			if(!str.equals("000")){
+				str = str.replaceFirst("^0*", "");
+				list.add(str);
+			}
+		}
+		return list;
+	}
+	
 	
 
 

@@ -53,15 +53,15 @@ public class AuthDao extends BaseJdbcDao {
 
 	}
 
-	public void delPrivileges(String roleId) {
+	public void delPrivileges(Integer roleId) {
 		String sql = "delete from fw_role_menu where role_id = ?";
 		this.jdbcTemplate.update(sql,new Object[]{roleId});
 		
 	}
 
-	public Number insertPrivileges(String roleId, String[] privileges) {
+	public Number insertPrivileges(Integer roleId, List<String> privileges) {
 		int rs = 0;
-		if(privileges.length >0){
+		if(privileges.size() >0){
 			List<Object[]> batchValue = new ArrayList<Object[]> ();
 			for(String str : privileges){
 				Object[] obj = new Object[]{roleId,str};
@@ -83,7 +83,7 @@ public class AuthDao extends BaseJdbcDao {
 			condition.or("id", Condition.EQUAL, menuIds.get(i));
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append(" select path from fw_meun ");
+		sb.append(" select path from fw_menu ");
 		sb.append(condition.getSql());
 		sb.append(" group by path ");
 		
