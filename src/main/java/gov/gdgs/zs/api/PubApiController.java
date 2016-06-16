@@ -25,6 +25,7 @@ public class PubApiController {
 	@Resource
 	SwsService swsService;
 
+	//机构查询
 	@RequestMapping(value="/jgs" ,method = { RequestMethod.GET })
 	public ResponseEntity<?> getSws(@RequestParam(value = "page", required = true) int page,
 			@RequestParam(value = "pagesize", required = true) int pagesize,
@@ -32,6 +33,7 @@ public class PubApiController {
 		return new ResponseEntity<>(swsService.swscx(page, pagesize, where),HttpStatus.OK);
 	}
 	
+	//非执业备案提交
 	@RequestMapping(value = "/fzysws", method = RequestMethod.POST)
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj){
 		String sfzh = (String)obj.get("sfzh");
@@ -44,4 +46,15 @@ public class PubApiController {
 				ResponseMessage.Type.success, "备案申请提交成功");
 		return new ResponseEntity<>(rm,HttpStatus.CREATED);
 	}
+	
+	//非执业备案通过列表
+
+	//非执业备案进度查询   
+	
+	//执业转执业通过列表
+	
+	//执业转非执业进度查询
+	
+	//非执业转籍申请
+	
 }

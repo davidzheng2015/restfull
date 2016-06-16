@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 public class RyglDao extends BaseDao{
 	/**
 	 * 人员查询
-	 * @param z
+	 * @param pn ps
 	 * @param qury
 	 * @return
 	 * @throws Exception
@@ -32,7 +32,7 @@ public class RyglDao extends BaseDao{
 	public Map<String,Object> rycx(int pn,int ps,Map<String, Object> qury) {
 		final String url=Config.URL_PROJECT;
 		Condition condition = new Condition();
-		condition.add("a.xm", Condition.FUZZY, qury.get("xm"));
+		condition.add("a.xming", Condition.FUZZY, qury.get("xm"));
 		condition.add("a.rysf_dm", Condition.EQUAL, qury.get("rysfdm"));
 		condition.add("a.sfzh", Condition.FUZZY_LEFT, qury.get("sfzh"));
 		condition.add("a.CS_DM", Condition.EQUAL, qury.get("cs"));
@@ -41,16 +41,16 @@ public class RyglDao extends BaseDao{
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select SQL_CALC_FOUND_ROWS ");
 		sb.append("		@rownum:=@rownum+1 as 'key',");
-		sb.append("				a.yid,");
-		sb.append("				a.xm,");
+		sb.append("				a.id,");
+		sb.append("				a.xming,");
 		sb.append("				d.mc as xb,");
-		sb.append("				date_format(a.bir,'%Y-%m-%d') as srrq,");
+		sb.append("				date_format(a.SRI,'%Y-%m-%d') as srrq,");
 		sb.append("				a.sfzh,");
 		sb.append("				b.mc as cs,");
 		sb.append("				c.mc as mz,");
 		sb.append("				f.mc as xl,");
 		sb.append("				e.mc as rysf,a.rysf_dm as rysfdm");
-		sb.append("				from zs_ry a,dm_cs b,dm_mz c,dm_xb d,dm_rysf e,dm_xl f,(select @rownum:=?) zs_ry");
+		sb.append("				from zs_ryjbxx a,dm_cs b,dm_mz c,dm_xb d,dm_rysf e,dm_xl f,(select @rownum:=?) zs_ry");
 		sb.append("		"+condition.getSql()+" ");
 		sb.append("				and a.xb_dm= d.id");
 		sb.append("				and a.cs_dm=b.id");
@@ -63,16 +63,16 @@ public class RyglDao extends BaseDao{
 			switch (qury.get("sfield").toString()) {
 			case "xm":
 				if(asc){
-					sb.append("		    order by convert( a.xm USING gbk) COLLATE gbk_chinese_ci ");
+					sb.append("		    order by convert( a.xming USING gbk) COLLATE gbk_chinese_ci ");
 				}else{
-					sb.append("		    order by convert( a.xm USING gbk) COLLATE gbk_chinese_ci desc");
+					sb.append("		    order by convert( a.xming USING gbk) COLLATE gbk_chinese_ci desc");
 				}
 				break;
 			case "xb":
 				if(asc){
-					sb.append("		    order by a.xb ");
+					sb.append("		    order by a.xb_dm ");
 				}else{
-					sb.append("		    order by a.xb desc");
+					sb.append("		    order by a.xb_dm desc");
 				}
 				break;
 			case "cs":
@@ -84,9 +84,9 @@ public class RyglDao extends BaseDao{
 				break;
 			case "srrq":
 				if(asc){
-					sb.append("		    order by a.bir ");
+					sb.append("		    order by a.sri ");
 				}else{
-					sb.append("		    order by a.bir desc");
+					sb.append("		    order by a.sri desc");
 				}
 				break;
 			}
@@ -102,7 +102,7 @@ public class RyglDao extends BaseDao{
 				Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
 				Map<String,Object> map = new HashMap<String,Object>();
 				Map<String,Object> link = new HashMap<>();
-				String id = hashids.encode(rs.getLong("yid"));
+				String id = hashids.encode(rs.getLong("id"));
 				switch (rs.getObject("rysfdm").toString()) {
 				case "1":
 					link.put("herf_xxzl", url+"/ryxx/zyryxx/"+id);
@@ -129,7 +129,7 @@ public class RyglDao extends BaseDao{
 				map.put("key", rs.getObject("key"));
 				map.put("xh", rs.getObject("key"));
 				map.put("_links", link);
-				map.put("xm", rs.getObject("xm"));
+				map.put("xm", rs.getObject("xming"));
 				map.put("xb", rs.getObject("xb"));
 				map.put("cs", rs.getObject("cs"));
 				map.put("srrq", rs.getObject("srrq"));
@@ -161,7 +161,7 @@ public class RyglDao extends BaseDao{
 	 */
 	public Map<String,Object> zyryxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("	select @rownum:=@rownum+1 as 'key',a.id ,");	
+		sb.append("	select @rownum:=@rownum+1 as 'key',b.dwmc,");	
 		sb.append("	c.xming as xm,");	
 		sb.append("	f.mc as cs,");	
 		sb.append("	d.mc as xb, ");	
@@ -266,21 +266,16 @@ public class RyglDao extends BaseDao{
 	public List<Map<String,Object>> zyryzzjl(int id){
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select @rownum:=@rownum+1 as 'key', ");
-		sb.append("		f.id,e.lclxid,b.sjid,a.zysq as zzsq,a.xdwyj as dwyj,DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS tbrq,DATE_FORMAT( c.SPSJ,'%Y-%m-%d') AS spsj ");
+		sb.append("		a.zysq as zzsq,a.xdwyj as dwyj,DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS tbrq,DATE_FORMAT( c.SPSJ,'%Y-%m-%d') AS spsj ");
 		sb.append("	 from (select * from zs_fzyzzy union");
 		sb.append("		 select * from zs_cyryzzy )as a,");
 		sb.append("		 zs_spzx b,");
 		sb.append("		 zs_spxx c,");
-		sb.append("		 zs_splcbz d,");
-		sb.append("		 zs_splc e, ");
 		sb.append("		 zs_zysws f,(select @rownum:=0) zs_sws ");
 		sb.append("		 where a.zysws_id = f.id ");
 		sb.append("		 and a.ID = b.sjid");
 		sb.append("		and c.SPID = b.ID ");
 		sb.append("		and c.ISPASS = 'Y' ");
-		sb.append("		 and d.ID = c.LCBZID ");
-		sb.append("		 and e.ID = d.LCID");
-		sb.append("		  and e.LCLXID in (13,44)");
 		sb.append("		   and f.ry_ID = ?");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
@@ -335,39 +330,40 @@ public class RyglDao extends BaseDao{
 	public Map<String,Object> fzyryxx(int id){
 		StringBuffer sb = new StringBuffer();
 		sb.append("	select @rownum:=@rownum+1 as 'key',");	
-		sb.append("		a.id,");
-		sb.append("		a.XMING as xm,");
+		sb.append("		a.zzdw,");
+		sb.append("		h.XMING as xm,");
 		sb.append("		d.MC AS cs,");
 		sb.append("		b.MC as xb,");
 		sb.append("		e.MC AS mz,");
-		sb.append("		DATE_FORMAT(a.sri,'%Y-%m-%d') AS csrq, ");
+		sb.append("		DATE_FORMAT(h.sri,'%Y-%m-%d') AS csrq, ");
 		sb.append("		c.MC as xl,");
-		sb.append("		a.sfzh,");
+		sb.append("		h.sfzh,");
 		sb.append("		f.MC AS zzmm,");
-		sb.append("		a.txdz,");
-		sb.append("		a.yddh,");
-		sb.append("		a.yzbm,");
+		sb.append("		h.txdz,");
+		sb.append("		h.yddh,");
+		sb.append("		h.yzbm,");
 		sb.append("		g.mc as zw,");
-		sb.append("		a.dhhm,");
-		sb.append("		a.byyx,");
+		sb.append("		h.dhhm,");
+		sb.append("		h.byyx,");
 		sb.append("		a.zyzgzsbh, ");
-		sb.append("		DATE_FORMAT(a.BYSJ,'%Y-%m-%d') AS bysj, ");
+		sb.append("		DATE_FORMAT(h.BYSJ,'%Y-%m-%d') AS bysj, ");
 		sb.append("		a.fzyhybh,");
 		sb.append("		DATE_FORMAT(a.RHSJ,'%Y-%m-%d') AS rhsj,");
 		sb.append("		DATE_FORMAT(a.ZGZSQFRQ,'%Y-%m-%d') AS zgzsqfrq,");
 		sb.append("		a.fzyzczsbh,");
 		sb.append("		DATE_FORMAT(a.FZYZCRQ,'%Y-%m-%d') AS fzyzcrq");
-		sb.append("		from zs_fzysws a,dm_xb b,dm_xl c,dm_cs d,dm_mz e,dm_zzmm f,dm_zw g,(select @rownum:=0) zs_sws");
-		sb.append("		where a.ryzt_dm = 1");
-		sb.append("		and a.XB_DM =b.ID");
-		sb.append("		and a.XL_DM = c.ID");
-		sb.append("		and a.cs_dm = d.ID");
-		sb.append("		and a.mz_dm = e.ID");
-		sb.append("		and a.zzmm_dm = f.ID");
+		sb.append("		from zs_fzysws a,zs_ryjbxx h,dm_xb b,dm_xl c,dm_cs d,dm_mz e,dm_zzmm f,dm_zw g,(select @rownum:=0) zs_sws");
+		sb.append("		where a.fzyzt_dm = 1");
+		sb.append("		and h.XB_DM =b.ID");
+		sb.append("		and h.XL_DM = c.ID");
+		sb.append("		and h.cs_dm = d.ID");
+		sb.append("		and h.mz_dm = e.ID");
+		sb.append("		and h.zzmm_dm = f.ID");
 		sb.append("		and a.zw_dm = g.ID");
-		sb.append("		and a.ID=?");
+		sb.append("		and a.RY_ID = h.ID");
+		sb.append("		and a.RY_ID=?");
 		sb.append("		order by a.ID");
-		String sql = "SELECT @rownum:=@rownum+1 as 'key',a.qzny,a.xxxx,a.zmr FROM zs_fzyjl a,(select @rownum:=0) zs_sws WHERE a.xxxx is not null and a.FZY_ID = ? order by a.ID";
+		String sql = "SELECT @rownum:=@rownum+1 as 'key',a.qzny,a.xxxx,a.zmr FROM zs_fzyjl a,(select @rownum:=0) zs_sws,zs_fzysws b WHERE a.xxxx is not null and a.FZY_ID = b.ID and b.RY_ID=? order by a.ID";
 		List<Map<String, Object>> tl = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 		Map<String,Object> ll =tl.get(0);
 		ll.put("ryjl", this.jdbcTemplate.queryForList(sql,new Object[]{id}));
@@ -382,8 +378,9 @@ public class RyglDao extends BaseDao{
 	public List<Map<String,Object>> fzyrybgjl(int id){
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select @rownum:=@rownum+1 as 'key',a.mc as bgmc,a.jzhi,a.xzhi,date_format(a.gxsj,'%Y-%m-%d') as gxsj ");
-		sb.append("		from zs_fzylsbgxxb a,(select @rownum:=0) zs_sws");
-		sb.append("		where a.FZY_ID = ?");
+		sb.append("		from zs_fzylsbgxxb a,zs_fzysws b,(select @rownum:=0) zs_sws");
+		sb.append("		where b.RY_ID = ?");
+		sb.append("		and a.FZY_ID = b.id");
 		sb.append("		order by a.gxsj");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
@@ -397,8 +394,9 @@ public class RyglDao extends BaseDao{
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select @rownum:=@rownum+1 as 'key', ");
 		sb.append("		a.fzy_id,a.zxyy,date_format(a.bdrq,'%Y-%m-%d') as bdrq,a.lrr");
-		sb.append("		FROM  zs_fzyzx a,(select @rownum:=0) zs_sws");
-		sb.append("		WHERE a.FZY_ID=? ");
+		sb.append("		FROM  zs_fzyzx a,zs_fzysws b,(select @rownum:=0) zs_sws");
+		sb.append("		where b.RY_ID = ?");
+		sb.append("		and a.FZY_ID = b.id");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 	/**
@@ -411,8 +409,9 @@ public class RyglDao extends BaseDao{
 		StringBuffer sb = new StringBuffer();
 		sb.append("		select @rownum:=@rownum+1 as 'key', ");
 		sb.append("		 a.fzy_id,a.zjyy,a.zjyyrq,date_format( a.tbrq,'%Y-%m-%d') AS tbrq ");
-		sb.append("		 FROM zs_fzyswszj a ,(select @rownum:=0) zs_sws");
-		sb.append("		 WHERE a.FZY_ID=? ");
+		sb.append("		 FROM zs_fzyswszj a ,zs_fzysws b,(select @rownum:=0) zs_sws");
+		sb.append("		where b.RY_ID = ?");
+		sb.append("		and a.FZY_ID = b.id");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 	/**
@@ -423,23 +422,16 @@ public class RyglDao extends BaseDao{
 	 */
 	public List<Map<String,Object>> fzyryzfjl(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("			select distinct a.fzysws_id,@rownum:=@rownum+1 as 'key',a.fzysq ,a.xdwyj,DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS bdrq,");
-		sb.append("			DATE_FORMAT( c.SPSJ,'%Y-%m-%d') as spsj,g.dwmc as ydwmc ");
+		sb.append("			select  @rownum:=@rownum+1 as 'key',a.fzysq ,a.xdwyj,DATE_FORMAT( a.tbrq,'%Y-%m-%d') AS bdrq,");
+		sb.append("			DATE_FORMAT( a.SGLZXYJRQ,'%Y-%m-%d') as spsj,g.dwmc as ydwmc ");
 		sb.append("		 from zs_zyswszfzy a,");
-		sb.append("		 zs_spzx b,");
-		sb.append("			 zs_spxx c,");
-		sb.append("			 zs_splcbz d,");
-		sb.append("			 zs_splc e, ");
-		sb.append("			 zs_zysws f,");
+		sb.append("			 zs_fzysws f,zs_zysws b,");
 		sb.append("			 zs_jg g,(select @rownum:=0) zs_sws");
-		sb.append("			 where a.zysws_id = f.id");
-		sb.append("			 and f.JG_ID = g.ID");
-		sb.append("			 and a.ID = b.sjid");
-		sb.append("			and c.SPID = b.ID ");
-		sb.append("			and c.ISPASS = 'Y' ");
-		sb.append("			 and d.ID = c.LCBZID ");
-		sb.append("			 and e.ID = d.LCID");
-		sb.append("			 and a.fzysws_ID =?");
+		sb.append("			 where a.fzysws_id = f.id");
+		sb.append("			 and a.zysws_id  = b.id");
+		sb.append("			 and b.jg_id  = g.id");
+		sb.append("			 and a.spzt_dm  = 2");
+		sb.append("			 and f.RY_ID = ?");
 		return this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 	}
 	/**
@@ -450,7 +442,7 @@ public class RyglDao extends BaseDao{
 	 */
 	public Map<String,Object> cyryxx(int id){
 		StringBuffer sb = new StringBuffer();
-		sb.append("	select @rownum:=@rownum+1 as 'key',");	
+		sb.append("	select @rownum:=@rownum+1 as 'key',c.dwmc,");	
 		sb.append("		b.XMING as xm,");
 		sb.append("		f.MC as cs,");
 		sb.append("		d.MC as xb,");
