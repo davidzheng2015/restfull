@@ -19,7 +19,7 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 	 
 	 
 	 /**
-	  * 事务所端审批申请方法
+	  * 事务所端审批申请处理方法
 	  * @param Map:sid,lclx,(可填：jgid,csdm)
 	  * @return boolean
 	  * @throws Exception
@@ -51,4 +51,36 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 		}
 		return true;
 	}
+	 
+	 @Transactional
+		public boolean swsSPtj(Map<String,Object> spsq) throws Exception{
+		 StringBuffer sb = new StringBuffer();
+		 sb.append("	 select a.ID,b.LCBZ,b.SPBZLX,b.BHBZLX,b.LCID,c.LCLXID,b.ROLEID,e.SJID from zs_spxx a,zs_splcbz b,zs_splc c,zs_spzx e,fw_user_role f ");
+		 sb.append("	 where a.LCBZID=b.ID and b.LCID=c.ID and a.SPID=e.ID and f.ROLE_ID=b.ROLEID and c.ZTBJ=2");
+		 sb.append("	 and a.spid = ? ");
+		 sb.append("	 and f.USER_ID=?");
+		 Map<String, Object> mp = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{spsq.get("sid"),spsq.get("uid")});
+		 String sql ="update zs_spxx set SPYJ=?,ISPASS=?,USERID=?,SPRNAME=?,SPSJ=sysdate() where id =?";
+		 this.jdbcTemplate.update(sql,new Object[]{spsq.get("spyj"),spsq.get("ispass"),spsq.get("uid"),spsq.get("uname"),mp.get("ID")});
+		 if(spsq.get("ispass").equals("Y")){
+			 if(mp.get("SPBZLX").equals("1")||mp.get("SPBZLX").equals("2")){
+				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("sid")});
+				 switch((int)mp.get("LCLXID")){
+				 case 2:
+					 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='8',SPRQ=sysdate(),SPR_ID=? where id =?",
+							 new Object[]{spsq.get("uid"),mp.get("SJID")});
+					 this.jdbcTemplate.update("update zs_jg a,zs_jgbglsb b,zs_jgbgspb c set a.DWMC=b.DWMC,"
+					 		+ "a.CS_DM=b.CS_DM,a.JGXZ_DM=b.JGXZ_DM,a.DZHI=b.DZHI,"
+					 		+ "a.ZCZJ=b.ZCZJ,a.ZCDZ=b.ZCDZ,a.YYZZHM=b.YYZZHM,"
+					 		+ "a.SWSZSCLSJ=b.SWSZSCLSJ where c.id =? and c.JGBGLSB_ID = b.id "
+					 		+ "and c.jg_id = a.id",new Object[]{mp.get("SJID")});
+				 };
+			 }else{
+				 this.jdbcTemplate.update("update zs_spzx set LCBZID=? where id =?",
+						 new Object[]{this.jdbcTemplate.queryForObject("select id from zs_splcbz where lcid=? and lcbz=?",
+								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")+1}, String.class),spsq.get("sid")});
+			 };
+		 };
+		 return true;
+	 }
 }

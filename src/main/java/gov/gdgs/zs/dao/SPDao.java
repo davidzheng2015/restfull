@@ -65,7 +65,11 @@ public class SPDao extends BaseDao{
 			});
 	}
 	
-	
+	/**
+	 * 事务所变更未审批明细查询
+	 * @param pn,ps,uid,lcid
+	 * @return
+	 */
 	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lcid){
 		String sql="select role_id from fw_user_role where USER_ID = ?";
 		StringBuffer sb = new StringBuffer();
@@ -88,7 +92,11 @@ public class SPDao extends BaseDao{
 		ob.put("page", meta);
 		return ob;
 	}
-	
+	/**
+	 * 事务所变更详细信息查看
+	 * @param sjid
+	 * @return
+	 */
 	public List<Map<String, Object>> swsbgspxx (int sjid){
 		return this.jdbcTemplate.queryForList("select MC,XZHI,JZHI from zs_jgbgxxb where jgbgspb_id = ?",new Object[]{sjid});
 	}

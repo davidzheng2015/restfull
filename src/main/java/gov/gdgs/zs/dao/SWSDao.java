@@ -154,7 +154,7 @@ public class SWSDao extends BaseDao{
 		sb.append("		b.mc as swsxz,a.szphone,a.gsyhmcbh,a.dzyj,a.yhdw,date_format(a.yhsj,'%Y-%m-%d') as yhsj, ");
 		sb.append("		a.gzbh,a.gzdw,a.gzry,date_format(a.gzsj,'%Y-%m-%d') as gzsj,a.yzbh,a.yzdw,a.yzry,date_format(a.yzsj,'%Y-%m-%d') as yzsj, ");
 		sb.append("		a.tthybh,date_format(a.rhsj,'%Y-%m-%d') as rhsj,a.khh,a.khhzh,a.fj,a.swdjhm,a.jbqk, ");
-		sb.append("		a.glzd,a.gddh,a.bgcszczm,a.yyzzhm,DATE_FORMAT(a.swszsclsj,'%Y-%m-%d') AS clsj,a.jgdmzh,a.wangzhi	from		 ");
+		sb.append("		a.glzd,a.gddh,a.bgcszczm,a.yyzzhm,DATE_FORMAT(a.swszsclsj,'%Y-%m-%d') AS clsj,a.jgdmzh,a.wangzhi,a.CS_DM as csdm,a.JGXZ_DM as jgxzdm	from		 ");
 		sb.append("		 zs_jg a,	dm_jgxz b,dm_cs c,	 zs_jg_njb d ");
 		sb.append("		WHERE		 a.JGXZ_DM = b.ID  ");
 		sb.append("		AND a.CS_DM = c.ID  ");

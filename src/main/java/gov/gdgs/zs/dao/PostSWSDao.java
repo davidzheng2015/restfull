@@ -21,10 +21,18 @@ public class PostSWSDao extends BaseDao{
 	
 	
 	public void updateSPXM(Map<String, Object> spxm,int id,int jgid) throws Exception{
-		List<Map<String, Object>> forupdate = (List<Map<String, Object>>) spxm.get("bgjl");//获取变更项目
-		String sql ="insert into zs_jgbgspb (JG_ID,SPZT_DM,BGRQ,TXR_ID) values(?,'1',sysdate(),?)";
+		List<Map<String, Object>> forupdate = (List<Map<String, Object>>) spxm.remove("bgjl");//获取变更项目
+		List<Object> listValue = new ArrayList<Object>();  //Map转List
+		Iterator<String> it = spxm.keySet().iterator();  
+		while (it.hasNext()) {  
+			String key = it.next().toString();  
+			listValue.add(spxm.get(key));  
+		};
+		String sql ="insert into zs_jgbgspb (JG_ID,SPZT_DM,BGRQ,TXR_ID,JGBGLSB_ID) values(?,'1',sysdate(),?,?)";
 		String sql2 ="insert into zs_jgbgxxb (MC,JZHI,XZHI,GXSJ,JGBGSPB_ID) values(?,?,?,sysdate(),?)";
-		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{jgid,id},new String[] {"ID"});//插入业务表，获取自动生成id
+		String sql3 ="insert into zs_jgbglsb (DWMC,CS_DM,JGXZ_DM,DZHI,ZCZJ,ZCDZ,YYZZHM,SWSZSCLSJ) values(?,?,?,?,?,?,?,?)";
+		Number rs1 = this.insertAndGetKeyByJdbc(sql3,listValue.toArray(),new String[] {"ID"});//插入临时表，获取自动生成id
+		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{jgid,id,rs1},new String[] {"ID"});//插入业务表，获取自动生成id
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
 		spsq.put("sid", rs);
 		spsq.put("lclx", SPUntils.JGBGSP);
