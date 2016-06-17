@@ -86,6 +86,10 @@ public class AuthService {
 		}
 		return list;
 	}
+
+	public Number addRole(Map<String, Object> obj) {
+		return authDao.addRole(obj);		
+	}
 	
 	
 
