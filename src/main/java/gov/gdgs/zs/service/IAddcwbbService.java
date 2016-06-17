@@ -6,5 +6,8 @@ public interface IAddcwbbService {
 	
 	public Map<String,Object> AddXjllb ( Map <String,Object> obj);
 	public void UpdateXjllb(Map<String,Object> obj);	
+	
+	public Map<String,Object> AddZcfzb ( Map <String,Object> obj);
+	public void UpdateZcfzb(Map<String,Object> obj);
 
 }

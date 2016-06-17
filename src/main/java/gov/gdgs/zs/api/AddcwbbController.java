@@ -61,5 +61,37 @@ import com.gdky.restfull.entity.ResponseMessage;
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 		}
+	 
+	 @RequestMapping(value = "/addzcfzb", method = RequestMethod.POST)
+		public ResponseEntity<Map<String,Object>> addZcfzb(@RequestBody  Map<String ,Object> obj) {
+			Map<String,Object> rs = iaddcwbbService.AddZcfzb(obj);
+			return new ResponseEntity<>(rs,HttpStatus.CREATED);
+		}
+	 
+	 @RequestMapping(value = "/add/zcfzb", method = RequestMethod.GET) 
+	 	public  ResponseEntity<Map<String,Object>> getZcfzb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){ 
+	 		Map<String,Object> obj = addcwbbService.getZcfzb(page, pageSize, where);
+	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+	 	}
+	 
+	 @RequestMapping(value = "/add/zcfzb/{id}", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getLzcfzbById(
+				@PathVariable("id") String id) {
+
+			Map<String, Object> obj = addcwbbService.getZcfzbById(id);
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 
+	 @RequestMapping(value = "/addzcfzb/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<ResponseMessage> updateZcfzb(@PathVariable("id") String id,
+				@RequestBody Map <String,Object> obj) {
+			
+		 addcwbbService.UpdateZcfzb(obj);
+			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+		}
 
 }
