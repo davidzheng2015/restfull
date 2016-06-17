@@ -11,16 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gdky.restfull.dao.BaseJdbcDao;
 @Repository
- class SPUntils extends BaseJdbcDao {
+public class SPUntils extends BaseJdbcDao {
 	/**
 	 * 事务所变更审批
 	 */
-	 static final String JGBGSP = "402881831be2e6af011be3ab8b84000c"; 
+	public static final String JGBGSP = "402881831be2e6af011be3ab8b84000c"; 
 	 
 	 
 	 /**
 	  * 事务所端审批申请处理方法
-	  * @param Map:sid,lclx,(可填：jgid,csdm)
+	  * @param Map:sid,lclx,(选填：jgid,csdm)
 	  * @return boolean
 	  * @throws Exception
 	  */
@@ -52,19 +52,25 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 		return true;
 	}
 	 
+	 /**
+	  * 中心端审批审核处理方法
+	  * @param Map:spid,uid,uname,spyj,ispass
+	  * @return boolean
+	  * @throws Exception
+	  */
 	 @Transactional
-		public boolean swsSPtj(Map<String,Object> spsq) throws Exception{
+		public boolean glzxSPtj(Map<String,Object> spsq) throws Exception{
 		 StringBuffer sb = new StringBuffer();
 		 sb.append("	 select a.ID,b.LCBZ,b.SPBZLX,b.BHBZLX,b.LCID,c.LCLXID,b.ROLEID,e.SJID from zs_spxx a,zs_splcbz b,zs_splc c,zs_spzx e,fw_user_role f ");
 		 sb.append("	 where a.LCBZID=b.ID and b.LCID=c.ID and a.SPID=e.ID and f.ROLE_ID=b.ROLEID and c.ZTBJ=2");
 		 sb.append("	 and a.spid = ? ");
 		 sb.append("	 and f.USER_ID=?");
-		 Map<String, Object> mp = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{spsq.get("sid"),spsq.get("uid")});
+		 Map<String, Object> mp = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{spsq.get("spid"),spsq.get("uid")});
 		 String sql ="update zs_spxx set SPYJ=?,ISPASS=?,USERID=?,SPRNAME=?,SPSJ=sysdate() where id =?";
 		 this.jdbcTemplate.update(sql,new Object[]{spsq.get("spyj"),spsq.get("ispass"),spsq.get("uid"),spsq.get("uname"),mp.get("ID")});
 		 if(spsq.get("ispass").equals("Y")){
 			 if(mp.get("SPBZLX").equals("1")||mp.get("SPBZLX").equals("2")){
-				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("sid")});
+				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
 				 switch((int)mp.get("LCLXID")){
 				 case 2:
 					 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='8',SPRQ=sysdate(),SPR_ID=? where id =?",
@@ -74,13 +80,23 @@ import com.gdky.restfull.dao.BaseJdbcDao;
 					 		+ "a.ZCZJ=b.ZCZJ,a.ZCDZ=b.ZCDZ,a.YYZZHM=b.YYZZHM,"
 					 		+ "a.SWSZSCLSJ=b.SWSZSCLSJ where c.id =? and c.JGBGLSB_ID = b.id "
 					 		+ "and c.jg_id = a.id",new Object[]{mp.get("SJID")});
+					 break;
 				 };
 			 }else{
 				 this.jdbcTemplate.update("update zs_spzx set LCBZID=? where id =?",
 						 new Object[]{this.jdbcTemplate.queryForObject("select id from zs_splcbz where lcid=? and lcbz=?",
-								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")+1}, String.class),spsq.get("sid")});
+								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")+1}, String.class),spsq.get("spid")});
 			 };
 		 };
+		 if(spsq.get("ispass").equals("N")){
+				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
+				 switch((int)mp.get("LCLXID")){
+				 case 2:
+					 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='3',SPRQ=sysdate(),SPR_ID=? where id =?",
+							 new Object[]{spsq.get("uid"),mp.get("SJID")});
+					 break;
+			 }
+		 }
 		 return true;
 	 }
 }

@@ -49,4 +49,12 @@ public class SPController {
 	public ResponseEntity<?> swsbgspxx(@RequestParam(value = "sjid", required = true) int sjid) throws Exception{
 		return new ResponseEntity<>(spPservice.swsbgspxx(sjid),HttpStatus.OK);
 	}
+	@RequestMapping(value = "/zjsh/wsptj1", method = RequestMethod.GET)
+	public ResponseEntity<?> sptj(@RequestParam(value = "spid", required = true) String spid,
+			@RequestParam(value = "spyj", required = true) String spyj,
+			@RequestParam(value = "ispass", required = true) String ispass,
+			HttpServletRequest request ) throws Exception{
+		User user =  accountService.getUserFromHeaderToken(request);
+		return new ResponseEntity<>(spPservice.sptj(spid, user.getId(), user.getNames(), spyj, ispass),HttpStatus.OK);
+	}
 }
