@@ -100,4 +100,11 @@ public class AuthDao extends BaseJdbcDao {
 		
 	}
 
+	public Integer delRole(Integer roleId) {
+		String sql = "delete from fw_role where id = ?";
+		Integer rs = this.jdbcTemplate.update(sql, new Object[]{roleId});
+		return rs;
+		
+	}
+
 }

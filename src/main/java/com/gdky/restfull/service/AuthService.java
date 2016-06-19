@@ -90,6 +90,11 @@ public class AuthService {
 	public Number addRole(Map<String, Object> obj) {
 		return authDao.addRole(obj);		
 	}
+
+	public void delRole(Integer roleId) {
+		authDao.delPrivileges(roleId);	
+		authDao.delRole(roleId);		
+	}
 	
 	
 

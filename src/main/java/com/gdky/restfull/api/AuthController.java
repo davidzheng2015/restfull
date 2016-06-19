@@ -98,6 +98,12 @@ public class AuthController {
 		return new ResponseEntity<>(ResponseMessage.success("添加成功"),HttpStatus.CREATED);
 	}
 	
+	@RequestMapping(value="/roles/{roleId}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> delRole(@PathVariable Integer roleId){
+		authService.delRole(roleId);
+		return  ResponseEntity.ok(null);
+	}
+	
 	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
 	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
 		List<Privileges> ls = authService.getPrivileges(roleId);
@@ -115,6 +121,8 @@ public class AuthController {
 		}		
 		return ResponseEntity.ok(null);
 	}
+	
+	
 	
 	
 
