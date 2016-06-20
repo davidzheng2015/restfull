@@ -38,7 +38,7 @@ public class AuthDao extends BaseJdbcDao {
 	}
 
 	public List<Role> getRoles() {
-		String sql = "select * from fw_role t order by t.id";
+		String sql = "select * from fw_role t order by t.id desc";
 		List<Role> ls = this.jdbcTemplate.query(sql,
 				new BeanPropertyRowMapper<Role>(Role.class));
 		return ls;
@@ -90,6 +90,21 @@ public class AuthDao extends BaseJdbcDao {
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(), condition.getParams()
 				.toArray());
 		return ls;
+	}
+
+	public Number addRole(Map<String, Object> obj) {
+		String name = (String)obj.get("name");
+		String desc = (String)obj.get("description");
+		String sql = "insert into fw_role (name,description) values(?,?)";
+		return this.insertAndGetKeyByJdbc(sql, new Object[]{name,desc}, new String[]{"id"});
+		
+	}
+
+	public Integer delRole(Integer roleId) {
+		String sql = "delete from fw_role where id = ?";
+		Integer rs = this.jdbcTemplate.update(sql, new Object[]{roleId});
+		return rs;
+		
 	}
 
 }

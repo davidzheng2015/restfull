@@ -92,6 +92,17 @@ public class AuthController {
 		List<Role> ls = authService.getRoles();
 		return ResponseEntity.ok(ls);
 	}
+	@RequestMapping(value="/roles",method=RequestMethod.POST)
+	public ResponseEntity<?> AddRole(@RequestBody Map<String,Object> obj){
+		authService.addRole(obj);
+		return new ResponseEntity<>(ResponseMessage.success("添加成功"),HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/roles/{roleId}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> delRole(@PathVariable Integer roleId){
+		authService.delRole(roleId);
+		return  ResponseEntity.ok(null);
+	}
 	
 	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
 	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
@@ -110,6 +121,9 @@ public class AuthController {
 		}		
 		return ResponseEntity.ok(null);
 	}
+	
+	
+	
 	
 
 }
