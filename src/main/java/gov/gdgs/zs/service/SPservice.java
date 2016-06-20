@@ -37,13 +37,9 @@ public class SPservice {
 	}
 	
 	@Transactional
-	public boolean sptj(String spid,int uid,String uname,String spyj,String ispass)throws Exception{
-		Map<String,Object> spsq = new HashMap<>();
-		spsq.put("spid", spid);
+	public boolean sptj(Map<String,Object> spsq,int uid,String uname)throws Exception{
 		spsq.put("uid", uid);
 		spsq.put("uname", uname);
-		spsq.put("spyj", spyj);
-		spsq.put("ispass", ispass);
 		return spUntils.glzxSPtj(spsq);
 	}
 }

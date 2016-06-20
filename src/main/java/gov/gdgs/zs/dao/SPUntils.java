@@ -69,7 +69,8 @@ public class SPUntils extends BaseJdbcDao {
 		 String sql ="update zs_spxx set SPYJ=?,ISPASS=?,USERID=?,SPRNAME=?,SPSJ=sysdate() where id =?";
 		 this.jdbcTemplate.update(sql,new Object[]{spsq.get("spyj"),spsq.get("ispass"),spsq.get("uid"),spsq.get("uname"),mp.get("ID")});
 		 if(spsq.get("ispass").equals("Y")){
-			 if(mp.get("SPBZLX").equals("1")||mp.get("SPBZLX").equals("2")){
+			 int c = (int)mp.get("SPBZLX");
+			 if(c==1||c==2){
 				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
 				 switch((int)mp.get("LCLXID")){
 				 case 2:
@@ -87,16 +88,16 @@ public class SPUntils extends BaseJdbcDao {
 						 new Object[]{this.jdbcTemplate.queryForObject("select id from zs_splcbz where lcid=? and lcbz=?",
 								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")+1}, String.class),spsq.get("spid")});
 			 };
-		 };
-		 if(spsq.get("ispass").equals("N")){
-				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
-				 switch((int)mp.get("LCLXID")){
-				 case 2:
-					 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='3',SPRQ=sysdate(),SPR_ID=? where id =?",
-							 new Object[]{spsq.get("uid"),mp.get("SJID")});
-					 break;
+		 }else if(spsq.get("ispass").equals("N")){
+			 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
+			 switch((int)mp.get("LCLXID")){
+			 case 2:
+				 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='3',SPRQ=sysdate(),SPR_ID=? where id =?",
+						 new Object[]{spsq.get("uid"),mp.get("SJID")});
+				 break;
+				 }
 			 }
-		 }
+		 
 		 return true;
 	 }
 }

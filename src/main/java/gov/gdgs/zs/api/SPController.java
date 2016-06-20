@@ -1,5 +1,7 @@
 package gov.gdgs.zs.api;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,7 @@ import gov.gdgs.zs.service.SPservice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,12 +52,10 @@ public class SPController {
 	public ResponseEntity<?> swsbgspxx(@RequestParam(value = "sjid", required = true) int sjid) throws Exception{
 		return new ResponseEntity<>(spPservice.swsbgspxx(sjid),HttpStatus.OK);
 	}
-	@RequestMapping(value = "/zjsh/wsptj1", method = RequestMethod.GET)
-	public ResponseEntity<?> sptj(@RequestParam(value = "spid", required = true) String spid,
-			@RequestParam(value = "spyj", required = true) String spyj,
-			@RequestParam(value = "ispass", required = true) String ispass,
+	@RequestMapping(value = "/zjsh/wspxq/wsptj1", method = RequestMethod.PUT)
+	public ResponseEntity<?> sptj(@RequestBody Map<String, Object> sptj,
 			HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(spPservice.sptj(spid, user.getId(), user.getNames(), spyj, ispass),HttpStatus.OK);
+		return new ResponseEntity<>(spPservice.sptj(sptj, user.getId(), user.getNames()),HttpStatus.OK);
 	}
 }
