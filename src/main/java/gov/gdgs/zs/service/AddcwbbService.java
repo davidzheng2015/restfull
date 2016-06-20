@@ -98,6 +98,42 @@ public class AddcwbbService implements IAddcwbbService {
 			Map<String,Object> obj = addcwbbDao.getZcfzbById(id);
 			return obj;
 		}
+		
+		@Override
+		public Map<String, Object> AddZcmxb (Map<String, Object> obj) {	
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+			String rs= iaddcwbbDao.AddZcmxb(obj);
+			map.put("id", rs);
+			return map;
+
+		}
+		
+		@Override
+		public void UpdateZcmxb(Map<String, Object> obj) {
+			iaddcwbbDao.UpdateZcmxb(obj);
+	        
+		}
+		
+		 //资产负债表
+		public Map<String, Object> getZcmxb(int page, int pageSize, String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}		
+			Map<String, Object> rs = addcwbbDao.getZcmxb(page, pageSize, map);
+			return rs;
+		}
+		public Map<String, Object> getZcmxbById(String id) {
+			Map<String,Object> obj = addcwbbDao.getZcmxbById(id);
+			return obj;
+		}
 	
 	
 

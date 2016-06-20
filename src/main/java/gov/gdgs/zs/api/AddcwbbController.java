@@ -93,5 +93,36 @@ import com.gdky.restfull.entity.ResponseMessage;
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 		}
+	 
+	 @RequestMapping(value = "/addzcmxb", method = RequestMethod.POST)
+		public ResponseEntity<Map<String,Object>> addZcmxb(@RequestBody  Map<String ,Object> obj) {
+			Map<String,Object> rs = iaddcwbbService.AddZcmxb(obj);
+			return new ResponseEntity<>(rs,HttpStatus.CREATED);
+		}
+	 
+	 @RequestMapping(value = "/add/zcmxb", method = RequestMethod.GET) 
+	 	public  ResponseEntity<Map<String,Object>> getZcmxb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){ 
+	 		Map<String,Object> obj = addcwbbService.getZcmxb(page, pageSize, where);
+	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+	 	}
+	 
+	 @RequestMapping(value = "/add/zcmxb/{id}", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getzcmxbById(
+				@PathVariable("id") String id) {
+
+			Map<String, Object> obj = addcwbbService.getZcmxbById(id);
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 @RequestMapping(value = "/addzcmxb/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<ResponseMessage> updateZcmxb(@PathVariable("id") String id,
+				@RequestBody Map <String,Object> obj) {
+			
+		 addcwbbService.UpdateZcmxb(obj);
+			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+		}
 
 }

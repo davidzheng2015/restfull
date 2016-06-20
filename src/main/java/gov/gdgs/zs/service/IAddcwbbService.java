@@ -9,5 +9,8 @@ public interface IAddcwbbService {
 	
 	public Map<String,Object> AddZcfzb ( Map <String,Object> obj);
 	public void UpdateZcfzb(Map<String,Object> obj);
+	
+	public Map<String,Object> AddZcmxb ( Map <String,Object> obj);
+	public void UpdateZcmxb(Map<String,Object> obj);
 
 }

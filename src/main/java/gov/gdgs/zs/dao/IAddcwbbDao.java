@@ -9,4 +9,7 @@ public interface IAddcwbbDao {
 	
 	public String AddZcfzb( Map <String,Object >obj);
 	public void UpdateZcfzb(Map <String,Object >obj);
+	
+	public String AddZcmxb( Map <String,Object >obj);
+	public void UpdateZcmxb(Map <String,Object >obj);
 }
