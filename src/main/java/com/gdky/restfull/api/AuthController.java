@@ -2,8 +2,10 @@ package com.gdky.restfull.api;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
+import com.gdky.restfull.entity.Privileges;
+import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.security.CustomUserDetails;
 import com.gdky.restfull.security.TokenUtils;
@@ -87,5 +92,38 @@ public class AuthController {
 		List<Role> ls = authService.getRoles();
 		return ResponseEntity.ok(ls);
 	}
+	@RequestMapping(value="/roles",method=RequestMethod.POST)
+	public ResponseEntity<?> AddRole(@RequestBody Map<String,Object> obj){
+		authService.addRole(obj);
+		return new ResponseEntity<>(ResponseMessage.success("添加成功"),HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/roles/{roleId}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> delRole(@PathVariable Integer roleId){
+		authService.delRole(roleId);
+		return  ResponseEntity.ok(null);
+	}
+	
+	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
+	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
+		List<Privileges> ls = authService.getPrivileges(roleId);
+		return ResponseEntity.ok(ls);
+	}
+	
+	@RequestMapping(value="/privileges",method=RequestMethod.PUT)
+	public ResponseEntity<?> updatePrivileges(@RequestBody Map<String,Object> obj){
+		List<String> privileges = (List<String>) obj.get("privileges");
+		Integer roleId = (Integer) obj.get("roleId");
+		
+		authService.delPrivileges(roleId);
+		if (privileges.size()>0){
+			authService.insertPrivileges(roleId,privileges);
+		}		
+		return ResponseEntity.ok(null);
+	}
+	
+	
+	
+	
 
 }

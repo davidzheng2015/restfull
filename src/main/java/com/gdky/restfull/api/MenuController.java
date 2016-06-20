@@ -46,7 +46,7 @@ public class MenuController {
 	
 
 	@RequestMapping(value = "/asidemenu/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseMessage> updateMenu(@PathVariable("id") String id,
+	public ResponseEntity<?> updateMenu(@PathVariable("id") String id,
 			@RequestBody AsideMenu asideMenu) {
 		
 		commonService.updateMenu(asideMenu);

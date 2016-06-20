@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 查询条件拼接工具，主要用于生成where...and..此段条件查询语句
  * 用法: 首先创建一个Condition对象，new Condition();
- * 然后用add(字段名，查询类型，传参值)加入查询条件,
+ * 然后用add(字段名，查询类型，传参值)添加"and"查询条件,用or(字段名，查询类型，传参值)添加"or"查询条件
  * 如add("name","EQUAL",map.get("name"))，会产生一条 'name = ?'的sql语句，map.get("name")会被放进变量参数的List中
  * 可用getSql取出拼接好的sql语句;
  * 可用getParams取出变量数组，类型为ArrayList
@@ -120,6 +120,36 @@ public class Condition {
 				this.params.add("%" + param + "%");
 			} else if (FUZZY_LEFT.equals(type)) {
 				sb.append(" AND ").append(colName).append(" like  ? ");
+				this.params.add("%"+ param );
+			}
+		}
+		return this;
+	}
+	public Condition or(String colName, String type, Object param) {
+		if (param != null) {
+			if (EQUAL.equals(type)) {
+				sb.append(" OR ").append(colName).append(" = ? ");
+				this.params.add(param);
+			} else if (NOT_EQUAL.equals(type)) {
+				sb.append(" OR ").append(colName).append(" <> ? ");
+				this.params.add(param);
+			} else if (LESS_THEN.equals(type)) {
+				sb.append(" OR ").append(colName).append(" < ? ");
+				this.params.add(param);
+			} else if (LESS_EQUAL.equals(type)) {
+				sb.append(" OR ").append(colName).append(" <= ? ");
+				this.params.add(param);
+			} else if (GREATER_EQUAL.equals(type)) {
+				sb.append(" OR ").append(colName).append(" >= ? ");
+				this.params.add(param);
+			} else if (GREATER_THEN.equals(type)) {
+				sb.append(" OR ").append(colName).append(" > ? ");
+				this.params.add(param);
+			} else if (FUZZY.equals(type)) {
+				sb.append(" OR ").append(colName).append(" like  ? ");
+				this.params.add("%" + param + "%");
+			} else if (FUZZY_LEFT.equals(type)) {
+				sb.append(" OR ").append(colName).append(" like  ? ");
 				this.params.add("%"+ param );
 			}
 		}
