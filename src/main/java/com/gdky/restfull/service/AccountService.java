@@ -46,7 +46,7 @@ public class AccountService {
 	}
 	
 	public String getPermissionByUser (User user){
-		List<AsideMenu> menu = this.getMenuByUser(user.getId());
+		List<AsideMenu> menu = menuDao.getPermitUrl(user.getId());
 		Md5PasswordEncoder  encoder = new Md5PasswordEncoder();
 		StringBuffer permission = new StringBuffer();
 		for (int i = 0;i<menu.size();i++){
