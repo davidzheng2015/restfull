@@ -16,6 +16,18 @@ public class SPUntils extends BaseJdbcDao {
 	 * 事务所变更审批
 	 */
 	public static final String JGBGSP = "402881831be2e6af011be3ab8b84000c"; 
+	/**
+	 * 事务所分所变更审批
+	 */
+	public static final String JGFSBGSP = "40288087228378910122838ecac50022"; 
+	/**
+	 * 事务所合并审批
+	 */
+	public static final String JGHBSP = "402881831be2e6af011be3aceac6000e"; 
+	/**
+	 * 事务所注销审批
+	 */
+	public static final String JGZXSP = "402881831be2e6af011be3adc72c0011"; 
 	 
 	 
 	 /**

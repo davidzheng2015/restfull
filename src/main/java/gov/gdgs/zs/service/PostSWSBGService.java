@@ -20,7 +20,9 @@ public class PostSWSBGService {
 	private PostSWSDao postSWSDao;
 	
 	public Map<String, Object> swsbgPost(int jgid) {
-		return this.swsDao.swsxx(jgid);
+		Map<String, Object> mp = this.swsDao.swsxx(jgid);
+		mp.put("checked", postSWSDao.checkBGing(jgid));
+		return mp;
 	}
 	
 	@Transactional

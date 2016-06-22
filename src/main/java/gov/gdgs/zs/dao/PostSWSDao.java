@@ -35,7 +35,12 @@ public class PostSWSDao extends BaseDao{
 		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{jgid,id,rs1},new String[] {"ID"});//插入业务表，获取自动生成id
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
 		spsq.put("sid", rs);
-		spsq.put("lclx", SPUntils.JGBGSP);
+		Integer tp = this.jdbcTemplate.queryForObject("select JGXZ_DM from zs_jg where id =?",new Object[]{jgid},int.class);
+		if(this.jdbcTemplate.queryForObject("select JGXZ_DM from zs_jg where id =?",new Object[]{jgid},int.class)!=3){
+			spsq.put("lclx", SPUntils.JGBGSP);
+		}else{
+			spsq.put("lclx", SPUntils.JGFSBGSP);
+		}
 		spsq.put("jgid", jgid);
 		spUntils.swsSPqq(spsq);//生成审批表记录
 		for(Map<String, Object> rec:forupdate){//插入变更项目信息
