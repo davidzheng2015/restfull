@@ -44,9 +44,10 @@ public class SPController {
 	public ResponseEntity<?> wspxq(@RequestParam(value = "lcid", required = true) int lcid,
 			@RequestParam(value = "pagenum", required = true) int pn,
 			@RequestParam(value = "pagesize", required = true) int ps,
+			@RequestParam(value = "where", required = false) String qury,
 			HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(spPservice.swsbgsp(pn,ps,user.getId(),lcid),HttpStatus.OK);
+		return new ResponseEntity<>(spPservice.swsbgsp(pn,ps,user.getId(),lcid,qury),HttpStatus.OK);
 	}
 	@RequestMapping(value = "/zjsh/wspxq/bgxx1", method = RequestMethod.GET)
 	public ResponseEntity<?> swsbgspxx(@RequestParam(value = "sjid", required = true) int sjid) throws Exception{

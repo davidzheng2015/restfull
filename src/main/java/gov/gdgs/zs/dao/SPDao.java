@@ -1,5 +1,7 @@
 package gov.gdgs.zs.dao;
 
+import gov.gdgs.zs.untils.Condition;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -67,23 +69,36 @@ public class SPDao extends BaseDao{
 	
 	/**
 	 * 事务所变更未审批明细查询
-	 * @param pn,ps,uid,lcid
+	 * @param pn,ps,uid,lcid,qury
 	 * @return
 	 */
-	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lcid){
-		String sql="select role_id from fw_user_role where USER_ID = ?";
+	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
+		Condition condition = new Condition();
+		condition.add("e.dwmc", Condition.FUZZY, qury.get("dwmc"));
+		condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
+		condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
 		StringBuffer sb = new StringBuffer();
 		sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
-		sb.append("		e.dwmc, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,e.id as jgid,");
-		sb.append("		case f.yjxx when f.yjxx then f.yjxx else '无' end as yjxx");
-		sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,zs_jg e,zs_jgyjxxb f,(SELECT @rownum:=?) zs_jg");
-		sb.append("		WHERE a.ID=b.LCID AND b.ROLEID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 AND a.LCLXID<>'29' and a.LCLXID=? and e.id=f.id");
-		sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' and e.ID=c.ZSJG_ID order by c.TJSJ desc");
+		sb.append("		e.dwmc, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,e.id as jgid,a.id as lcid,");
+		sb.append("		case f.yjxx when f.yjxx then f.yjxx else '无' end as yjxx,group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
+		sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,zs_jg e,zs_jgyjxxb f,fw_user_role g,fw_role h,(SELECT @rownum:=?) zs_jg");
+		sb.append("		"+condition.getSql()+" ");
+		sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id and g.USER_ID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 and b.ROLEID=h.ID AND a.LCLXID<>'29' and a.LCLXID=? and e.id=f.id");
+		sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' and e.ID=c.ZSJG_ID group by e.dwmc order by c.TJSJ desc");
 		sb.append("		    LIMIT ?, ? ");
-		List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{(pn-1)*ps,this.jdbcTemplate.queryForObject(sql,new Object[]{uid}, int.class),lcid,(pn-1)*ps,ps});
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add(uid);
+		params.add(lclxid);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
 		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		String lcbzmx = this.jdbcTemplate.queryForObject("select group_concat(concat(a.LCBZ,'.',b.DESCRIPTION)) as lcbzmx from zs_splcbz a,fw_role b where a.LCID=? and a.ROLEID=b.ID order by a.LCBZ",new Object[]{ls.get(0).get("lcid")}, String.class);
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", ls);
+		ob.put("dqlcbz", ls.get(0).get("dqlcbz"));
+		ob.put("lcbzmx", lcbzmx);
 		Map<String, Object> meta = new HashMap<>();
 		meta.put("pageNum", pn);
 		meta.put("pageSize", ps);

@@ -12,6 +12,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class SPservice {
 
@@ -29,8 +32,20 @@ public class SPservice {
 		return spDao.cklc(lid);
 	}
 	
-	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lcid){
-		return spDao.swsbgsp(pn,ps,uid,lcid);
+	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lcid,String where){
+		HashMap<String, Object> qury = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				qury = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return spDao.swsbgsp(pn,ps,uid,lcid,qury);
 	}
 	public List<Map<String, Object>> swsbgspxx(int uid){
 		return spDao.swsbgspxx(uid);
