@@ -107,4 +107,10 @@ public class AuthDao extends BaseJdbcDao {
 		
 	}
 
+	public void updateRole(Role role) {
+		String sql = "update fw_role set name=?,description=? where id=?";
+		this.jdbcTemplate.update(sql,new Object[]{role.getName(),role.getDescription(),role.getId()});
+		
+	}
+
 }

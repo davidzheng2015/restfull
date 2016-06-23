@@ -95,6 +95,10 @@ public class AuthService {
 		authDao.delPrivileges(roleId);	
 		authDao.delRole(roleId);		
 	}
+
+	public void updateRole(Role role) {
+		authDao.updateRole(role);		
+	}
 	
 	
 

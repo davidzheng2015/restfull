@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
 import com.gdky.restfull.entity.Privileges;
@@ -101,6 +102,12 @@ public class AuthController {
 	@RequestMapping(value="/roles/{roleId}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> delRole(@PathVariable Integer roleId){
 		authService.delRole(roleId);
+		return  ResponseEntity.ok(null);
+	}
+	
+	@RequestMapping(value="/roles", method=RequestMethod.PUT)
+	public ResponseEntity<?> updateRole(@RequestBody Role role){
+		authService.updateRole(role);
 		return  ResponseEntity.ok(null);
 	}
 	
