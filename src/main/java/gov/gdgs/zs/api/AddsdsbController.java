@@ -1,0 +1,73 @@
+package gov.gdgs.zs.api;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import gov.gdgs.zs.configuration.Config;
+
+
+import gov.gdgs.zs.service.AddsdsbService;
+import gov.gdgs.zs.service.IAddsdsbService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gdky.restfull.entity.ResponseMessage;
+
+@RestController
+@RequestMapping(value = Config.URL_PROJECT)
+public class AddsdsbController {
+	
+	@Resource 
+	private IAddsdsbService iaddsdsbService;
+	
+	@Resource
+	private AddsdsbService addsdsbService;
+	
+	 @RequestMapping(value = "/addswsjbb", method = RequestMethod.POST)
+		public ResponseEntity<Map<String,Object>> addSwsjbb(@RequestBody  Map<String ,Object> obj) {
+			Map<String,Object> rs = iaddsdsbService.AddSwsjbqkb(obj);
+			return new ResponseEntity<>(rs,HttpStatus.CREATED);
+		}
+	 
+	 @RequestMapping(value = "/add/swsjbb", method = RequestMethod.GET) 
+	 	public  ResponseEntity<Map<String,Object>> getSwsjbb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){ 
+	 		Map<String,Object> obj = addsdsbService.getSwsjbqkb(page, pageSize, where);
+	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+	 	} 
+	 
+	 @RequestMapping(value = "/add/swsjbb/{id}", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getSwsjbbById(
+				@PathVariable("id") String id) {
+
+			Map<String, Object> obj = addsdsbService.getSwsjbqkbById(id);
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 @RequestMapping(value = "/add/swsjbbok", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getOK(
+				 ) {
+
+			Map<String, Object> obj = addsdsbService.getOK();
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 
+	 @RequestMapping(value = "/addswsjbb/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<ResponseMessage> updateSwsjbb(@PathVariable("id") String id,
+				@RequestBody Map <String,Object> obj) {
+			
+		 addsdsbService.UpdateSwsjbqkb(obj);
+			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+		}
+
+}
