@@ -17,8 +17,15 @@ public class User implements Serializable {
 	private Integer accountLocked;
 	private Integer credentialsExpired;
 	private Integer jgId;
+	private String uname;
 	
 	
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
 	public Integer getJgId() {
 		return jgId;
 	}

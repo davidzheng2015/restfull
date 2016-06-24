@@ -3,6 +3,7 @@ package com.gdky.restfull.dao;
 import gov.gdgs.zs.untils.Condition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +106,17 @@ public class AuthDao extends BaseJdbcDao {
 		Integer rs = this.jdbcTemplate.update(sql, new Object[]{roleId});
 		return rs;
 		
+	}
+
+	public void updateRole(Role role) {
+		String sql = "update fw_role set name=?,description=? where id=?";
+		this.jdbcTemplate.update(sql,new Object[]{role.getName(),role.getDescription(),role.getId()});
+		
+	}
+
+	public Map<String,Object> getUsers(int page, int pageSize, HashMap<String, Object> map) {
+		String sql = "select * from fw_users ";
+		return null;
 	}
 
 }
