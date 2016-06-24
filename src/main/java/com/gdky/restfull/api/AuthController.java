@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
@@ -127,6 +128,15 @@ public class AuthController {
 			authService.insertPrivileges(roleId,privileges);
 		}		
 		return ResponseEntity.ok(null);
+	}
+	@RequestMapping(value="/users",method=RequestMethod.GET)
+	public ResponseEntity<?> getUsers(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@RequestParam(value = "where", required = false) String where){
+		Map<String,Object> rs = authService.getUsers(page, pageSize, where);
+		
+		return ResponseEntity.ok(rs);
 	}
 	
 	
