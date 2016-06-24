@@ -18,8 +18,15 @@ public class User implements Serializable {
 	private Integer credentialsExpired;
 	private Integer jgId;
 	private String uname;
+	private Dat createTime;
 	
 	
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 	public String getUname() {
 		return uname;
 	}
