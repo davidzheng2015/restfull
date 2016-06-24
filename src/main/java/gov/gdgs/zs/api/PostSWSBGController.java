@@ -48,6 +48,13 @@ public class PostSWSBGController {
 	public ResponseEntity<?> updateSPXM(
 			@RequestBody Map<String, Object> ptxm,HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(poService.updateSPXM(ptxm,user.getId(),user.getJgId()),HttpStatus.CREATED);
+		poService.updateSPXM(ptxm,user.getId(),user.getJgId());
+		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
+	}
+	//测试附件
+	@RequestMapping(value = "/swszx/swszxfjPost1", method = RequestMethod.POST)
+	public ResponseEntity<?> testUpload(HttpServletRequest request ) throws Exception{
+		User user =  accountService.getUserFromHeaderToken(request);
+		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
 }

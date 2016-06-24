@@ -101,14 +101,21 @@ public class SPUntils extends BaseJdbcDao {
 								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")+1}, String.class),spsq.get("spid")});
 			 };
 		 }else if(spsq.get("ispass").equals("N")){
-			 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
-			 switch((int)mp.get("LCLXID")){
-			 case 2:
-				 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='3',SPRQ=sysdate(),SPR_ID=? where id =?",
-						 new Object[]{spsq.get("uid"),mp.get("SJID")});
-				 break;
+			 int c = (int)mp.get("BHBZLX");
+			 if(c==1||c==2){
+				 this.jdbcTemplate.update("update zs_spzx set ZTBJ='N' where id =?",new Object[]{spsq.get("spid")});
+				 switch((int)mp.get("LCLXID")){
+				 case 2:
+					 this.jdbcTemplate.update("update zs_jgbgspb set SPZT_DM='3',SPRQ=sysdate(),SPR_ID=? where id =?",
+							 new Object[]{spsq.get("uid"),mp.get("SJID")});
+					 break;
 				 }
+			 }else{
+				 this.jdbcTemplate.update("update zs_spzx set LCBZID=? where id =?",
+						 new Object[]{this.jdbcTemplate.queryForObject("select id from zs_splcbz where lcid=? and lcbz=?",
+								 new Object[]{mp.get("LCID"),(int)mp.get("LCBZ")-1}, String.class),spsq.get("spid")});
 			 }
+		 }
 		 
 		 return true;
 	 }

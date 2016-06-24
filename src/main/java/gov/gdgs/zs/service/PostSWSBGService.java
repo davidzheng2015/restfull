@@ -32,11 +32,7 @@ public class PostSWSBGService {
 	}
 	
 	@Transactional
-	public boolean updateSPXM(Map<String, Object> ptxm,int id,int jgid) throws Exception{
-		if(postSWSDao.checkBGing(jgid)){//判断是否审批中
+	public void updateSPXM(Map<String, Object> ptxm,int id,int jgid) throws Exception{
 			this.postSWSDao.updateSPXM(ptxm,id,jgid);
-			return true;
-		}
-		return false;
 	}
 }
