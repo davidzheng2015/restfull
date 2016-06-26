@@ -25,5 +25,7 @@ public interface IAsideMenuDao {
 	public int removeMenu(AsideMenu menu);
 	
 	public List<AsideMenu> getAccoutMenu (int userId);
+	
+	public List<AsideMenu> getPermitUrl (int userId);
 
 }

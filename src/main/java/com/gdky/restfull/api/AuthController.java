@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
 import com.gdky.restfull.entity.Privileges;
@@ -92,6 +93,23 @@ public class AuthController {
 		List<Role> ls = authService.getRoles();
 		return ResponseEntity.ok(ls);
 	}
+	@RequestMapping(value="/roles",method=RequestMethod.POST)
+	public ResponseEntity<?> AddRole(@RequestBody Map<String,Object> obj){
+		authService.addRole(obj);
+		return new ResponseEntity<>(ResponseMessage.success("添加成功"),HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/roles/{roleId}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> delRole(@PathVariable Integer roleId){
+		authService.delRole(roleId);
+		return  ResponseEntity.ok(null);
+	}
+	
+	@RequestMapping(value="/roles", method=RequestMethod.PUT)
+	public ResponseEntity<?> updateRole(@RequestBody Role role){
+		authService.updateRole(role);
+		return  ResponseEntity.ok(null);
+	}
 	
 	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
 	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
@@ -110,6 +128,9 @@ public class AuthController {
 		}		
 		return ResponseEntity.ok(null);
 	}
+	
+	
+	
 	
 
 }
