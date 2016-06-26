@@ -28,7 +28,7 @@ public class SPservice {
 		return spDao.cklc(lid);
 	}
 	
-	public Map<String,Object> swsbgsp(int pn,int ps,int uid,int lcid,String where){
+	public Map<String,Object> wspmxcx(int pn,int ps,int uid,int lcid,String where){
 		HashMap<String, Object> qury = new HashMap<String, Object>();
 		if (where != null) {
 			try {
@@ -68,8 +68,7 @@ public class SPservice {
 	}
 	
 	@Transactional
-	public void updatePTXM(Map<String,Object> ptxm,String splx,int jgid)throws Exception {
-		 ptxm.put("jgid", jgid);
+	public void fspsq(Map<String,Object> ptxm,String splx)throws Exception {
 		 switch (splx) {
 			case "jgbgsp":
 		 this.spDao.updatePTXM(ptxm);

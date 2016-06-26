@@ -59,7 +59,7 @@ public class SPController {
 			@RequestParam(value = "where", required = false) String qury,
 			HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(spPservice.swsbgsp(pn,ps,user.getId(),lcid,qury),HttpStatus.OK);
+		return new ResponseEntity<>(spPservice.wspmxcx(pn,ps,user.getId(),lcid,qury),HttpStatus.OK);
 	}
 	
 	/**
@@ -108,8 +108,7 @@ public class SPController {
 	@RequestMapping(value = "/spapi/fspsq/{splx}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updatePTXM(@PathVariable(value = "splx") String splx,
 			@RequestBody Map<String, Object> ptxm,HttpServletRequest request)throws Exception {
-		User user =  accountService.getUserFromHeaderToken(request);
-		spPservice.updatePTXM(ptxm,splx,user.getJgId());
+		spPservice.fspsq(ptxm,splx);
 		return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 	}
 	
