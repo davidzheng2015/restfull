@@ -10,6 +10,7 @@ import gov.gdgs.zs.service.SPservice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.entity.User;
 import com.gdky.restfull.service.AccountService;
 
@@ -29,19 +31,29 @@ public class SPController {
 	@Resource
 	private SPservice spPservice;
 	
-	@RequestMapping(value = "/zjsh/wspcx1", method = RequestMethod.GET)
-	public ResponseEntity<?> wspcx(
-			HttpServletRequest request ) throws Exception{
+	/**
+	 * 未审批查询
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/wspcx", method = RequestMethod.GET)
+	public ResponseEntity<?> wspcx(HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
 		return new ResponseEntity<>(spPservice.wspcx(user.getId()),HttpStatus.OK);
 	}
-	@RequestMapping(value = "/zjsh/cklc1", method = RequestMethod.GET)
-	public ResponseEntity<?> cklc(@RequestParam(value = "lid", required = true) int lid ) throws Exception{
-		return new ResponseEntity<>(spPservice.cklc(lid),HttpStatus.OK);
-	}
 	
-	@RequestMapping(value = "/zjsh/wspxq1", method = RequestMethod.GET)
-	public ResponseEntity<?> wspxq(@RequestParam(value = "lcid", required = true) int lcid,
+	/**
+	 * 未审批类型明细查询
+	 * @param lcid
+	 * @param pn
+	 * @param ps
+	 * @param qury
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/wspcx/{lcid}", method = RequestMethod.GET)
+	public ResponseEntity<?> wspxq(@PathVariable(value = "lcid") int lcid,
 			@RequestParam(value = "pagenum", required = true) int pn,
 			@RequestParam(value = "pagesize", required = true) int ps,
 			@RequestParam(value = "where", required = false) String qury,
@@ -49,14 +61,69 @@ public class SPController {
 		User user =  accountService.getUserFromHeaderToken(request);
 		return new ResponseEntity<>(spPservice.swsbgsp(pn,ps,user.getId(),lcid,qury),HttpStatus.OK);
 	}
-	@RequestMapping(value = "/zjsh/wspxq/bgxx1", method = RequestMethod.GET)
-	public ResponseEntity<?> swsbgspxx(@RequestParam(value = "sjid", required = true) int sjid) throws Exception{
-		return new ResponseEntity<>(spPservice.swsbgspxx(sjid),HttpStatus.OK);
+	
+	/**
+	 * 查看流程
+	 * @param lid
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/cklc", method = RequestMethod.GET)
+	public ResponseEntity<?> cklc(@RequestParam(value = "lid", required = true) int lid ) throws Exception{
+		return new ResponseEntity<>(spPservice.cklc(lid),HttpStatus.OK);
 	}
-	@RequestMapping(value = "/zjsh/wspxq/wsptj1", method = RequestMethod.PUT)
-	public ResponseEntity<?> sptj(@RequestBody Map<String, Object> sptj,
-			HttpServletRequest request ) throws Exception{
+	
+	/**
+	 * 审批明细信息查询
+	 * @param sjid
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/spmxxx/{splx}", method = RequestMethod.GET)
+	public ResponseEntity<?> swsbgspxx(@PathVariable(value = "splx") String splx,
+			@RequestParam(value = "sjid", required = true) int sjid) throws Exception{
+		return new ResponseEntity<>(spPservice.spmxxx(splx,sjid),HttpStatus.OK);
+	}
+	
+	/**
+	 * 审批申请
+	 * @param splx
+	 * @param ptxm
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/spsq/{splx}", method = RequestMethod.POST)
+	public ResponseEntity<?> spsq(@PathVariable(value = "splx") String splx,
+			@RequestBody Map<String, Object> ptxm,HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(spPservice.sptj(sptj, user.getId(), user.getNames()),HttpStatus.OK);
+		spPservice.spsq(ptxm,splx,user.getId(),user.getJgId());
+		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
+	
+	/**
+	 * 非审批申请
+	 * @param ptxm
+	 * @return
+	 */
+	@RequestMapping(value = "/spapi/fspsq/{splx}", method = RequestMethod.PUT)
+	public ResponseEntity<ResponseMessage> updatePTXM(@PathVariable(value = "splx") String splx,
+			@RequestBody Map<String, Object> ptxm,HttpServletRequest request)throws Exception {
+		User user =  accountService.getUserFromHeaderToken(request);
+		spPservice.updatePTXM(ptxm,splx,user.getJgId());
+		return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+	}
+	
+	/**
+	 * 审批提交
+	 * @param sptj
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/spapi/sptj/{spid}", method = RequestMethod.PUT)
+	public ResponseEntity<?> sptj(@PathVariable(value = "spid") String spid,
+			@RequestBody Map<String, Object> sptj,HttpServletRequest request) throws Exception{
+		User user =  accountService.getUserFromHeaderToken(request);
+		return new ResponseEntity<>(spPservice.sptj(sptj,spid, user.getId(), user.getNames()),HttpStatus.OK);
+	}
+	
 }

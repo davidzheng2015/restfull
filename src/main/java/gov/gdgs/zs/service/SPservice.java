@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import gov.gdgs.zs.dao.SPDao;
-import gov.gdgs.zs.dao.SPUntils;
 
 import javax.annotation.Resource;
 
@@ -20,9 +19,6 @@ public class SPservice {
 
 	@Resource
 	private SPDao spDao;
-	
-	@Resource
-	private SPUntils spUntils;
 	
 	public Map<String,Object> wspcx(int uid){
 		return spDao.wspcx(uid);
@@ -47,14 +43,36 @@ public class SPservice {
 		}
 		return spDao.swsbgsp(pn,ps,uid,lcid,qury);
 	}
-	public List<Map<String, Object>> swsbgspxx(int uid){
-		return spDao.swsbgspxx(uid);
+	public List<Map<String, Object>> spmxxx(String lcid,int sjid){
+		switch (lcid) {
+		case "jgbgsp":
+			return spDao.swsbgspxx(sjid);
+		}
+		return null;
 	}
 	
 	@Transactional
-	public boolean sptj(Map<String,Object> spsq,int uid,String uname)throws Exception{
+	public boolean sptj(Map<String,Object> spsq,String spid,int uid,String uname)throws Exception{
+		spsq.put("spid", spid);
 		spsq.put("uid", uid);
 		spsq.put("uname", uname);
-		return spUntils.glzxSPtj(spsq);
+		return spDao.sptj(spsq);
+	}
+	
+	@Transactional
+	public void spsq(Map<String, Object> ptxm,String splx,int id,int jgid) throws Exception{
+		switch (splx) {
+		case "jgbgsp":
+			this.spDao.swsbgsq(ptxm,id,jgid);
+		}
+	}
+	
+	@Transactional
+	public void updatePTXM(Map<String,Object> ptxm,String splx,int jgid)throws Exception {
+		 ptxm.put("jgid", jgid);
+		 switch (splx) {
+			case "jgbgsp":
+		 this.spDao.updatePTXM(ptxm);
+		 }
 	}
 }
