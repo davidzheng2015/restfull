@@ -1,6 +1,8 @@
 package com.gdky.restfull.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 public class User implements Serializable {
 
 	/**
@@ -18,13 +20,13 @@ public class User implements Serializable {
 	private Integer credentialsExpired;
 	private Integer jgId;
 	private String uname;
-	private Dat createTime;
+	private Timestamp createTime;
 	
 	
-	public Date getCreateTime() {
+	public Timestamp getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
 	public String getUname() {

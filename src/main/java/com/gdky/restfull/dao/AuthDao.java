@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gdky.restfull.entity.Privileges;
 import com.gdky.restfull.entity.Role;
 import com.gdky.restfull.entity.User;
+import com.gdky.restfull.utils.HashIdUtil;
 
 @Repository
 @Transactional
@@ -147,7 +148,7 @@ public class AuthDao extends BaseJdbcDao {
 		
 
 		// 获取符合条件的记录
-		List<User> ls = jdbcTemplate.query(sb.toString(),
+		List<Map<String,Object>> ls = jdbcTemplate.query(sb.toString(),
 				params.toArray(),new UserRowMapper());
 		String countSql = condition.getCountSql("t.id",
 				"fw_users t");
@@ -163,22 +164,22 @@ public class AuthDao extends BaseJdbcDao {
 		return obj;
 	}
 	
-	public class UserRowMapper implements RowMapper<User> {  
+	public class UserRowMapper implements RowMapper<Map<String,Object>> {  
 		  
         @Override  
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {  
-            User user = new User();  
-            user.setId(rs.getInt("id"));  
-            user.setUsername(rs.getString("username"));
-            user.setJgId(rs.getInt("jg_id"));
-            user.setNames(rs.getString("names"));
-            user.setUname(rs.getString("uname"));
-            user.setAccountEnabled(rs.getInt("account_enabled"));
-            user.setAccountExpired(rs.getInt("account_expired"));
-            user.setAccountLocked(rs.getInt("account_locked"));
-            user.setCredentialsExpired(rs.getInt("credentials_expired"));
+        public Map<String,Object> mapRow(ResultSet rs, int rowNum) throws SQLException {  
+        	Map<String,Object> map = new HashMap<String,Object>();
+        	map.put("id",HashIdUtil.encode(rs.getInt("id")));  
+        	map.put("username",rs.getString("username"));
+        	map.put("jgId",HashIdUtil.encode(rs.getInt("jg_id")));
+        	map.put("names",rs.getString("names"));
+        	map.put("uname",rs.getString("uname"));
+        	map.put("accountEnabled",rs.getInt("account_enabled"));
+        	map.put("accountExpired",rs.getInt("account_expired"));
+        	map.put("accountLocked",rs.getInt("account_locked"));
+        	map.put("credentialsExpired",rs.getInt("credentials_expired"));
             
-            return user;  
+            return map;  
         }  
           
     }
