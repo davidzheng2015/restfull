@@ -95,8 +95,13 @@ public class SPController {
 	@RequestMapping(value = "/spapi/spsq/{splx}", method = RequestMethod.POST)
 	public ResponseEntity<?> spsq(@PathVariable(value = "splx") String splx,
 			@RequestBody Map<String, Object> ptxm,HttpServletRequest request ) throws Exception{
-		User user =  accountService.getUserFromHeaderToken(request);
-		spPservice.spsq(ptxm,splx,user.getId(),user.getJgId());
+		try {
+			User user =  accountService.getUserFromHeaderToken(request);
+			ptxm.put("uid", user.getId());
+			ptxm.put("jgid", user.getJgId());
+		} catch (Exception e) {
+		}
+		spPservice.spsq(ptxm,splx);
 		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
 	
@@ -107,7 +112,7 @@ public class SPController {
 	 */
 	@RequestMapping(value = "/spapi/fspsq/{splx}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseMessage> updatePTXM(@PathVariable(value = "splx") String splx,
-			@RequestBody Map<String, Object> ptxm,HttpServletRequest request)throws Exception {
+			@RequestBody Map<String,Object> ptxm,HttpServletRequest request)throws Exception {
 		spPservice.fspsq(ptxm,splx);
 		return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 	}

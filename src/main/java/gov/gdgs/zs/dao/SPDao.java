@@ -179,7 +179,7 @@ public class SPDao extends BaseDao{
 	 }
 	/*-------------------------------事务所端-------------------------------------*/
 	 /**
-		 * 事务所变更审批项目更新
+		 * 事务所变更审批项目申请
 		 * @param spxm
 		 */
 	 @Transactional
@@ -207,43 +207,74 @@ public class SPDao extends BaseDao{
 		spsq.put("jgid", jgid);
 		swsSPqq(spsq);//生成审批表记录
 		for(Map<String, Object> rec:forupdate){//插入变更项目信息
-			this.jdbcTemplate.update(sql2,new Object[]{rec.get("mc"),rec.get("jzhi"),rec.get("xzhi"),rs,});
+			this.jdbcTemplate.update(sql2,new Object[]{rec.get("mc"),rec.get("jzhi"),rec.get("xzhi"),rs});
 		}
 	}
-	
-		/**
-		  * 审批申请处理方法
-		  * @param Map:sid,lclx,(选填：jgid,csdm)
-		  * @return boolean
-		  * @throws Exception
-		  */
-		 @Transactional
-		 boolean swsSPqq(Map<String,Object> spsq) throws Exception{
-			String sql ="select b.id,b.lcbz,b.roleid from zs_splcbz b where  b.LCID =? order by b.LCBZ";
-			 List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sql,new Object[]{spsq.get("lclx")});//查询该流程需要步骤
-			List<Object> listValue = new ArrayList<Object>();//设置插入单据表参数
-			String suid = new Common().newUUID();
-			listValue.add(suid);
-			listValue.add(spsq.get("sid"));
-			listValue.add(ls.get(0).get("id"));//获取第一步步骤id
-			String insterspzx = "";
-			String insterspzx2 = "";
-			if(spsq.containsKey("jgid")){//是否填写机构id
-				listValue.add(spsq.get("jgid"));
-				insterspzx+="ZSJG_ID,";
-				insterspzx2+="?,";
-			}
-			if(spsq.containsKey("csdm")){//是否填写城市代码
-				listValue.add(spsq.get("csdm"));
-				insterspzx+="CS_ID,";
-				insterspzx2+="?,";
-			}
-			this.jdbcTemplate.update("insert into zs_spzx (ID,SJID,LCBZID,ZTBJ,"+insterspzx+"TJSJ) values(?,?,?,'Y',"+insterspzx2+"sysdate())",listValue.toArray());
-			for(Map<String, Object> rec:ls){//根据步骤生成对应审批节点数记录
-				this.jdbcTemplate.update("insert into zs_spxx (ID,SPID,LCBZID) values(?,?,?)",new Object[]{new Common().newUUID(),suid,rec.get("id")});
-			}
-			return true;
+	 
+	 /**
+	  * 非执业税务师备案申请
+	  * @param sqxx
+	  * @throws Exception
+	  */
+	 @Transactional
+	public void fzyswsba(Map<String, Object> sqxx) throws Exception{
+		String sql ="insert into zs_ryjbxx (XMING,XB_DM,SRI,SFZH,TXDZ,YZBM,DHHM,YDDH,CS_DM,MZ_DM,XL_DM,ZZMM_DM,BYYX,BYSJ,XPIAN,RYZT_DM,RYSF_DM,LRRQ,YXBZ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'3','2',sysdate(),'0')";
+		String sql2 ="insert into zs_fzysws (RY_ID,ZYZGZSBH,ZGZSQFRQ,FZYHYBH,ZW_DM,ZZDW,RHSJ,FZYZT_DM,RYSPGCZT_DM,YXBZ) values(?,?,?,?,?,?,?,'3','1','0')";
+		String sql3 ="insert into zs_fzyjl (FZY_ID,QZNY,XXXX,ZMR) values(?,?,?,?)";
+		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{sqxx.get("XMING"),sqxx.get("XB_DM"),
+				sqxx.get("SRI"),sqxx.get("SFZH"),sqxx.get("TXDZ"),sqxx.get("YZBM"),
+				sqxx.get("DHHM"),sqxx.get("YDDH"),sqxx.get("CS_DM"),sqxx.get("MZ_DM"),
+				sqxx.get("XL_DM"),sqxx.get("ZZMM_DM"),sqxx.get("BYYX"),sqxx.get("BYSJ"),
+				sqxx.get("XPIAN")},new String[] {"ID"});//插入ry表，获取自动生成id
+		Number rs2 = this.insertAndGetKeyByJdbc(sql2, new Object[]{rs,sqxx.get("ZYZGZSBH"),
+				sqxx.get("ZGZSQFRQ"),sqxx.get("FZYHYBH"),sqxx.get("ZW_DM"),sqxx.get("ZZDW"),
+				sqxx.get("RHSJ")},new String[] {"ID"});
+		for(Map<String, Object> rec:(List<Map<String, Object>>)sqxx.get("fzyjl")){
+			this.jdbcTemplate.update(sql3,new Object[]{rs2,rec.get("QZNY"),rec.get("XXXX"),rec.get("ZMR")});
 		}
+		String suid = new Common().newUUID();
+		this.jdbcTemplate.update("insert into zs_fzybasp (ID,FZYSWS_ID,SPZT_DM) values(?,?,'1')",new Object[]{suid,rs2});
+		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
+		spsq.put("sid", suid);
+		spsq.put("lclx", "402881831be2e6af011be3c184d2003a");
+		spsq.put("csdm", sqxx.get("CS_DM"));
+		swsSPqq(spsq);
+	}
+	
+	
+	/**
+	  * 审批申请处理方法
+	  * @param Map:sid,lclx,(选填：jgid,csdm)
+	  * @return boolean
+	  * @throws Exception
+	  */
+	 @Transactional
+	 boolean swsSPqq(Map<String,Object> spsq) throws Exception{
+		String sql ="select b.id,b.lcbz,b.roleid from zs_splcbz b where  b.LCID =? order by b.LCBZ";
+		 List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sql,new Object[]{spsq.get("lclx")});//查询该流程需要步骤
+		List<Object> listValue = new ArrayList<Object>();//设置插入单据表参数
+		String suid = new Common().newUUID();
+		listValue.add(suid);
+		listValue.add(spsq.get("sid"));
+		listValue.add(ls.get(0).get("id"));//获取第一步步骤id
+		String insterspzx = "";
+		String insterspzx2 = "";
+		if(spsq.containsKey("jgid")){//是否填写机构id
+			listValue.add(spsq.get("jgid"));
+			insterspzx+="ZSJG_ID,";
+			insterspzx2+="?,";
+		}
+		if(spsq.containsKey("csdm")){//是否填写城市代码
+			listValue.add(spsq.get("csdm"));
+			insterspzx+="CS_ID,";
+			insterspzx2+="?,";
+		}
+		this.jdbcTemplate.update("insert into zs_spzx (ID,SJID,LCBZID,ZTBJ,"+insterspzx+"TJSJ) values(?,?,?,'Y',"+insterspzx2+"sysdate())",listValue.toArray());
+		for(Map<String, Object> rec:ls){//根据步骤生成对应审批节点数记录
+			this.jdbcTemplate.update("insert into zs_spxx (ID,SPID,LCBZID) values(?,?,?)",new Object[]{new Common().newUUID(),suid,rec.get("id")});
+		}
+		return true;
+	}
 	
 	 /*-------------------------------非审批申请-------------------------------------*/
 	 /**

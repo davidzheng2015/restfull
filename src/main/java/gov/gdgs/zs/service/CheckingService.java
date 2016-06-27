@@ -22,4 +22,8 @@ public class CheckingService {
 		}
 		return true;
 	}
+	
+	public boolean checkSFZH(String sfzh){
+		return this.chDao.checkHadSFZH(sfzh);
+	}
 }

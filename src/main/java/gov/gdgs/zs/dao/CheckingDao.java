@@ -16,4 +16,16 @@ public class CheckingDao extends BaseJdbcDao{
 		}
 		return true;
 	}
+	
+	/**
+	 * 判断是否存在重复身份证号
+	 * @param sfzh
+	 * @return false--身份证号重复
+	 */
+	public boolean checkHadSFZH(String sfzh){
+		if(this.jdbcTemplate.queryForList("select * from zs_ryjbxx where SFZH = ? and ybxz =1",new Object[]{sfzh}).size()!=0){
+			return false;
+		}
+		return true;
+	}
 }

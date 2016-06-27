@@ -60,10 +60,12 @@ public class SPservice {
 	}
 	
 	@Transactional
-	public void spsq(Map<String, Object> ptxm,String splx,int id,int jgid) throws Exception{
+	public void spsq(Map<String, Object> spxm,String splx) throws Exception{
 		switch (splx) {
 		case "jgbgsp":
-			this.spDao.swsbgsq(ptxm,id,jgid);
+			this.spDao.swsbgsq(spxm,(int)spxm.get("uid"),(int)spxm.get("jgid"));
+		case"fzyswsba":
+			this.spDao.fzyswsba(spxm);
 		}
 	}
 	
