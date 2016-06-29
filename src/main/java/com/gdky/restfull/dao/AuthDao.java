@@ -125,6 +125,7 @@ public class AuthDao extends BaseJdbcDao {
 	public Map<String, Object> getUsers(int page, int pageSize,
 			HashMap<String, Object> where) {
 		Condition condition = new Condition();
+		condition.add(" And u.id = ur.user_id ");
 		condition.add("ur.role_id",Condition.EQUAL,where.get("roleId"));
 		condition.add("u.name", Condition.FUZZY, where.get("name"));
 		condition.add("u.username", Condition.FUZZY, where.get("username"));
@@ -137,7 +138,6 @@ public class AuthDao extends BaseJdbcDao {
 		sb.append("    fw_users u,fw_user_role ur, ");
 		sb.append("    (SELECT @rownum:=?) n ");
 		sb.append(condition.getSql());
-		sb.append(" and u.id = ur.user_id");
 		sb.append("    ORDER BY u.CREATE_TIME DESC ");
 		sb.append("    LIMIT ? , ? ");
 
@@ -152,8 +152,8 @@ public class AuthDao extends BaseJdbcDao {
 		// 获取符合条件的记录
 		List<Map<String,Object>> ls = jdbcTemplate.query(sb.toString(),
 				params.toArray(),new UserRowMapper());
-		String countSql = condition.getCountSql("t.id",
-				"fw_users t");
+		String countSql = condition.getCountSql("u.id",
+				"fw_users u,fw_user_role ur");
 		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
 				.toArray(), Integer.class);
 		
