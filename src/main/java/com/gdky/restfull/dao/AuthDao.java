@@ -125,24 +125,26 @@ public class AuthDao extends BaseJdbcDao {
 	public Map<String, Object> getUsers(int page, int pageSize,
 			HashMap<String, Object> where) {
 		Condition condition = new Condition();
+		condition.add("ur.role_id",Condition.EQUAL,where.get("roleId"));
 		condition.add("u.name", Condition.FUZZY, where.get("name"));
 		condition.add("u.username", Condition.FUZZY, where.get("username"));
 		condition.add("u.uname", Condition.EQUAL, where.get("uname"));
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT  ");
-		sb.append("    @rownum:=@rownum + 1 AS 'key', t . * ");
+		sb.append("    @rownum:=@rownum + 1 AS 'key', u.* ");
 		sb.append("FROM ");
-		sb.append("    fw_users t, ");
+		sb.append("    fw_users u,fw_user_role ur, ");
 		sb.append("    (SELECT @rownum:=?) n ");
 		sb.append(condition.getSql());
-		sb.append("    ORDER BY t.CREATE_TIME DESC ");
+		sb.append(" and u.id = ur.user_id");
+		sb.append("    ORDER BY u.CREATE_TIME DESC ");
 		sb.append("    LIMIT ? , ? ");
 
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
-		params.add(pageSize * (page - 1));
+		params.add(0, startIndex);
 		params.add(startIndex);
 		params.add(pageSize);
 		
