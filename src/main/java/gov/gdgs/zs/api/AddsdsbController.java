@@ -69,5 +69,45 @@ public class AddsdsbController {
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 		}
+	 //经营规模统计表
+	 @RequestMapping(value = "/add/jygmtjb", method = RequestMethod.GET) 
+	 	public  ResponseEntity<Map<String,Object>> getJygmtjb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){ 
+	 		Map<String,Object> obj = addsdsbService.getJygmtjb(page, pageSize, where);
+	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+	 	} 
+	 
+	 @RequestMapping(value = "/add/jygmtjb/{id}", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getJygmtjbById(
+				@PathVariable("id") String id) {
+
+			Map<String, Object> obj = addsdsbService.getJygmtjbById(id);
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	
+	 @RequestMapping(value = "/add/jygmtjbok", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getOK1(
+				 ) {
+
+			Map<String, Object> obj = addsdsbService.getOK1();
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 
+	 @RequestMapping(value = "/addjygmtjb", method = RequestMethod.POST)
+		public ResponseEntity<Map<String,Object>> addJygmtjb(@RequestBody  Map<String ,Object> obj) {
+			Map<String,Object> rs = iaddsdsbService.AddJygmtjb(obj);
+			return new ResponseEntity<>(rs,HttpStatus.CREATED);
+		}
+	 
+	 @RequestMapping(value = "/addjygmtjb/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<ResponseMessage> updateJygmtjb(@PathVariable("id") String id,
+				@RequestBody Map <String,Object> obj) {
+			
+		 addsdsbService.UpdateJygmtjb(obj);
+			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+		}
 
 }

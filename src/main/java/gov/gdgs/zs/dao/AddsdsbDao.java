@@ -90,7 +90,8 @@ public class AddsdsbDao extends BaseJdbcDao  implements IAddsdsbDao{
 	}
 	
 	public Map<String, Object> getSwsjbqkbById(String id) {
-		String sql = "select b.DWMC,c.MC as cs,a.JGXZ_DM as jgxzdm,b.CS_DM as csdm,case a.JGXZ_DM when 1 then '合伙事务所' when 2 then '有限公司' when 3 then '无'  else null end as JGXZ,a.* from "+Config.PROJECT_SCHEMA+"zs_sdsb_swsjbqk a, zs_jg b,dm_cs c where a.jg_id = b.id and b.CS_DM=c.ID and a.id = ?";
+		String sql = "select b.DWMC,c.MC as cs,a.JGXZ_DM as jgxzdm,b.CS_DM as csdm,case a.JGXZ_DM when 1 then '合伙事务所' when 2 then '有限公司' when 3 then '无'  else null end as JGXZ,"
+				+ "a.* from "+Config.PROJECT_SCHEMA+"zs_sdsb_swsjbqk a, zs_jg b,dm_cs c where a.jg_id = b.id and b.CS_DM=c.ID and a.id = ?";
 		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
 		return rs;
 	}
@@ -100,6 +101,93 @@ public class AddsdsbDao extends BaseJdbcDao  implements IAddsdsbDao{
 		Map<String,Object> rs = jdbcTemplate.queryForMap(sql);
 		return rs;
 	}
+	
+	
+	@Override
+	public String AddJygmtjb( Map <String,Object> obj){
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		obj.put("id", uuid);
+		final StringBuffer sb = new StringBuffer("insert into "
+				+ Config.PROJECT_SCHEMA + "zs_sdsb_jygmtjb ");	
+		sb.append("  ( id,jg_id,snsrze,bnsrze_hj,bnsrze_ssfw,bnsrze_ssjz,bnsrze_qtyw,nd,sbrq,ztbj,tbr,sz)");
+		sb.append("values ( :id,:jg_id,:snsrze,:bnsrze_hj,:bnsrze_ssfw,:bnsrze_ssjz,:bnsrze_qtyw,:nd,sysdate(),:ztbj,:tbr,:sz)");	
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		int count=named.update(sb.toString(), obj);
+		if(count==0){
+		return null;
+	 }else {
+		return uuid;
+	 }
+	}
+	
+	@Override
+	public void UpdateJygmtjb(Map <String,Object> obj) {
+		 StringBuffer sb = new StringBuffer("update "
+				+ Config.PROJECT_SCHEMA + "zs_sdsb_jygmtjb ");
+		sb.append(" set jg_id=:jg_id,snsrze=:snsrze,bnsrze_hj=:bnsrze_hj,bnsrze_ssfw=:bnsrze_ssfw,bnsrze_ssjz=:bnsrze_ssjz,");	
+		sb.append(" bnsrze_qtyw=:bnsrze_qtyw,nd=:nd,sbrq=sysdate(),ztbj=:ztbj,tbr=:tbr,sz=:sz where id=:id");
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		named.update(sb.toString(), obj);
+	}
+	
+	public Map<String, Object> getJygmtjb(int page, int pageSize,
+			Map<String, Object> where) {
+
+		Condition condition = new Condition();
+		condition.add("a.nd", "FUZZY", where.get("nd"));
+		condition.add("a.ZTBJ", "FUZZY", where.get("ZTBJ"));		
+
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.*");
+		sb.append(" FROM   ( select a.id,a.SNSRZE,a.nd,a.BNSRZE_HJ,a.BNSRZE_SSFW,a.BNSRZE_SSJZ,a.BNSRZE_QTYW,");	
+		sb.append(" case a.ZTBJ when 1 then '提交' when 2 then '通过' when 0 then '保存' when 3 then '退回' else null end as ZTBJ");		
+		sb.append(" FROM " + Config.PROJECT_SCHEMA
+				+ "zs_sdsb_jygmtjb a,zs_jg b,(SELECT @rownum:=?) temp");
+		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append("    LIMIT ?, ? ");
+		// 装嵌传值数组
+		int startIndex = pageSize * (page - 1);
+		ArrayList<Object> params = condition.getParams();
+		params.add(0, pageSize * (page - 1));
+		params.add(startIndex);
+		params.add(pageSize);
+
+		// 获取符合条件的记录
+		List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+				params.toArray());
+
+		// 获取符合条件的记录数
+
+		int total = jdbcTemplate.queryForObject("SELECT FOUND_ROWS()",
+				Integer.class);
+
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("data", ls);
+		obj.put("total", total);
+		obj.put("pageSize", pageSize);
+		obj.put("current", page);
+		return obj;
+	}
+	
+	public Map<String, Object> getJygmtjbById(String id) {
+		String sql = "select b.DWMC,a.* from "+Config.PROJECT_SCHEMA+"zs_sdsb_jygmtjb a, zs_jg b where a.jg_id = b.id and a.id = ?";
+		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
+		return rs;
+	}
+	
+	public Map<String, Object> getOk() {
+		String sql = "select * from "+Config.PROJECT_SCHEMA+"zs_sdsb_swsjbqk a where jg_id='68' and nd=(select max(nd) from zs_sdsb_swsjbqk )";
+		List<Map<String,Object>> rs = jdbcTemplate.queryForList(sql);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", rs);
+		if(ob.size()>0){
+			return ob;
+		}else{
+			return null;
+		}
+	}
+	
 	
 
 }
