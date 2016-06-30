@@ -130,4 +130,9 @@ public class SPController {
 		return new ResponseEntity<>(spPservice.sptj(sptj,spid, user.getId(), user.getNames()),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/spapi/sjbhyj/{spid}/{lcbz}", method = RequestMethod.GET)
+	public ResponseEntity<?> sjbhyj(@PathVariable(value = "spid") String spid,
+			@PathVariable(value = "lcbz") int lcbz) throws Exception{
+		return new ResponseEntity<>(spPservice.sjbhyj(spid,lcbz),HttpStatus.OK);
+	}
 }

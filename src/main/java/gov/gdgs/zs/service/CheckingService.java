@@ -19,8 +19,14 @@ public class CheckingService {
 		switch (splx) {
 		case "jgbg":
 			return chDao.checkBGing((int)hashids.decode(jgid)[0]);
+		case "jgzx":
+			return chDao.checkZXing((int)hashids.decode(jgid)[0]);
 		}
 		return true;
+	}
+	
+	public boolean checkIsBH(String spid){
+		return this.chDao.checkIsBH(spid);
 	}
 	
 	public boolean checkSFZH(String sfzh){

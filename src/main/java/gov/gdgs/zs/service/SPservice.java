@@ -41,14 +41,15 @@ public class SPservice {
 				e.printStackTrace();
 			}
 		}
-		return spDao.swsbgsp(pn,ps,uid,lcid,qury);
+		return spDao.wspmxcx(pn,ps,uid,lcid,qury);
 	}
+	
 	public List<Map<String, Object>> spmxxx(String lcid,int sjid){
-		switch (lcid) {
-		case "jgbgsp":
-			return spDao.swsbgspxx(sjid);
-		}
-		return null;
+		return spDao.spmxxx(lcid,sjid);
+	}
+	
+	public Map<String, Object> sjbhyj(String spid,int lcbz){
+		return spDao.sjbhyj(spid,lcbz);
 	}
 	
 	@Transactional
@@ -60,19 +61,21 @@ public class SPservice {
 	}
 	
 	@Transactional
-	public void spsq(Map<String, Object> spxm,String splx) throws Exception{
+	public void spsq(Map<String, Object> sqxm,String splx) throws Exception{
 		switch (splx) {
-		case "jgbgsp":
-			this.spDao.swsbgsq(spxm,(int)spxm.get("uid"),(int)spxm.get("jgid"));
-		case"fzyswsba":
-			this.spDao.fzyswsba(spxm);
+		case "jgbgsq":
+			this.spDao.swsbgsq(sqxm,(int)sqxm.get("uid"),(int)sqxm.get("jgid"));break;
+		case"fzyswsbasq":
+			this.spDao.fzyswsba(sqxm);break;
+		case"jgzxsq":
+			this.spDao.swszxsq(sqxm);break;
 		}
 	}
 	
 	@Transactional
 	public void fspsq(Map<String,Object> ptxm,String splx)throws Exception {
 		 switch (splx) {
-			case "jgbgsp":
+			case "jgbgsq":
 		 this.spDao.updatePTXM(ptxm);
 		 }
 	}

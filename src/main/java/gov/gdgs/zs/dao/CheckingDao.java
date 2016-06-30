@@ -16,7 +16,29 @@ public class CheckingDao extends BaseJdbcDao{
 		}
 		return true;
 	}
+	/**
+	 * 判断事务所注销审批中
+	 * @param jgid
+	 * @return false--审批中
+	 */
+	public boolean checkZXing(int jgid){
+		if(this.jdbcTemplate.queryForList("select * from zs_jgzx where spzt = 1 and jg_id =?",new Object[]{jgid}).size()!=0){
+			return false;
+		}
+		return true;
+	}
 	
+	/**
+	 * 判断审批是否为上级驳回
+	 * @param sfzh
+	 * @return false--上级驳回
+	 */
+	public boolean checkIsBH(String spid){
+		if(this.jdbcTemplate.queryForList("select * from zs_spzx where id = ? and qrbj is not null",new Object[]{spid}).size()!=0){
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * 判断是否存在重复身份证号
 	 * @param sfzh

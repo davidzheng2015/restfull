@@ -19,13 +19,10 @@ import com.gdky.restfull.service.AccountService;
 @RequestMapping(value = Constants.URI_API_PREFIX + Config.URI_API_ZS)
 public class PostSWSBGController {
 
-	@Resource
-	AccountService accountService;
 
 	//测试附件
 	@RequestMapping(value = "/swszx/swszxfjPost1", method = RequestMethod.POST)
 	public ResponseEntity<?> testUpload(HttpServletRequest request ) throws Exception{
-		User user =  accountService.getUserFromHeaderToken(request);
 		return new ResponseEntity<>(ResponseMessage.success("提交成功"),HttpStatus.CREATED);
 	}
 }

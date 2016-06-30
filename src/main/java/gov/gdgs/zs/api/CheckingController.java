@@ -25,8 +25,14 @@ public class CheckingController {
 			@PathVariable(value = "splx") String splx) {
 		return new ResponseEntity<>(chService.checkSPing(splx,jgid),HttpStatus.OK);
 	}
+	
 	@RequestMapping(value = "/commont/checksfzh/{sfzh}", method = { RequestMethod.GET })
 	public ResponseEntity<?> checkSFZH(@PathVariable(value = "sfzh") String sfzh) {
 		return new ResponseEntity<>(chService.checkSFZH(sfzh),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/commont/checkisbh/{spid}", method = { RequestMethod.GET })
+	public ResponseEntity<?> checkIsBH(@PathVariable(value = "spid") String spid) {
+		return new ResponseEntity<>(chService.checkIsBH(spid),HttpStatus.OK);
 	}
 }
