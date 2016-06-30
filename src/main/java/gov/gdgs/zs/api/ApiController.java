@@ -3,6 +3,10 @@ package gov.gdgs.zs.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,7 +21,8 @@ import com.gdky.restfull.security.CustomUserDetails;
 
 @RestController
 public class ApiController {
-	
+	@Autowired
+		    private HttpServletRequest request;
    
     public ApiController(){
     	System.out.println(">>>>>>>>>>>>>>>>>>>>>>  API 启动    >>>>>>>>>>>>>>>>>>>>>");
@@ -26,6 +31,7 @@ public class ApiController {
     @RequestMapping(value = "/api", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getApiList() {
 
+    	System.out.println(request.getServletPath());
 
     	Authentication userName = SecurityContextHolder.getContext().getAuthentication();
     	System.out.println(userName.toString());

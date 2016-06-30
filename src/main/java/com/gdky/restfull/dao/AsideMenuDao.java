@@ -96,5 +96,20 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 						AsideMenu.class));
 		return ls;
 	}
+	
+	public List<AsideMenu> getPermitUrl(int userId){
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select m.* ");
+		sb.append(" from fw_users u, fw_user_role ur, fw_role_menu rm, fw_menu m ");
+		sb.append(" where u.ID = ur.USER_ID ");
+		sb.append(" and ur.ROLE_ID = rm.ROLE_ID ");
+		sb.append(" and rm.MENU_ID = m.ID ");
+		sb.append(" and u.ID = ? ");
+		sb.append(" order by m.path ");
+		List<AsideMenu> ls = this.jdbcTemplate.query(sb.toString(),
+				new Object[] { userId }, new BeanPropertyRowMapper<AsideMenu>(
+						AsideMenu.class));
+		return ls;
+	}
 
 }

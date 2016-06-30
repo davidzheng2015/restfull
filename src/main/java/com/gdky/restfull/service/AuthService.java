@@ -2,6 +2,7 @@ package com.gdky.restfull.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdky.restfull.configuration.Constants;
 import com.gdky.restfull.dao.AuthDao;
 import com.gdky.restfull.entity.Privileges;
@@ -94,6 +97,26 @@ public class AuthService {
 	public void delRole(Integer roleId) {
 		authDao.delPrivileges(roleId);	
 		authDao.delRole(roleId);		
+	}
+
+	public void updateRole(Role role) {
+		authDao.updateRole(role);		
+	}
+
+	public Map<String, Object> getUsers(int page, int pageSize, String where) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			} catch (Exception e) {
+			}
+		}
+		Map<String, Object> rs = authDao.getUsers(page, pageSize, map);
+		return rs;
 	}
 	
 	

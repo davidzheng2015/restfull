@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.configuration.Constants;
+import com.gdky.restfull.entity.AsideMenu;
 import com.gdky.restfull.entity.AuthRequest;
 import com.gdky.restfull.entity.AuthResponse;
 import com.gdky.restfull.entity.Privileges;
@@ -104,6 +106,12 @@ public class AuthController {
 		return  ResponseEntity.ok(null);
 	}
 	
+	@RequestMapping(value="/roles", method=RequestMethod.PUT)
+	public ResponseEntity<?> updateRole(@RequestBody Role role){
+		authService.updateRole(role);
+		return  ResponseEntity.ok(null);
+	}
+	
 	@RequestMapping(value="/privileges/{roleId}",method=RequestMethod.GET)
 	public ResponseEntity<?> getPrivileges(@PathVariable Integer roleId){
 		List<Privileges> ls = authService.getPrivileges(roleId);
@@ -120,6 +128,15 @@ public class AuthController {
 			authService.insertPrivileges(roleId,privileges);
 		}		
 		return ResponseEntity.ok(null);
+	}
+	@RequestMapping(value="/users",method=RequestMethod.GET)
+	public ResponseEntity<?> getUsers(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@RequestParam(value = "where", required = false) String where){
+		Map<String,Object> rs = authService.getUsers(page, pageSize, where);
+		
+		return ResponseEntity.ok(rs);
 	}
 	
 	
