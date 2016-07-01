@@ -65,6 +65,7 @@ public class SPservice {
 		switch (splx) {
 		case "jgbgsq":
 			this.spDao.swsbgsq(sqxm,(int)sqxm.get("uid"),(int)sqxm.get("jgid"));break;
+		//非执业备案
 		case"fzyswsbasq":
 			this.spDao.fzyswsba(sqxm);break;
 		case"jgzxsq":
@@ -78,5 +79,11 @@ public class SPservice {
 			case "jgbgsq":
 		 this.spDao.updatePTXM(ptxm);
 		 }
+	}
+
+	//按身份证号查询个人非执业备案情况
+	public Map<String, Object> getFzyswsBa(String sfzh) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

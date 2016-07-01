@@ -275,7 +275,7 @@ public class SPDao extends BaseDao{
 	  * @throws Exception
 	  */
 	 @Transactional
-	public void fzyswsba(Map<String, Object> sqxx) throws Exception{
+	public void fzyswsba(Map<String, Object> sqxx) throws Exception {
 		String sql ="insert into zs_ryjbxx (XMING,XB_DM,SRI,SFZH,TXDZ,YZBM,DHHM,YDDH,CS_DM,MZ_DM,XL_DM,ZZMM_DM,BYYX,BYSJ,XPIAN,RYZT_DM,RYSF_DM,LRRQ,YXBZ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'3','2',sysdate(),'0')";
 		String sql2 ="insert into zs_fzysws (RY_ID,ZYZGZSBH,ZGZSQFRQ,FZYHYBH,ZW_DM,ZZDW,RHSJ,FZYZT_DM,RYSPGCZT_DM,YXBZ) values(?,?,?,?,?,?,?,'3','1','0')";
 		String sql3 ="insert into zs_fzyjl (FZY_ID,QZNY,XXXX,ZMR) values(?,?,?,?)";
@@ -287,7 +287,7 @@ public class SPDao extends BaseDao{
 		Number rs2 = this.insertAndGetKeyByJdbc(sql2, new Object[]{rs,sqxx.get("ZYZGZSBH"),
 				sqxx.get("ZGZSQFRQ"),sqxx.get("FZYHYBH"),sqxx.get("ZW_DM"),sqxx.get("ZZDW"),
 				sqxx.get("RHSJ")},new String[] {"ID"});
-		for(Map<String, Object> rec:(List<Map<String, Object>>)sqxx.get("fzyjl")){
+		for(Map<String, Object> rec:(List<Map<String, Object>>)sqxx.get("FZYJL")){
 			this.jdbcTemplate.update(sql3,new Object[]{rs2,rec.get("QZNY"),rec.get("XXXX"),rec.get("ZMR")});
 		}
 		String suid = new Common().newUUID();
