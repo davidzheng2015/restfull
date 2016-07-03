@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdky.restfull.entity.Privileges;
@@ -189,5 +191,13 @@ public class AuthDao extends BaseJdbcDao {
         }  
           
     }
+	public void insertNew(String content) {
+		String sql = "insert into fw_test2 (content,des) values(?,?)";
+		this.jdbcTemplate.update(sql,new Object[]{content,"fail"});
+	}
+	public void updateTest(String content){
+		String sql = "update fw_test2 set des='ok' where content=?";
+		this.jdbcTemplate.update(sql,new Object[]{content});
+	}
 
 }

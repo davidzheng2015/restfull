@@ -1,16 +1,17 @@
 package gov.gdgs.zs.api;
 
-import java.util.Map;
-
 import gov.gdgs.zs.service.CheckingService;
 import gov.gdgs.zs.service.SPservice;
 import gov.gdgs.zs.service.SwsService;
+
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
+import com.gdky.restfull.service.AuthService;
 
 
 @RestController
@@ -34,6 +36,10 @@ public class PubApiController {
 	
 	@Autowired
 	private SPservice spService;
+	
+	@Autowired
+	private AuthService authService;
+	
 
 	//机构查询
 	@RequestMapping(value="/jgs" ,method = { RequestMethod.GET })
@@ -73,5 +79,11 @@ public class PubApiController {
 	//执业转非执业进度查询
 	
 	//非执业转籍申请
+	
+	@RequestMapping(value="/test",method = RequestMethod.POST)
+	public ResponseEntity<?> newTest(@RequestBody Map<String,Object> obj ) {
+		authService.insertNew();
+		return ResponseEntity.ok(null);
+	}
 	
 }
