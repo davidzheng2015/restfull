@@ -31,6 +31,7 @@ public class CheckingService {
 		return this.chDao.checkIsBH(spid);
 	}
 	
+	//检查身份证身份证是否已存在
 	public boolean checkSFZH(String sfzh){
 		return this.chDao.checkHadSFZH(sfzh);
 	}
