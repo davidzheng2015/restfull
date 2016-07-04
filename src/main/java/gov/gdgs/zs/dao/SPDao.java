@@ -96,7 +96,7 @@ public class SPDao extends BaseDao{
 			condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
 			condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
 			sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
-			sb.append("		f.xming,f.SFZH,k.MC as xb, ");
+			sb.append("		f.xming,f.sfzh,k.MC as xb, ");
 			sb.append("		e.MC as cs, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,a.id as lcid,b.lcbz,");
 			sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
 			sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,fw_user_role g,dm_cs e,zs_ryjbxx f,"+bm+" i,"+bm2+" j,");
@@ -157,6 +157,8 @@ public class SPDao extends BaseDao{
 			return this.jdbcTemplate.queryForList("select MC,XZHI,JZHI from zs_jgbgxxb where jgbgspb_id = ?",new Object[]{sjid});
 		case "jgzxsp":
 			return this.jdbcTemplate.queryForList("select b.MC as zxyy,a.BZ as zxsm from zs_jgzx a,dm_jgzxyy b where a.id=? and b.ID=a.zxyy_id ",new Object[]{sjid});
+		case "jghbsp":
+			return this.jdbcTemplate.queryForList("select * from zs_jghb a where a.id=? ",new Object[]{sjid});
 		}
 		return null;
 	}
@@ -310,6 +312,22 @@ public class SPDao extends BaseDao{
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
 		spsq.put("sid", rs);
 		spsq.put("lclx", "402881831be2e6af011be3adc72c0011");
+		spsq.put("jgid", sqxm.get("jgid"));
+		swsSPqq(spsq);
+	}
+	/**
+	 * 事务所合并审批申请
+	 * @param sqxm
+	 * @throws Exception
+	 */
+	public void swshbsq(Map<String, Object> sqxm) throws Exception{
+		String sql ="insert into zs_jghb (JG_ID,SFMC,XSWSMC,GSMCYHBH,SQR,HBSJ,SBSJ,HBZT) values(?,?,?,?,?,?,sysdate(),'1')";
+		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{sqxm.get("jgid"),
+				sqxm.get("SFMC"),sqxm.get("XSWSMC"),sqxm.get("GSMCYHBH"),
+				sqxm.get("SQR"),sqxm.get("HBSJ")},new String[] {"ID"});
+		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
+		spsq.put("sid", rs);
+		spsq.put("lclx", "402881831be2e6af011be3aceac6000e");
 		spsq.put("jgid", sqxm.get("jgid"));
 		swsSPqq(spsq);
 	}

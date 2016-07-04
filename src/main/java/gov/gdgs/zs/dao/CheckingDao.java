@@ -27,6 +27,17 @@ public class CheckingDao extends BaseJdbcDao{
 		}
 		return true;
 	}
+	/**
+	 * 判断事务所合并审批中
+	 * @param jgid
+	 * @return false--审批中
+	 */
+	public boolean checkHBing(int jgid){
+		if(this.jdbcTemplate.queryForList("select * from zs_jghb where HBZT = 1 and jg_id =?",new Object[]{jgid}).size()!=0){
+			return false;
+		}
+		return true;
+	}
 	
 	/**
 	 * 判断审批是否为上级驳回
