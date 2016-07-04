@@ -68,9 +68,8 @@ public class PubApiController {
 	//非执业备案进度查询   
 	@RequestMapping(value="/ba/fzysws/{sfzh}",method = RequestMethod.GET)
 		public ResponseEntity<?> getFzyswsBa(@PathVariable String sfzh){
-		Map<String,Object> rs = spService.getFzyswsBa(sfzh);
-		ResponseMessage rm = new ResponseMessage(ResponseMessage.Type.success,"审批状态");
-		return new ResponseEntity<>(rm,HttpStatus.OK);
+		Map<String,Object> rm = spService.getFzyswsBa(sfzh);
+		return  ResponseEntity.ok(rm);
 		
 	}
 	
@@ -80,10 +79,6 @@ public class PubApiController {
 	
 	//非执业转籍申请
 	
-	@RequestMapping(value="/test",method = RequestMethod.POST)
-	public ResponseEntity<?> newTest(@RequestBody Map<String,Object> obj ) {
-		authService.insertNew();
-		return ResponseEntity.ok(null);
-	}
+
 	
 }

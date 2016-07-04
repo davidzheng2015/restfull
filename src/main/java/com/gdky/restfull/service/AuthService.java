@@ -122,19 +122,6 @@ public class AuthService {
 		Map<String, Object> rs = authDao.getUsers(page, pageSize, map);
 		return rs;
 	}
-	@Transactional(rollbackFor = Exception.class)
-	public void insertNew() {
-			authDao.insertNew("content1");
-			System.out.println(1/0);//2
-			authDao.updateTest("content1");
-			
-		
-			
-		
-		
-	}
-	
-	
 
 
 }

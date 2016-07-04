@@ -45,7 +45,7 @@ public class CheckingDao extends BaseJdbcDao{
 	 * @return false--身份证号重复
 	 */
 	public boolean checkHadSFZH(String sfzh){
-		if(this.jdbcTemplate.queryForList("select * from zs_ryjbxx where SFZH = ? and yxbz =1",new Object[]{sfzh}).size()!=0){
+		if(this.jdbcTemplate.queryForList("select * from zs_ryjbxx where SFZH = ? and ryzt_dm not in(2,5,6)",new Object[]{sfzh}).size()!=0){
 			return false;
 		}
 		return true;

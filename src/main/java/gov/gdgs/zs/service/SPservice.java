@@ -81,9 +81,33 @@ public class SPservice {
 		 }
 	}
 
-	//按身份证号查询个人非执业备案情况
+	/**
+	 * 按身份证号查询个人非执业备案情况
+	 * @para
+	 *
+	 */
 	public Map<String, Object> getFzyswsBa(String sfzh) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Map<String,Object>> ls = spDao.getFzyswsBa(sfzh);
+		Map<String,Object> obj = new HashMap<String,Object>();
+		obj = ls.get(0);
+		HashMap<String,Object> rm = new HashMap<String,Object>();
+		int dm = (int) obj.get("RYZT_DM");
+		String spyj = (String)obj.get("SPYJ");
+		spyj = (spyj != null && !spyj.isEmpty()) ?  spyj : "";
+		
+		if(dm==3){
+			rm.put("zt", "审批中");
+			rm.put("spyj", spyj);
+		}else if (dm == 1){
+			rm.put("zt", "审批通过");
+			rm.put("spyj", spyj);
+		}else if (dm == 2){
+			rm.put("zt", "申请驳回");
+			rm.put("spyj", spyj);
+		}else{
+			rm.put("zt", "没有记录");
+			rm.put("spyj", "");
+		}
+		return rm;
 	}
 }
