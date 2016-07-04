@@ -102,5 +102,45 @@ public class AddsdsbService implements IAddsdsbService{
 			Map<String,Object> obj = addsdsbDao.getOk();
 			return obj;
 		}
+		
+		//鉴证业务情况统计表
+		
+		@Override
+		public Map<String, Object> AddJzywqktjb (Map<String, Object> obj) {	
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+			String rs= iaddsdsbDao.AddJzywqktjb(obj);
+			map.put("id", rs);
+			return map;
+
+		}
+		
+		@Override
+		public void UpdateJzywqktjb(Map<String, Object> obj) {
+			iaddsdsbDao.UpdateJzywqktjb(obj);
+		}
+		public Map<String, Object> getJzywqktjb(int page, int pageSize, String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}		
+			Map<String, Object> rs = addsdsbDao.getJzywqktjb(page, pageSize, map);
+			return rs;
+		}
+		public Map<String, Object> getJzywqktjbById(String id) {
+			Map<String,Object> obj = addsdsbDao.getJzywqktjbById(id);
+			return obj;
+		}
+		
+		public Map<String, Object> getUpyear(){
+			Map<String, Object >obj=addsdsbDao.getUpyear();
+			return obj;
+		}
 
 }

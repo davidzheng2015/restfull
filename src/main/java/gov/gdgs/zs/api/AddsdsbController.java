@@ -69,7 +69,7 @@ public class AddsdsbController {
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 		}
-	 //经营规模统计表
+ //经营规模统计表
 	 @RequestMapping(value = "/add/jygmtjb", method = RequestMethod.GET) 
 	 	public  ResponseEntity<Map<String,Object>> getJygmtjb( 
 	 			@RequestParam(value = "page", required = true) int page, 
@@ -106,6 +106,44 @@ public class AddsdsbController {
 				@RequestBody Map <String,Object> obj) {
 			
 		 addsdsbService.UpdateJygmtjb(obj);
+			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
+
+		}
+ //鉴证业务情况统计表
+	 @RequestMapping(value = "/add/jzywqktjb", method = RequestMethod.GET) 
+	 	public  ResponseEntity<Map<String,Object>> getJzywqktjb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){ 
+	 		Map<String,Object> obj = addsdsbService.getJzywqktjb(page, pageSize, where);
+	 		return new ResponseEntity<>(obj,HttpStatus.OK); 
+	 	} 
+	 @RequestMapping(value = "/add/jzywqktjb/{id}", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getJzywqktjbById(
+				@PathVariable("id") String id) {
+
+			Map<String, Object> obj = addsdsbService.getJzywqktjbById(id);
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 @RequestMapping(value = "/add/upyear", method = RequestMethod.GET)
+		public ResponseEntity<Map<String, Object>> getUpyear(
+				 ) {
+
+			Map<String, Object> obj = addsdsbService.getUpyear();
+			return new ResponseEntity<>(obj, HttpStatus.OK);
+		}
+	 
+	 @RequestMapping(value = "/addjzywqktjb", method = RequestMethod.POST)
+		public ResponseEntity<Map<String,Object>> addJzywqktjb(@RequestBody  Map<String ,Object> obj) {
+			Map<String,Object> rs = iaddsdsbService.AddJzywqktjb(obj);
+			return new ResponseEntity<>(rs,HttpStatus.CREATED);
+		}
+	 
+	 @RequestMapping(value = "/addjzywqktjb/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<ResponseMessage> updateJzywqktjb(@PathVariable("id") String id,
+				@RequestBody Map <String,Object> obj) {
+			
+		 addsdsbService.UpdateJzywqktjb(obj);
 			return new ResponseEntity<>(ResponseMessage.success("更新成功"),HttpStatus.OK);
 
 		}

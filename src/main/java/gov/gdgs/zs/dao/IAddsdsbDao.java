@@ -8,5 +8,8 @@ public interface IAddsdsbDao {
 	
 	public String AddJygmtjb( Map <String,Object >obj);
 	public void UpdateJygmtjb(Map <String,Object >obj);
+	
+	public String AddJzywqktjb( Map <String,Object >obj);
+	public void UpdateJzywqktjb(Map <String,Object >obj);
 
 }

@@ -188,6 +188,106 @@ public class AddsdsbDao extends BaseJdbcDao  implements IAddsdsbDao{
 		}
 	}
 	
+	@Override
+	public String AddJzywqktjb( Map <String,Object> obj){
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		obj.put("id", uuid);
+		final StringBuffer sb = new StringBuffer("insert into "
+				+ Config.PROJECT_SCHEMA + "zs_sdsb_jzywqktjb ");	
+		sb.append(" ( id,jg_id,nd,sbrq,ztbj,hsqjje_hs0,hsqjje_je0,hsqjje_hs,hsqjje_je,tzynsdse_hs0,tzynsdse_je0,");
+		sb.append(" tzynsdse_hs,tzynsdse_je,tjynsdse_hs0,tjynsdse_je0,tjynsdse_hs,tjynsdse_je,mbksje_hs0,mbksje_je0,mbksje_hs,mbksje_je,");
+		sb.append("  ccsskc_hs0,ccsskc_je0,ccsskc_hs,ccsskc_je,tdzzsqsjz_hs0,tdzzsqsjz_je0,tdzzsqsjz_hs,tdzzsqsjz_je,");
+		sb.append(" qtjz_hs0,qtjz_je0,qtjz_hs,qtjz_je,gxjsqyrdqzyw_hs0,gxjsqyrdqzyw_je0,gxjsqyrdqzyw_hs,gxjsqyrdqzyw_je,qyzxswdeskjsjzyw_hs0,qyzxswdeskjsjzyw_je0,");
+		sb.append(" qyzxswdeskjsjzyw_hs,qyzxswdeskjsjzyw_je,yffjjkcjzyw_hs0,yffjjkcjzyw_je0,yffjjkcjzyw_hs,yffjjkcjzyw_je,qt_hs0,qt_je0,qt_hs,qt_je,tianbiaoren,suozhang)");
+		sb.append("values ( :id,:jg_id,:nd,sysdate(),:ztbj,:hsqjje_hs0,:hsqjje_je0,:hsqjje_hs,:hsqjje_je,:tzynsdse_hs0,:tzynsdse_je0,");
+		sb.append(" :tzynsdse_hs,:tzynsdse_je,:tjynsdse_hs0,:tjynsdse_je0,:tjynsdse_hs,:tjynsdse_je,:mbksje_hs0,:mbksje_je0,:mbksje_hs,:mbksje_je,");
+		sb.append(" :ccsskc_hs0,:ccsskc_je0,:ccsskc_hs,:ccsskc_je,:tdzzsqsjz_hs0,:tdzzsqsjz_je0,:tdzzsqsjz_hs,:tdzzsqsjz_je,:qtjz_hs0,:qtjz_je0,");
+		sb.append(" :qtjz_hs,:qtjz_je,:gxjsqyrdqzyw_hs0,:gxjsqyrdqzyw_je0,:gxjsqyrdqzyw_hs,:gxjsqyrdqzyw_je,:qyzxswdeskjsjzyw_hs0,:qyzxswdeskjsjzyw_je0,");
+		sb.append(" :qyzxswdeskjsjzyw_hs,:qyzxswdeskjsjzyw_je,:yffjjkcjzyw_hs0,:yffjjkcjzyw_je0,:yffjjkcjzyw_hs,:yffjjkcjzyw_je,:qt_hs0,:qt_je0,:qt_hs,:qt_je,:tianbiaoren,:suozhang)");
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		int count=named.update(sb.toString(), obj);
+		if(count==0){
+		return null;
+	 }else {
+		return uuid;
+	 }
+	}
 	
+	@Override
+	public void UpdateJzywqktjb(Map <String,Object> obj) {
+		 StringBuffer sb = new StringBuffer("update "
+				+ Config.PROJECT_SCHEMA + "zs_sdsb_jzywqktjb ");
+		sb.append(" set jg_id=:jg_id,nd=:nd,sbrq=sysdate(),ztbj=:ztbj,hsqjje_hs0=:hsqjje_hs0,hsqjje_je0=:hsqjje_je0,hsqjje_hs=hsqjje_hs,");
+		sb.append(" hsqjje_je=:hsqjje_je,tzynsdse_hs0=:tzynsdse_hs0,tzynsdse_je0=:tzynsdse_je0,tzynsdse_hs=:tzynsdse_hs,tzynsdse_je=:tzynsdse_je,");
+		sb.append(" tjynsdse_hs0=:tjynsdse_hs0,tjynsdse_je0=:tjynsdse_je0,tjynsdse_hs=:tjynsdse_hs,tjynsdse_je=:tjynsdse_je,mbksje_hs0=:mbksje_hs0,");
+		sb.append(" mbksje_je0=:mbksje_je0,mbksje_hs=:mbksje_hs,mbksje_je=:mbksje_je,ccsskc_hs0=:ccsskc_hs0,ccsskc_je0=:ccsskc_je0,");
+		sb.append(" ccsskc_hs=:ccsskc_hs,ccsskc_je=:ccsskc_je,tdzzsqsjz_hs0=:tdzzsqsjz_hs0,tdzzsqsjz_je0=:tdzzsqsjz_je0,tdzzsqsjz_hs=:tdzzsqsjz_hs,");
+		sb.append(" tdzzsqsjz_je=:tdzzsqsjz_je,qtjz_hs0=:qtjz_hs0,qtjz_je0=:qtjz_je0,qtjz_hs=:qtjz_hs,qtjz_je=:qtjz_je,gxjsqyrdqzyw_hs0=:gxjsqyrdqzyw_hs0,");
+		sb.append(" gxjsqyrdqzyw_je0=:gxjsqyrdqzyw_je0,gxjsqyrdqzyw_hs=:gxjsqyrdqzyw_hs,gxjsqyrdqzyw_je=:gxjsqyrdqzyw_je,");
+		sb.append(" qyzxswdeskjsjzyw_hs0=:qyzxswdeskjsjzyw_hs0,qyzxswdeskjsjzyw_je0=:qyzxswdeskjsjzyw_je0,qyzxswdeskjsjzyw_hs=:qyzxswdeskjsjzyw_hs,");
+		sb.append(" qyzxswdeskjsjzyw_je=:qyzxswdeskjsjzyw_je,yffjjkcjzyw_hs0=:yffjjkcjzyw_hs0,yffjjkcjzyw_je0=:yffjjkcjzyw_je0,yffjjkcjzyw_hs=:yffjjkcjzyw_hs,");
+		sb.append(" yffjjkcjzyw_je=:yffjjkcjzyw_je,qt_hs0=:qt_hs0,qt_je0=:qt_je0,qt_hs=:qt_hs,qt_je=:qt_je,tianbiaoren=:tianbiaoren,suozhang=:suozhang where id=:id");
+		NamedParameterJdbcTemplate named=new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+		named.update(sb.toString(), obj);
+	}
+	
+	public Map<String, Object> getJzywqktjb(int page, int pageSize,
+			Map<String, Object> where) {
+
+		Condition condition = new Condition();
+		condition.add("a.nd", "FUZZY", where.get("nd"));
+		condition.add("a.ZTBJ", "FUZZY", where.get("ZTBJ"));		
+
+		StringBuffer sb = new StringBuffer();
+		sb.append(" SELECT  SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 AS 'key',t.*");
+		sb.append(" FROM   ( select a.id,a.nd,b.DWMC,a.HSQJJE_HS,a.HSQJJE_JE,a.TZYNSDSE_HS,a.TZYNSDSE_JE,");	
+		sb.append("  a.TJYNSDSE_JE,a.TJYNSDSE_HS,");
+		sb.append(" case a.ZTBJ when 1 then '提交' when 2 then '通过' when 0 then '保存' when 3 then '退回' else null end as ZTBJ");		
+		sb.append(" FROM " + Config.PROJECT_SCHEMA
+				+ "zs_sdsb_jzywqktjb a,zs_jg b,(SELECT @rownum:=?) temp");
+		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append("    LIMIT ?, ? ");
+		// 装嵌传值数组
+		int startIndex = pageSize * (page - 1);
+		ArrayList<Object> params = condition.getParams();
+		params.add(0, pageSize * (page - 1));
+		params.add(startIndex);
+		params.add(pageSize);
+
+		// 获取符合条件的记录
+		List<Map<String, Object>> ls = jdbcTemplate.queryForList(sb.toString(),
+				params.toArray());
+
+		// 获取符合条件的记录数
+
+		int total = jdbcTemplate.queryForObject("SELECT FOUND_ROWS()",
+				Integer.class);
+
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("data", ls);
+		obj.put("total", total);
+		obj.put("pageSize", pageSize);
+		obj.put("current", page);
+		return obj;
+	}
+	
+	public Map<String, Object> getJzywqktjbById(String id) {
+		String sql = "select b.DWMC,a.* from "+Config.PROJECT_SCHEMA+"zs_sdsb_jzywqktjb a, zs_jg b where a.jg_id = b.id and a.id = ?";
+		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
+		return rs;
+	}
+	
+	public Map<String, Object> getUpyear() {
+		String sql = "select a.nd,a.* from "+Config.PROJECT_SCHEMA+"zs_sdsb_jzywqktjb a where jg_id='68' and a.ND=( date_format(sysdate(),'%Y')-2)";
+		List<Map<String,Object>> rs = jdbcTemplate.queryForList(sql);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("upyear", rs);
+		if(ob.size()>0){
+			return ob;
+		}else{
+			return null;
+		}
+	}
 
 }
