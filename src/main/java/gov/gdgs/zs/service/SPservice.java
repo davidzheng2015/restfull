@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SPservice {
 
 	@Resource
@@ -52,7 +53,6 @@ public class SPservice {
 		return spDao.sjbhyj(spid,lcbz);
 	}
 	
-	@Transactional
 	public boolean sptj(Map<String,Object> spsq,String spid,int uid,String uname)throws Exception{
 		spsq.put("spid", spid);
 		spsq.put("uid", uid);
@@ -60,7 +60,6 @@ public class SPservice {
 		return spDao.sptj(spsq);
 	}
 	
-	@Transactional
 	public void spsq(Map<String, Object> sqxm,String splx) throws Exception{
 		switch (splx) {
 		case "jgbgsq":
@@ -69,10 +68,11 @@ public class SPservice {
 			this.spDao.fzyswsba(sqxm);break;
 		case"jgzxsq":
 			this.spDao.swszxsq(sqxm);break;
+		case"jghbsq":
+			this.spDao.swshbsq(sqxm);break;
 		}
 	}
 	
-	@Transactional
 	public void fspsq(Map<String,Object> ptxm,String splx)throws Exception {
 		 switch (splx) {
 			case "jgbgsq":
