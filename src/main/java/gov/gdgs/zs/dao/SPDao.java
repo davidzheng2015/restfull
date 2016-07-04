@@ -96,7 +96,7 @@ public class SPDao extends BaseDao{
 			condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
 			condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
 			sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
-			sb.append("		f.xming,f.SFZH,k.MC as xb, ");
+			sb.append("		f.xming,f.sfzh,k.MC as xb, ");
 			sb.append("		e.MC as cs, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,a.id as lcid,b.lcbz,");
 			sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
 			sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,fw_user_role g,dm_cs e,zs_ryjbxx f,"+bm+" i,"+bm2+" j,");
