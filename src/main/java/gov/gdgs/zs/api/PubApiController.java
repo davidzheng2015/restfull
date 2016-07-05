@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.entity.ResponseMessage;
+import com.gdky.restfull.exception.InvalidRequestException;
 import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
 import com.gdky.restfull.service.AuthService;
 
@@ -53,10 +54,12 @@ public class PubApiController {
 	@RequestMapping(value = "/ba/fzysws", method = RequestMethod.POST)
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj) throws Exception{
 		String sfzh = (String)obj.get("SFZH");
-		if(sfzh != null && !checkingService.checkSFZH(sfzh)){
-			System.out.println("身份证号码已存在");
+		if(sfzh != null){
+			throw new InvalidRequestException("填报资料不全：缺失身份证号");			
+		}else if(!checkingService.checkSFZH(sfzh)){
 			throw new ResourceAlreadyExistsExcepiton();
-		}		
+		}
+		
 		spService.spsq(obj,"fzyswsbasq");
 		ResponseMessage rm = new ResponseMessage(
 				ResponseMessage.Type.success, "备案申请提交成功");

@@ -96,17 +96,29 @@ public class SPservice {
 		spyj = (spyj != null && !spyj.isEmpty()) ?  spyj : "";
 		
 		if(dm==3){
+			rm.put("dm", "3");
 			rm.put("zt", "审批中");
 			rm.put("spyj", spyj);
+			rm.put("spr", obj.get("NAMES"));
+			rm.put("spsj",obj.get("SPSJ"));
 		}else if (dm == 1){
+			rm.put("dm", "1");
 			rm.put("zt", "审批通过");
 			rm.put("spyj", spyj);
+			rm.put("spr", obj.get("NAMES"));
+			rm.put("spsj",obj.get("SPSJ"));
 		}else if (dm == 2){
+			rm.put("dm", "2");
 			rm.put("zt", "申请驳回");
 			rm.put("spyj", spyj);
+			rm.put("spr", obj.get("NAMES"));
+			rm.put("spsj",obj.get("SPSJ"));
 		}else{
+			rm.put("dm", "0");
 			rm.put("zt", "没有记录");
 			rm.put("spyj", "");
+			rm.put("spr", obj.get("NAMES"));
+			rm.put("spsj",obj.get("SPSJ"));
 		}
 		return rm;
 	}
