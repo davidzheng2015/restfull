@@ -61,5 +61,10 @@ public class SwsService {
 		}
 		return sb;
 	}
+	
+	public Map<String, Object> swsxxcx(String jgid) {
+		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
+		return this.swsDao.swsxx((int)hashids.decode(jgid)[0]);
+	}
 
 }

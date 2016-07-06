@@ -90,7 +90,7 @@ public class AsideMenuDao extends BaseJdbcDao implements IAsideMenuDao {
 		sb.append(" and rm.MENU_ID = m.ID ");
 		sb.append(" and m.VISBLE = 1 ");
 		sb.append(" and u.ID = ? ");
-		sb.append(" order by m.path ");
+		sb.append(" order by m.path,m.order_no ");
 		List<AsideMenu> ls = this.jdbcTemplate.query(sb.toString(),
 				new Object[] { userId }, new BeanPropertyRowMapper<AsideMenu>(
 						AsideMenu.class));

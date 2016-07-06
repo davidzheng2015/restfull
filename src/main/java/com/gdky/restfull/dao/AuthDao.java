@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdky.restfull.entity.Privileges;
@@ -127,9 +129,13 @@ public class AuthDao extends BaseJdbcDao {
 		Condition condition = new Condition();
 		condition.add(" And u.id = ur.user_id ");
 		condition.add("ur.role_id",Condition.EQUAL,where.get("roleId"));
-		condition.add("u.name", Condition.FUZZY, where.get("name"));
+		condition.add("u.names", Condition.FUZZY, where.get("names"));
 		condition.add("u.username", Condition.FUZZY, where.get("username"));
-		condition.add("u.uname", Condition.EQUAL, where.get("uname"));
+		condition.add("u.uname", Condition.FUZZY, where.get("uname"));
+		condition.add("u.account_enabled",Condition.EQUAL,where.get("accountEnabled"));
+		condition.add("u.account_expired",Condition.EQUAL,where.get("accountExpired"));
+		condition.add("u.account_locked",Condition.EQUAL,where.get("accountLocked"));
+		condition.add("u.credentials_expired",Condition.EQUAL,where.get("credentialsExpired"));
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT  ");
@@ -185,5 +191,6 @@ public class AuthDao extends BaseJdbcDao {
         }  
           
     }
+	
 
 }

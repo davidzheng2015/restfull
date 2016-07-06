@@ -2,6 +2,7 @@ package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.configuration.Config;
 import gov.gdgs.zs.service.SwsService;
+
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -36,5 +37,10 @@ public class SWSCXController {
 			@PathVariable(value = "swsxqTab") String xqTab,
 			@PathVariable(value = "swjgId") String gid) {
 		return new ResponseEntity<>(swsService.swsxx(xqTab, gid),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/jgsxx/{jgid}", method = { RequestMethod.GET })
+	public ResponseEntity<Map<String, Object>> swsxxcx(@PathVariable(value = "jgid") String jgid) {
+		return new ResponseEntity<>(swsService.swsxxcx(jgid),HttpStatus.OK);
 	}
 }

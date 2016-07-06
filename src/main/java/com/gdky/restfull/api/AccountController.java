@@ -27,6 +27,12 @@ public class AccountController {
 	@Resource
 	AuthService userService;
 
+	/**
+	 * 获取用户登录基本信息
+	 * name-用户名称，menu-用户菜单，newMsg-新信息提示
+	 * @para
+	 *
+	 */
 	@RequestMapping(value="/account")
 	public ResponseEntity<?> getAccount(HttpServletRequest request){
 		
