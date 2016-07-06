@@ -52,14 +52,15 @@ public class SPController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/spapi/wspcx/{lcid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/spapi/wspcx/{cxlx}/{lcid}", method = RequestMethod.GET)
 	public ResponseEntity<?> wspxq(@PathVariable(value = "lcid") int lcid,
+			@PathVariable(value = "cxlx") String cxlx,
 			@RequestParam(value = "pagenum", required = true) int pn,
 			@RequestParam(value = "pagesize", required = true) int ps,
 			@RequestParam(value = "where", required = false) String qury,
 			HttpServletRequest request ) throws Exception{
 		User user =  accountService.getUserFromHeaderToken(request);
-		return new ResponseEntity<>(spPservice.wspmxcx(pn,ps,user.getId(),lcid,qury),HttpStatus.OK);
+		return new ResponseEntity<>(spPservice.wspmxcx(pn,ps,user.getId(),lcid,cxlx,qury),HttpStatus.OK);
 	}
 	
 	/**
@@ -81,7 +82,7 @@ public class SPController {
 	 */
 	@RequestMapping(value = "/spapi/spmxxx/{splx}", method = RequestMethod.GET)
 	public ResponseEntity<?> swsbgspxx(@PathVariable(value = "splx") String splx,
-			@RequestParam(value = "sjid", required = true) int sjid) throws Exception{
+			@RequestParam(value = "sjid", required = true) String sjid) throws Exception{
 		return new ResponseEntity<>(spPservice.spmxxx(splx,sjid),HttpStatus.OK);
 	}
 	
