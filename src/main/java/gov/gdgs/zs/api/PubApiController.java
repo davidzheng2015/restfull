@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdky.restfull.entity.ResponseMessage;
+import com.gdky.restfull.exception.InvalidRequestException;
 import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
 import com.gdky.restfull.service.AuthService;
 
@@ -53,10 +54,12 @@ public class PubApiController {
 	@RequestMapping(value = "/ba/fzysws", method = RequestMethod.POST)
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj) throws Exception{
 		String sfzh = (String)obj.get("SFZH");
-		if(sfzh != null && !checkingService.checkSFZH(sfzh)){
-			System.out.println("身份证号码已存在");
+		if(sfzh == null && sfzh.isEmpty()){
+			throw new InvalidRequestException("填报资料不全：缺失身份证号");			
+		}else if(!checkingService.checkSFZH(sfzh)){
 			throw new ResourceAlreadyExistsExcepiton();
-		}		
+		}
+		
 		spService.spsq(obj,"fzyswsbasq");
 		ResponseMessage rm = new ResponseMessage(
 				ResponseMessage.Type.success, "备案申请提交成功");
@@ -68,9 +71,8 @@ public class PubApiController {
 	//非执业备案进度查询   
 	@RequestMapping(value="/ba/fzysws/{sfzh}",method = RequestMethod.GET)
 		public ResponseEntity<?> getFzyswsBa(@PathVariable String sfzh){
-		Map<String,Object> rs = spService.getFzyswsBa(sfzh);
-		ResponseMessage rm = new ResponseMessage(ResponseMessage.Type.success,"审批状态");
-		return new ResponseEntity<>(rm,HttpStatus.OK);
+		Map<String,Object> rm = spService.getFzyswsBa(sfzh);
+		return  ResponseEntity.ok(rm);
 		
 	}
 	
@@ -80,10 +82,6 @@ public class PubApiController {
 	
 	//非执业转籍申请
 	
-	@RequestMapping(value="/test",method = RequestMethod.POST)
-	public ResponseEntity<?> newTest(@RequestBody Map<String,Object> obj ) {
-		authService.insertNew();
-		return ResponseEntity.ok(null);
-	}
+
 	
 }

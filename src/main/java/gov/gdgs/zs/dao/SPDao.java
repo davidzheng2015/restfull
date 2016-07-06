@@ -416,5 +416,22 @@ public class SPDao extends BaseDao{
 			}
 				
 		}
+
+
+	public List<Map<String, Object>> getFzyswsBa(String sfzh) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("  select d.ZTBJ,e.spyj,a.RYZT_DM,a.ID ,e.SPSJ,a.XMING,u.`NAMES` ");
+		sb.append("  from zs_ryjbxx a,zs_fzysws b,zs_fzybasp c,zs_spzx d,zs_spxx e ");
+		sb.append("  left join fw_users u  ");
+		sb.append("  on u.ID = e.USERID ");
+		sb.append("  where a.ID=b.RY_ID   ");
+		sb.append("  and b.ID=c.FZYSWS_ID  ");
+		sb.append("  and d.SJID=c.ID  ");
+		sb.append("  and d.ID=e.SPID ");
+		sb.append("  and a.SFZH= ? ");
+		sb.append("  order by a.id desc  ");
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(), new Object[]{sfzh});
+		return ls;
+	}
 }
 

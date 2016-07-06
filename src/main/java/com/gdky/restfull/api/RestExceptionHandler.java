@@ -65,7 +65,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(alert, HttpStatus.CONFLICT);
 	}
 
+	/**
+	 * 处理非法类型提交
+	 * @para
+	 *
+	 */
 	@ExceptionHandler(value = { InvalidRequestException.class })
+	public ResponseEntity<?> handleInvalidRequestException(InvalidRequestException e){
+		ResponseMessage alert = new ResponseMessage(
+				ResponseMessage.Type.warning, "INVALID_REQUEST",
+				e.getErrorMessages());
+		return new ResponseEntity<>(alert,HttpStatus.BAD_REQUEST);
+	}
+	/*
 	public ResponseEntity<ResponseMessage> handleInvalidRequestException(
 			InvalidRequestException ex, WebRequest req) {
 		if (log.isDebugEnabled()) {
@@ -87,7 +99,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			}
 		}
 		return new ResponseEntity<>(alert, HttpStatus.UNPROCESSABLE_ENTITY);
-	}
+	}*/
 
 	/**
 	 * 处理jdbctemplate抛出的错误
@@ -145,5 +157,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				ResponseMessage.Type.warning, exMessage),
 				HttpStatus.UNAUTHORIZED);
 	}
+
 
 }
