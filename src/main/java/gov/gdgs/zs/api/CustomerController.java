@@ -3,10 +3,12 @@ package gov.gdgs.zs.api;
 import java.util.Map;
 
 import gov.gdgs.zs.configuration.Config;
+import gov.gdgs.zs.service.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,13 +58,10 @@ public class CustomerController {
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/customers/{}", method = RequestMethod.PUT)
-	public  ResponseEntity<Map<String,Object>> AddCustomers(
-			@RequestParam(value = "page", required = true) int page,
-			@RequestParam(value = "pageSize", required = true) int pageSize,
-			@RequestParam(value="where", required=false) String where){ 
+	@RequestMapping(value = "/customers/{hashId}", method = RequestMethod.PUT)
+	public  ResponseEntity<Map<String,Object>> updateCustomer(@PathVariable String hashId){ 
 
-		Map<String,Object> obj = ywglService.getYwbb(page,pageSize,where);
+		Map<String,Object> obj = customService.updateCustomer();
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 	
@@ -71,13 +70,10 @@ public class CustomerController {
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/customers", method = RequestMethod.DELETE)
-	public  ResponseEntity<?> AddCustomers(
-			@RequestParam(value = "page", required = true) int page,
-			@RequestParam(value = "pageSize", required = true) int pageSize,
-			@RequestParam(value="where", required=false) String where){ 
+	@RequestMapping(value = "/customers/{hashId}", method = RequestMethod.DELETE)
+	public  ResponseEntity<?> delCustomer(@PathVariable String hashId){ 
 
-		Map<String,Object> obj = ywglService.getYwbb(page,pageSize,where);
+		Map<String,Object> obj = customService.delCustomer();
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 }
