@@ -35,9 +35,19 @@ public class CustomerController {
 	public  ResponseEntity<?> getCustomers(
 			@RequestParam(value = "page", required = true) int page,
 			@RequestParam(value = "pageSize", required = true) int pageSize,
-			@RequestParam(value="where", required=false) String where){ 
+			@RequestParam(value="where", required=true) String where){ 
 
 		Map<String,Object> obj = customService.getCustomers(page,pageSize,where);
+		return new ResponseEntity<>(obj,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
+	public  ResponseEntity<?> getCustomer(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize,
+			@PathVariable String id){ 
+
+		Map<String,Object> obj = customService.getCustomer(page,pageSize,id);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 	
