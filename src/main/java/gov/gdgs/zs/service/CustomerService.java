@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
 @Transactional
@@ -20,7 +21,8 @@ public class CustomerService {
 	@Resource
 	private CustomerDao customerDao;
 
-	public Map<String, Object> getCustomers(int page, int pageSize, String where) {
+	public Map<String, Object> getCustomers(int page, int pageSize, String jgid, String where) {
+		Long jid = HashIdUtil.decode(jgid);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (where != null) {
 			try {
@@ -30,15 +32,10 @@ public class CustomerService {
 						new TypeReference<Map<String, Object>>() {
 						});
 			} catch (Exception e) {
-				throw new RuntimeException();
+				e.printStackTrace();
 			}
 		}
-		return customerDao.getCustomers(page,pageSize,map);
-	}
-	public Map<String, Object> getCustomer(int page, int pageSize, String where) {
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("jid", where);
-				return customerDao.getCustomers(page,pageSize,map);
+		return customerDao.getCustomers(page,pageSize,jid,map);
 	}
 
 	public Map<String, Object> AddCustomer() {

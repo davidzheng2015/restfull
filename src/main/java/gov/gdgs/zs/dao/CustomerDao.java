@@ -16,9 +16,9 @@ import com.gdky.restfull.dao.AuthDao.UserRowMapper;
 public class CustomerDao extends BaseJdbcDao{
 
 	public Map<String, Object> getCustomers(int page, int pageSize,
-			HashMap<String, Object> where) {
+			Long jid, HashMap<String, Object> where) {
 		Condition condition = new Condition();
-		condition.add("c.jg_id",Condition.EQUAL,where.get("jid"));
+		condition.add("c.jg_id",Condition.EQUAL,jid);
 		condition.add("c.lxr",Condition.FUZZY,where.get("lxr"));
 		condition.add("c.nsrsbh", Condition.FUZZY, where.get("nsrsbh"));
 		condition.add("c.nsrsbhdf", Condition.FUZZY, where.get("nsrsbhdf"));
