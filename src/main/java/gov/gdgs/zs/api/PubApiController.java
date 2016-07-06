@@ -54,7 +54,7 @@ public class PubApiController {
 	@RequestMapping(value = "/ba/fzysws", method = RequestMethod.POST)
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj) throws Exception{
 		String sfzh = (String)obj.get("SFZH");
-		if(sfzh != null){
+		if(sfzh == null && sfzh.isEmpty()){
 			throw new InvalidRequestException("填报资料不全：缺失身份证号");			
 		}else if(!checkingService.checkSFZH(sfzh)){
 			throw new ResourceAlreadyExistsExcepiton();
