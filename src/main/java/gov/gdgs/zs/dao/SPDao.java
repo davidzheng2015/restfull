@@ -212,6 +212,12 @@ public class SPDao extends BaseDao{
 					 this.jdbcTemplate.update("update zs_jg a,zs_jgzx b set a.JGZT_DM='9',a.yxbz='0' where b.id =? and a.id=b.jg_id",
 							 new Object[]{mp.get("SJID")});
 					 break;
+				 case 20://select * from zs_splcbz where lcid='402881831be2e6af011be3c184d2003a' 审批步骤需改为2
+					 this.jdbcTemplate.update("update zs_fzybasp a,zs_fzysws b,zs_ryjbxx c set a.SPZT_DM='2',a.SPR=?,c.RYZT_DM='1',c.YXBZ='1', "
+					 		+ "b.RHSJ=sysdate(),b.FZYZT_DM='1',b.RYSPGCZT_DM='1',b.YXBZ='1',b.FZYZCRQ=sysdate() "
+					 		+ " where a.id =? and a.FZYSWS_ID=b.id and b.ry_id=c.id",
+							 new Object[]{spsq.get("uid"),mp.get("SJID")});
+					 break;
 				 };
 			 }else{
 				 this.jdbcTemplate.update("update zs_spzx set LCBZID=?, QRBJ=null where id =?",
@@ -230,6 +236,12 @@ public class SPDao extends BaseDao{
 				 case 4:
 					 this.jdbcTemplate.update("update zs_jgzx set SPZT='3',ZXRQ=sysdate() where id =?",
 							 new Object[]{mp.get("SJID")});
+					 break;
+				 case 20:
+					 this.jdbcTemplate.update("update zs_fzybasp a,zs_fzysws b,zs_ryjbxx c set a.SPZT_DM='3',a.SPR=?,c.RYZT_DM='2',c.YXBZ='0', "
+					 		+ "b.FZYZT_DM='2',b.RYSPGCZT_DM='3',b.YXBZ='0' "
+					 		+ " where a.id =? and a.FZYSWS_ID=b.id and b.ry_id=c.id",
+							 new Object[]{spsq.get("uid"),mp.get("SJID")});
 					 break;
 				 }
 			 }else{
@@ -292,7 +304,7 @@ public class SPDao extends BaseDao{
 	 @Transactional
 	public void fzyswsba(Map<String, Object> sqxx) throws Exception {
 		String sql ="insert into zs_ryjbxx (XMING,XB_DM,SRI,SFZH,TXDZ,YZBM,DHHM,YDDH,CS_DM,MZ_DM,XL_DM,ZZMM_DM,BYYX,BYSJ,XPIAN,RYZT_DM,RYSF_DM,LRRQ,YXBZ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'3','2',sysdate(),'0')";
-		String sql2 ="insert into zs_fzysws (RY_ID,ZYZGZSBH,ZGZSQFRQ,FZYHYBH,ZW_DM,ZZDW,RHSJ,FZYZT_DM,RYSPGCZT_DM,YXBZ) values(?,?,?,?,?,?,?,'3','1','0')";
+		String sql2 ="insert into zs_fzysws (RY_ID,ZYZGZSBH,ZGZSQFRQ,FZYHYBH,ZW_DM,ZZDW,RHSJ,FZYZT_DM,RYSPGCZT_DM,YXBZ) values(?,?,?,?,?,?,?,'3','2','0')";
 		String sql3 ="insert into zs_fzyjl (FZY_ID,QZNY,XXXX,ZMR) values(?,?,?,?)";
 		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{sqxx.get("XMING"),sqxx.get("XB_DM"),
 				sqxx.get("SRI"),sqxx.get("SFZH"),sqxx.get("TXDZ"),sqxx.get("YZBM"),
@@ -307,7 +319,7 @@ public class SPDao extends BaseDao{
 			this.jdbcTemplate.update(sql3,new Object[]{rs2,rec.get("QZNY"),rec.get("XXXX"),rec.get("ZMR")});
 		}
 		String suid = new Common().newUUID();
-		this.jdbcTemplate.update("insert into zs_fzybasp (ID,FZYSWS_ID,SPZT_DM) values(?,?,'1')",new Object[]{suid,rs2});
+		this.jdbcTemplate.update("insert into zs_fzybasp (ID,FZYSWS_ID,SPZT_DM,SPSJ) values(?,?,'1',sysdate())",new Object[]{suid,rs2});
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
 		spsq.put("sid", suid);
 		spsq.put("lclx", "402881831be2e6af011be3c184d2003a");
