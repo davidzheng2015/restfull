@@ -170,7 +170,7 @@ public class SPDao extends BaseDao{
 			sb.append("		where a.FZYSWS_ID=b.ID and b.RY_ID=c.id and d.ID=c.XB_DM and e.ID=c.CS_DM and f.ID=c.MZ_DM");
 			sb.append("		and g.ID=c.ZZMM_DM and h.ID=b.ZW_DM and a.id=? and i.id=c.xl_dm");
 			Map<String, Object> fzba = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{sjid});
-			fzba.put("fzjl", this.jdbcTemplate.queryForList("select qzny,xxxx,zmr from zs_fzyjl where FZY_ID=? and QZNY is not null",new Object[]{fzba.get("ID")}));
+			fzba.put("fzjl", this.jdbcTemplate.queryForList("select id,qzny,xxxx,zmr from zs_fzyjl where FZY_ID=? and QZNY is not null and qzny<>''",new Object[]{fzba.get("ID")}));
 			return fzba;
 		}
 		return null;
