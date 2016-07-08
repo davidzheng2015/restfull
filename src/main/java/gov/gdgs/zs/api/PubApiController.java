@@ -66,6 +66,12 @@ public class PubApiController {
 		return new ResponseEntity<>(rm,HttpStatus.CREATED);
 	}
 	
+	@RequestMapping(value="/images",method= RequestMethod.POST)
+		public ResponseEntity<?> addImages(@RequestBody Map<String,Object> img) {
+			return null;
+		}
+
+	
 	//非执业备案通过列表
 
 	//非执业备案进度查询   
@@ -81,6 +87,9 @@ public class PubApiController {
 	//执业转非执业进度查询
 	
 	//非执业转籍申请
+	
+	//报备号码查询
+	
 	
 
 	
