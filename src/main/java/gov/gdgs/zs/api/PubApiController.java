@@ -66,6 +66,7 @@ public class PubApiController {
 		return new ResponseEntity<>(rm,HttpStatus.CREATED);
 	}
 	
+	
 	//非执业备案通过列表
 
 	//非执业备案进度查询   
@@ -81,6 +82,9 @@ public class PubApiController {
 	//执业转非执业进度查询
 	
 	//非执业转籍申请
+	
+	//报备号码查询
+	
 	
 
 	
