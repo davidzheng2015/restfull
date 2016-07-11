@@ -65,4 +65,14 @@ public class CustomerDao extends BaseJdbcDao{
 		return obj;
 	}
 
+	public void addCustomer(Map<String, Object> obj) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" insert into zs_customer ");
+		sb.append(" (jg_id,dwmc,dwdz,lxr,lxdh,nsrsbh,nsrsbhdf,adddate,nsrxz) ");
+		sb.append(" values (:JG_ID,:DWMC,:DWDZ,:LXR,:LXDH,:NSRSBH,:NSRSBHDF,:ADDDATE,:NSRSZ)");
+		
+		this.namedParameterJdbcTemplate.update(sb.toString(), obj);
+		
+	}
+
 }

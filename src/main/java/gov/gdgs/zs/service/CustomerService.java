@@ -38,9 +38,8 @@ public class CustomerService {
 		return customerDao.getCustomers(page,pageSize,jid,map);
 	}
 
-	public Map<String, Object> AddCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addCustomer(Map<String, Object> obj) {
+		customerDao.addCustomer(obj);
 	}
 
 	public Map<String, Object> updateCustomer() {
