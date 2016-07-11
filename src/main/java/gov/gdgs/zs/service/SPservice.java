@@ -28,7 +28,11 @@ public class SPservice {
 	public List<Map<String,Object>> cklc(int lid){
 		return spDao.cklc(lid);
 	}
-	
+	/**
+	 * 审批明细查询
+	 * @param pn ps uid lcid cxlx where
+	 * @return
+	 */
 	public Map<String,Object> wspmxcx(int pn,int ps,int uid,int lcid,String cxlx,String where){
 		HashMap<String, Object> qury = new HashMap<String, Object>();
 		if (where != null) {
@@ -42,38 +46,70 @@ public class SPservice {
 				e.printStackTrace();
 			}
 		}
-		return spDao.wspmxcx(pn,ps,uid,lcid,cxlx,qury);
+		switch(cxlx){
+		case "jg":
+			return spDao.jgspcx(pn,ps,uid,lcid,qury);
+		case "ry":
+			return spDao.ryspcx(pn,ps,uid,lcid,qury);
+		};
+		return null;
 	}
-	
+	/**
+	 * 审批项目详细信息
+	 * @param lcid sjid
+	 * @return
+	 */
 	public Object spmxxx(String lcid,String sjid){
 		return spDao.spmxxx(lcid,sjid);
 	}
-	
+	/**
+	 * 上级驳回意见
+	 * @param spid
+	 * @param lcbz
+	 * @return
+	 */
 	public Map<String, Object> sjbhyj(String spid,int lcbz){
 		return spDao.sjbhyj(spid,lcbz);
 	}
-	
+	/**
+	 * 审批提交
+	 * @param spsq
+	 * @param spid
+	 * @param uid
+	 * @param uname
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean sptj(Map<String,Object> spsq,String spid,int uid,String uname)throws Exception{
 		spsq.put("spid", spid);
 		spsq.put("uid", uid);
 		spsq.put("uname", uname);
 		return spDao.sptj(spsq);
 	}
-	
+	/**
+	 * 审批申请
+	 * @param sqxm
+	 * @param splx
+	 * @throws Exception
+	 */
 	public void spsq(Map<String, Object> sqxm,String splx) throws Exception{
 		switch (splx) {
-		case "jgbgsq":
+		case "jgbgsq"://机构变更申请
 			this.spDao.swsbgsq(sqxm);break;
-		//非执业备案
-		case"fzyswsbasq":
-			this.spDao.fzyswsba(sqxm);break;
-		case"jgzxsq":
+		case"jgzxsq"://机构注销申请
 			this.spDao.swszxsq(sqxm);break;
-		case"jghbsq":
+		case"jghbsq"://机构合并申请
 			this.spDao.swshbsq(sqxm);break;
+		case"fzyswsbasq"://非执业备案申请
+			this.spDao.fzyswsba(sqxm);break;
 		}
 	}
-	
+	/**
+	 * 非审批申请
+	 * @param ptxm
+	 * @param splx
+	 * @throws Exception
+	 */
 	public void fspsq(Map<String,Object> ptxm,String splx)throws Exception {
 		 switch (splx) {
 			case "jgbgsq":

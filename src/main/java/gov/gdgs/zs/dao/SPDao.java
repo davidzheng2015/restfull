@@ -73,15 +73,13 @@ public class SPDao extends BaseDao{
 	}
 	
 	/**
-	 * 未审批明细查询
+	 * 机构未审批明细查询
 	 * @param pn,ps,uid,lcid,qury
 	 * @return
 	 */
-	public Map<String,Object> wspmxcx(int pn,int ps,int uid,int lclxid,String cxlx,Map<String,Object> qury){
+	public Map<String,Object> jgspcx(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
 		Condition condition = new Condition();
 		StringBuffer sb = new StringBuffer();
-		switch(cxlx){
-		case "jg":
 			condition.add("e.dwmc", Condition.FUZZY, qury.get("dwmc"));
 			condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
 			condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
@@ -93,44 +91,6 @@ public class SPDao extends BaseDao{
 			sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id and g.USER_ID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 and b.ROLEID=h.ID AND a.LCLXID<>'29' and a.LCLXID=? and e.id=f.id");
 			sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' and e.ID=c.ZSJG_ID group by e.dwmc order by c.TJSJ desc");
 			sb.append("		    LIMIT ?, ? ");
-			break;
-		case "ry":
-			String zdm="FZY_ID";
-			String bm2="zs_fzysws";
-			String bm="";
-			String zd="";
-			String where="";
-			switch(lclxid){
-			case 13:bm="zs_fzyzzy";break;
-			case 14:bm="zs_fzyswszj";break;
-			case 15:bm="zs_fzyzx";break;
-			case 20:bm="zs_fzybasp";zdm="FZYSWS_ID";break;
-			case 43:bm="zs_cyryzx";bm2="zs_cyry";zdm="CYRY_ID";break;
-			case 44:bm="zs_cyryzzy";bm2="zs_cyry";zdm="CYRY_ID";break;
-			case 5:bm="zs_zyswsbasp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
-				where=" and c.ZSJG_ID = l.id ";break;
-			case 6:bm="zs_zyswsbgsp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
-				where=" and c.ZSJG_ID = l.id ";break;
-			}
-			condition.add("f.xming", Condition.FUZZY, qury.get("xming"));
-			condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
-			condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
-			sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
-			sb.append("		f.xming,f.sfzh,k.MC as xb, ");
-			sb.append("		d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,a.id as lcid,b.lcbz,");
-			sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz"+zd+"");
-			sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,fw_user_role g,zs_ryjbxx f,"+bm+" i,"+bm2+" j,");
-			sb.append("		fw_role h,dm_xb k,(SELECT @rownum:=?) zs_jg");
-			sb.append("		"+condition.getSql()+where+"  ");
-			sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id ");
-			sb.append("		 AND d.ID=a.LCLXID AND a.ZTBJ=2 and g.USER_ID=?");
-			sb.append("		and b.ROLEID=h.ID  AND a.LCLXID<>'29' and a.LCLXID=?");
-			sb.append("		 and c.SJID=i.ID and j.ID=i."+zdm+" and f.ID=j.RY_ID and k.ID=f.XB_DM");
-			sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' ");
-			sb.append("		  group by c.sjid order by c.TJSJ desc");
-			sb.append("		    LIMIT ?, ? ");
-			break;
-		};
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
 		params.add(uid);
@@ -142,7 +102,74 @@ public class SPDao extends BaseDao{
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", ls);
 		if(ls.size()!=0){
-			String lcbzmx = this.jdbcTemplate.queryForObject("select group_concat(concat(a.LCBZ,'.',b.DESCRIPTION)) as lcbzmx from zs_splcbz a,fw_role b where a.LCID=? and a.ROLEID=b.ID order by a.LCBZ",new Object[]{ls.get(0).get("lcid")}, String.class);
+			String lcbzmx = this.jdbcTemplate.queryForObject("select group_concat(concat(a.LCBZ,'.',b.DESCRIPTION)) as lcbzmx from zs_splcbz a,fw_role b where a.LCID=? and a.ROLEID=b.ID order by a.LCBZ",
+					new Object[]{ls.get(0).get("lcid")}, String.class);
+			ob.put("lcbzmx", lcbzmx);
+			ob.put("dqlcbz", ls.get(0).get("dqlcbz"));
+		}
+		Map<String, Object> meta = new HashMap<>();
+		meta.put("pageNum", pn);
+		meta.put("pageSize", ps);
+		meta.put("pageTotal",total);
+		meta.put("pageAll",(total + ps - 1) / ps);
+		ob.put("page", meta);
+		return ob;
+	}
+	/**
+	 * 人员未审批明细查询
+	 * @param pn,ps,uid,lcid,qury
+	 * @return
+	 */
+	public Map<String,Object> ryspcx(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
+		Condition condition = new Condition();
+		StringBuffer sb = new StringBuffer();
+		String zdm="FZY_ID";
+		String bm2="zs_fzysws";
+		String bm="";
+		String zd="";
+		String where="";
+		switch(lclxid){
+		case 13:bm="zs_fzyzzy";break;
+		case 14:bm="zs_fzyswszj";break;
+		case 15:bm="zs_fzyzx";break;
+		case 20:bm="zs_fzybasp";zdm="FZYSWS_ID";break;
+		case 43:bm="zs_cyryzx";bm2="zs_cyry";zdm="CYRY_ID";break;
+		case 44:bm="zs_cyryzzy";bm2="zs_cyry";zdm="CYRY_ID";break;
+		case 5:bm="zs_zyswsbasp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 6:bm="zs_zyswsbgsp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
+			where=" and c.ZSJG_ID = l.id ";break;
+		}
+		condition.add("f.xming", Condition.FUZZY, qury.get("xming"));
+		condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
+		condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
+		sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
+		sb.append("		f.xming,f.sfzh,k.MC as xb, ");
+		sb.append("		d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,a.id as lcid,b.lcbz,");
+		sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz"+zd+"");
+		sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,fw_user_role g,zs_ryjbxx f,"+bm+" i,"+bm2+" j,");
+		sb.append("		fw_role h,dm_xb k,(SELECT @rownum:=?) zs_jg");
+		sb.append("		"+condition.getSql()+where+"  ");
+		sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id ");
+		sb.append("		 AND d.ID=a.LCLXID AND a.ZTBJ=2 and g.USER_ID=?");
+		sb.append("		and b.ROLEID=h.ID  AND a.LCLXID<>'29' and a.LCLXID=?");
+		sb.append("		 and c.SJID=i.ID and j.ID=i."+zdm+" and f.ID=j.RY_ID and k.ID=f.XB_DM");
+		sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' ");
+		sb.append("		  group by c.sjid order by c.TJSJ desc");
+		sb.append("		    LIMIT ?, ? ");
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add(uid);
+		params.add(lclxid);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
+		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", ls);
+		if(ls.size()!=0){
+			String lcbzmx = this.jdbcTemplate.queryForObject("select group_concat(concat(a.LCBZ,'.',b.DESCRIPTION)) as lcbzmx from zs_splcbz a,fw_role b where a.LCID=? and a.ROLEID=b.ID order by a.LCBZ",
+					new Object[]{ls.get(0).get("lcid")}, String.class);
 			ob.put("lcbzmx", lcbzmx);
 			ob.put("dqlcbz", ls.get(0).get("dqlcbz"));
 		}
@@ -156,30 +183,43 @@ public class SPDao extends BaseDao{
 	}
 	
 	/**
-	 * 事务所审批详细信息查看
+	 * 审批详细信息查看
 	 * @param sjid
 	 * @return List
 	 */
 	public Object spmxxx (String lcid,String sjid){
+		StringBuffer sb = new StringBuffer();
 		switch (lcid) {
-		case "jgbgsp":
+		case "jgbgsp"://机构变更审批详细信息
 			return this.jdbcTemplate.queryForList("select MC,XZHI,JZHI from zs_jgbgxxb where jgbgspb_id = ?",new Object[]{sjid});
-		case "jgzxsp":
+		case "jgzxsp"://机构注销审批详细信息
 			return this.jdbcTemplate.queryForMap("select b.MC as zxyy,a.BZ as zxsm from zs_jgzx a,dm_jgzxyy b where a.id=? and b.ID=a.zxyy_id ",new Object[]{sjid});
-		case "jghbsp":
+		case "jghbsp"://机构合并审批详细信息
 			return this.jdbcTemplate.queryForMap("select * from zs_jghb a where a.id=? ",new Object[]{sjid});
-		case "zybgsp":
+		case "zybgsp"://执业变更审批详细信息
 			return this.jdbcTemplate.queryForList("select MC,XZHI,JZHI from zs_zyswsbgxxb where bgspb_id = ?",new Object[]{sjid});
-		case "fzyswsba":
-			StringBuffer sb = new StringBuffer();
+		case "fzyba"://非执业备案审批详细信息
 			sb.append("select b.ID,c.XMING,d.MC as XB,c.SFZH,c.TXDZ,c.SRI,c.YZBM,c.DHHM,c.BYYX,c.YDDH,e.MC as CS,g.MC as ZZMM,c.BYSJ,c.XPIAN,");
-			sb.append("		b.ZYZGZSBH,b.ZGZSQFRQ,b.FZYHYBH, h.MC as ZW,b.ZZDW,DATE_FORMAT(b.RHSJ,'%Y-%m-%d') AS RHSJ,i.mc as XL");
+			sb.append("		b.ZYZGZSBH,DATE_FORMAT(b.ZGZSQFRQ,'%Y-%m-%d') as ZGZSQFRQ,b.FZYHYBH, h.MC as ZW,b.ZZDW,DATE_FORMAT(b.RHSJ,'%Y-%m-%d') AS RHSJ,i.mc as XL");
 			sb.append("		from zs_fzybasp a,zs_fzysws b,zs_ryjbxx c,dm_xb d,dm_cs e,dm_mz f,dm_zzmm g,dm_zw h,dm_xl i");
 			sb.append("		where a.FZYSWS_ID=b.ID and b.RY_ID=c.id and d.ID=c.XB_DM and e.ID=c.CS_DM and f.ID=c.MZ_DM");
 			sb.append("		and g.ID=c.ZZMM_DM and h.ID=b.ZW_DM and a.id=? and i.id=c.xl_dm");
 			Map<String, Object> fzba = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{sjid});
-			fzba.put("fzjl", this.jdbcTemplate.queryForList("select id,qzny,xxxx,zmr from zs_fzyjl where FZY_ID=? and QZNY is not null and qzny<>''",new Object[]{fzba.get("ID")}));
+			fzba.put("fzjl", this.jdbcTemplate.queryForList("select id,qzny,xxxx,zmr from zs_fzyjl where FZY_ID=? and QZNY is not null and qzny<>'' order by qzny",new Object[]{fzba.get("ID")}));
 			return fzba;
+		case "zyba"://执业备案审批详细信息
+			sb.append("		select c.ID,c.XMING,d.MC as XB,c.SFZH,c.TXDZ,c.SRI,c.YZBM,c.DHHM,c.BYYX,c.YDDH,e.MC as CS,g.MC as ZZMM,c.BYSJ,c.XPIAN,");
+			sb.append("		b.ZYZGZSBH,DATE_FORMAT(b.ZGZSQFRQ,'%Y-%m-%d') as ZGZSQFRQ, h.MC as ZW,DATE_FORMAT(b.RHSJ,'%Y-%m-%d') AS RHSJ,i.mc as XL,");
+			sb.append("			DATE_FORMAT(b.SWDLYWKSSJ,'%Y-%m-%d') as SWDLYWKSSJ,b.ZYZSBH,DATE_FORMAT(b.ZYZCRQ,'%Y-%m-%d') as ZYZCRQ,b.GRHYBH,");
+			sb.append("		case b.czr_dm when 1 then \"是\"  when 2 then \"否\" else null end as CZR,");
+			sb.append("		case b.fqr_dm when 1 then \"是\"  when 2 then \"否\" else null end as FQR,");
+			sb.append("		b.CZE,c.RYDAZT");
+			sb.append("		from zs_zyswsbasp a,zs_zysws b,zs_ryjbxx c,dm_xb d,dm_cs e,dm_mz f,dm_zzmm g,dm_zw h,dm_xl i");
+			sb.append("		where a.ZYSWS_ID=b.ID and b.RY_ID=c.id and d.ID=c.XB_DM and e.ID=c.CS_DM and f.ID=c.MZ_DM");
+			sb.append("		and g.ID=c.ZZMM_DM and h.ID=b.ZW_DM  and i.id=c.xl_dm and a.id=?");
+			Map<String, Object> zyba = this.jdbcTemplate.queryForMap(sb.toString(),new Object[]{sjid});
+			zyba.put("zyjl", this.jdbcTemplate.queryForList("select id,qzny,xxxx,zmr from zs_jl where ry_ID=? and QZNY is not null and qzny<>'' order by qzny",new Object[]{zyba.get("ID")}));
+			return zyba;
 		}
 		return null;
 	}
@@ -190,7 +230,6 @@ public class SPDao extends BaseDao{
 	  * @return boolean
 	  * @throws Exception
 	  */
-	 @Transactional
 		public boolean sptj(Map<String,Object> spsq) throws Exception{
 		 StringBuffer sb = new StringBuffer();
 		 sb.append("	 select a.ID,b.LCBZ,b.SPBZLX,b.BHBZLX,b.LCID,c.LCLXID,b.ROLEID,e.SJID from zs_spxx a,zs_splcbz b,zs_splc c,zs_spzx e,fw_user_role f ");
@@ -224,6 +263,12 @@ public class SPDao extends BaseDao{
 							 new Object[]{mp.get("SJID")});
 					 this.jdbcTemplate.update("update zs_jg a,zs_jgzx b set a.JGZT_DM='9',a.yxbz='0' where b.id =? and a.id=b.jg_id",
 							 new Object[]{mp.get("SJID")});
+					 break;
+				 case 5:
+					 this.jdbcTemplate.update("update zs_zyswsbasp a,zs_zysws b,zs_ryjbxx c set a.SPZT_DM='2',a.YJIAN=?,a.SPRQ=sysdate(),a.SPR=?,c.RYZT_DM='1',c.YXBZ='1', "
+					 		+ "b.RHSJ=sysdate(),b.ZYZT_DM='1',b.RYSPGCZT_DM='1',b.YXBZ='1',b.ZYZCRQ=sysdate() "
+					 		+ " where a.id =? and a.ZYSWS_ID=b.id and b.ry_id=c.id",
+							 new Object[]{spsq.get("spyj"),spsq.get("uname"),mp.get("SJID")});
 					 break;
 				 case 6:
 					 this.jdbcTemplate.update("update zs_fzybasp set SPZT_DM='8',YJIAN=?,SPRQ=sysdate(),SPR_ID=? where id =?",
@@ -268,6 +313,12 @@ public class SPDao extends BaseDao{
 					 this.jdbcTemplate.update("update zs_jgzx set SPZT='3',ZXRQ=sysdate() where id =?",
 							 new Object[]{mp.get("SJID")});
 					 break;
+				 case 5:
+					 this.jdbcTemplate.update("update zs_zyswsbasp a,zs_zysws b,zs_ryjbxx c set a.SPZT_DM='3',a.YJIAN=?,a.SPRQ=sysdate(),a.SPR=?,c.RYZT_DM='2',c.YXBZ='0', "
+					 		+ "b.ZYZT_DM='2',b.RYSPGCZT_DM='3',b.YXBZ='0' "
+					 		+ " where a.id =? and a.ZYSWS_ID=b.id and b.ry_id=c.id",
+							 new Object[]{spsq.get("spyj"),spsq.get("uname"),mp.get("SJID")});
+					 break;
 				 case 6:
 					 this.jdbcTemplate.update("update zs_zyswsbgsp set SPZT_DM='3',YJIAN=?,SPRQ=sysdate(),SPR=? where id =?",
 							 new Object[]{spsq.get("spyj"),spsq.get("uid"),mp.get("SJID")});
@@ -302,7 +353,6 @@ public class SPDao extends BaseDao{
 		 * 事务所变更审批项目申请
 		 * @param spxm
 		 */
-	 @Transactional
 	public void swsbgsq(Map<String, Object> spxm) throws Exception{
 		List<Map<String, Object>> forupdate = (List<Map<String, Object>>) spxm.remove("bgjl");//获取变更项目
 		int id=(int)spxm.remove("uid");
@@ -338,7 +388,6 @@ public class SPDao extends BaseDao{
 	  * @param sqxx
 	  * @throws Exception
 	  */
-	 @Transactional
 	public void fzyswsba(Map<String, Object> sqxx) throws Exception {
 		String sql ="insert into zs_ryjbxx (XMING,XB_DM,SRI,SFZH,TXDZ,YZBM,DHHM,YDDH,CS_DM,MZ_DM,XL_DM,ZZMM_DM,BYYX,BYSJ,XPIAN,RYZT_DM,RYSF_DM,LRRQ,YXBZ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'3','2',sysdate(),'0')";
 		String sql2 ="insert into zs_fzysws (RY_ID,ZYZGZSBH,ZGZSQFRQ,FZYHYBH,ZW_DM,ZZDW,RHSJ,FZYZT_DM,RYSPGCZT_DM,YXBZ) values(?,?,?,?,?,?,?,'3','2','0')";
@@ -368,7 +417,6 @@ public class SPDao extends BaseDao{
 	  * @param sqxm
 	  * @throws Exception
 	  */
-	@Transactional
 	public void swszxsq(Map<String, Object> sqxm) throws Exception{
 		String sql ="insert into zs_jgzx (ZXYY_ID,JG_ID,BZ,SPZT) values(?,?,?,'1')";
 		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{sqxm.get("zxyy"),sqxm.get("jgid"),sqxm.get("zxsm")},new String[] {"ID"});
@@ -394,13 +442,14 @@ public class SPDao extends BaseDao{
 		spsq.put("jgid", sqxm.get("jgid"));
 		swsSPqq(spsq);
 	}
+	
+	
 	/**
 	  * 审批申请处理方法
 	  * @param Map:sid,lclx,(选填：jgid,csdm)
 	  * @return boolean
 	  * @throws Exception
 	  */
-	 @Transactional
 	 boolean swsSPqq(Map<String,Object> spsq) throws Exception{
 		String sql ="select b.id,b.lcbz,b.roleid from zs_splcbz b where  b.LCID =? order by b.LCBZ";
 		 List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sql,new Object[]{spsq.get("lclx")});//查询该流程需要步骤
@@ -433,7 +482,6 @@ public class SPDao extends BaseDao{
 		 * 普通项目更新
 		 * @param ptxm
 		 */
-		 @Transactional
 		public void updatePTXM(Map<String, Object> ptxm)throws Exception{
 			List<Map<String, Object>> forupdate = (List<Map<String, Object>>) ptxm.remove("bgjl");//获取并移除bgjl属性
 			Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
