@@ -38,7 +38,7 @@ public class AddsdsbService implements IAddsdsbService{
 	}
 	
 	 
-		public Map<String, Object> getSwsjbqkb(int page, int pageSize, String where) {
+		public Map<String, Object> getSwsjbqkb(int page, int pageSize,int Jgid,int Id, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -50,15 +50,15 @@ public class AddsdsbService implements IAddsdsbService{
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = addsdsbDao.getSwsjbqkb(page, pageSize, map);
+			Map<String, Object> rs = addsdsbDao.getSwsjbqkb(page, pageSize, Jgid,Id, map);
 			return rs;
 		}
 		public Map<String, Object> getSwsjbqkbById(String id) {
 			Map<String,Object> obj = addsdsbDao.getSwsjbqkbById(id);
 			return obj;
 		}
-		public Map<String, Object> getOK() {
-			Map<String,Object> obj = addsdsbDao.getLrze();
+		public Map<String, Object> getOK(String jgid) {
+			Map<String,Object> obj = addsdsbDao.getLrze(jgid);
 			return obj;
 		}
 		
@@ -78,7 +78,7 @@ public class AddsdsbService implements IAddsdsbService{
 		
 		
 		//经营规模统计表
-		public Map<String, Object> getJygmtjb(int page, int pageSize, String where) {
+		public Map<String, Object> getJygmtjb(int page, int pageSize,int Id,int Jgid, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -90,7 +90,7 @@ public class AddsdsbService implements IAddsdsbService{
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = addsdsbDao.getJygmtjb(page, pageSize, map);
+			Map<String, Object> rs = addsdsbDao.getJygmtjb(page, pageSize,Id,Jgid, map);
 			return rs;
 		}
 		public Map<String, Object> getJygmtjbById(String id) {
@@ -98,8 +98,48 @@ public class AddsdsbService implements IAddsdsbService{
 			return obj;
 		}
 		
-		public Map<String, Object> getOK1() {
-			Map<String,Object> obj = addsdsbDao.getOk();
+		public Map<String, Object> getOK1(String jgid) {
+			Map<String,Object> obj = addsdsbDao.getOk(jgid);
+			return obj;
+		}
+		
+		//鉴证业务情况统计表
+		
+		@Override
+		public Map<String, Object> AddJzywqktjb (Map<String, Object> obj) {	
+			Map<String,Object> map = new LinkedHashMap<String,Object>();
+			String rs= iaddsdsbDao.AddJzywqktjb(obj);
+			map.put("id", rs);
+			return map;
+
+		}
+		
+		@Override
+		public void UpdateJzywqktjb(Map<String, Object> obj) {
+			iaddsdsbDao.UpdateJzywqktjb(obj);
+		}
+		public Map<String, Object> getJzywqktjb(int page, int pageSize,int Id,int Jgid, String where) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			if (where != null) {
+				try {
+					where = java.net.URLDecoder.decode(where, "UTF-8");
+					ObjectMapper mapper = new ObjectMapper();
+					map = mapper.readValue(where,
+							new TypeReference<Map<String, Object>>() {
+							});
+				} catch (Exception e) {
+				}
+			}		
+			Map<String, Object> rs = addsdsbDao.getJzywqktjb(page, pageSize, Id,Jgid,map);
+			return rs;
+		}
+		public Map<String, Object> getJzywqktjbById(String id) {
+			Map<String,Object> obj = addsdsbDao.getJzywqktjbById(id);
+			return obj;
+		}
+		
+		public Map<String, Object> getUpyear(String jgid){
+			Map<String, Object >obj=addsdsbDao.getUpyear(jgid);
 			return obj;
 		}
 

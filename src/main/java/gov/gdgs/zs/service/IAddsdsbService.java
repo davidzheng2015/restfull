@@ -9,4 +9,7 @@ public interface IAddsdsbService {
 	
 	public Map<String,Object> AddJygmtjb ( Map <String,Object> obj);
 	public void UpdateJygmtjb(Map<String,Object> obj);
+	
+	public Map<String,Object> AddJzywqktjb ( Map <String,Object> obj);
+	public void UpdateJzywqktjb(Map<String,Object> obj);
 }

@@ -363,7 +363,7 @@ public class RyglDao extends BaseDao{
 		sb.append("		and a.RY_ID = h.ID");
 		sb.append("		and a.RY_ID=?");
 		sb.append("		order by a.ID");
-		String sql = "SELECT @rownum:=@rownum+1 as 'key',a.qzny,a.xxxx,a.zmr FROM zs_fzyjl a,(select @rownum:=0) zs_sws,zs_fzysws b WHERE a.xxxx is not null and a.FZY_ID = b.ID and b.RY_ID=? order by a.ID";
+		String sql = "SELECT @rownum:=@rownum+1 as 'key',a.qzny,a.xxxx,a.zmr FROM zs_fzyjl a,(select @rownum:=0) zs_sws,zs_fzysws b WHERE a.xxxx is not null and a.xxxx<>'' and a.FZY_ID = b.ID and b.RY_ID=? order by a.ID";
 		List<Map<String, Object>> tl = this.jdbcTemplate.queryForList(sb.toString(),new Object[]{id});
 		Map<String,Object> ll =tl.get(0);
 		ll.put("ryjl", this.jdbcTemplate.queryForList(sql,new Object[]{id}));

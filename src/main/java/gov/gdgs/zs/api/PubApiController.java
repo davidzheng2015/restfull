@@ -54,7 +54,7 @@ public class PubApiController {
 	@RequestMapping(value = "/ba/fzysws", method = RequestMethod.POST)
 	public ResponseEntity<?> addFzyswsBa (@RequestBody Map<String, Object> obj) throws Exception{
 		String sfzh = (String)obj.get("SFZH");
-		if(sfzh != null){
+		if(sfzh == null && sfzh.isEmpty()){
 			throw new InvalidRequestException("填报资料不全：缺失身份证号");			
 		}else if(!checkingService.checkSFZH(sfzh)){
 			throw new ResourceAlreadyExistsExcepiton();
@@ -65,6 +65,7 @@ public class PubApiController {
 				ResponseMessage.Type.success, "备案申请提交成功");
 		return new ResponseEntity<>(rm,HttpStatus.CREATED);
 	}
+	
 	
 	//非执业备案通过列表
 
@@ -81,6 +82,9 @@ public class PubApiController {
 	//执业转非执业进度查询
 	
 	//非执业转籍申请
+	
+	//报备号码查询
+	
 	
 
 	
