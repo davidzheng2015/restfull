@@ -63,7 +63,7 @@ public class SPservice {
 	public void spsq(Map<String, Object> sqxm,String splx) throws Exception{
 		switch (splx) {
 		case "jgbgsq":
-			this.spDao.swsbgsq(sqxm,(int)sqxm.get("uid"),(int)sqxm.get("jgid"));break;
+			this.spDao.swsbgsq(sqxm);break;
 		//非执业备案
 		case"fzyswsbasq":
 			this.spDao.fzyswsba(sqxm);break;
