@@ -37,12 +37,12 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		obj.put("id", uuid);
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd ");
-		sb.append("(id,jg_id,nd,timevalue,zgywsr,zgywsr1,zgywcb,zgywcb1,zgywsj,zgywsj1,zgwylr,zgwylr1,qtywlr,qtywlr1,yyfy,yyfy1,glfy,glfy1,");
+		sb.append("(id,jg_id,use_id,nd,timevalue,zgywsr,zgywsr1,zgywcb,zgywcb1,zgywsj,zgywsj1,zgwylr,zgwylr1,qtywlr,qtywlr1,yyfy,yyfy1,glfy,glfy1,");
 		sb.append(" cwfy,cwfy1,yylr,yylr1,tzsy,tzsy1,btsr,btsr1,yywsr,yywsr1,yywzc,yywzc1,lrze,lrze1,sds,sds1,jlr,jlr1,");
 		sb.append("  csczsy,csczsy1,zhss,zhss1,zcbglr,zcbglr1,gjbglr,gjbglr1,zwczss,zwczss1,qt,qt1,dlswdjhs,dlswdjsr,");
 		sb.append("  dlswdjsr1,dlnssbhs,dlnssbsr,dlnssbsr1,dlnsschs,dlnsscsr,dlnsscsr1,dljzjzhs,dljzjzsr,dljzjzsr1,spgwzxhs,");
 		sb.append("  spgwzxsr,spgwzxsr1,dlsqswfyhs,dlsqswfysr,dlsqswfysr1,pxhs,pxsr,pxsr1,qtzyywsrhs,qtzyywsr,qtzyywsr1,sz,zgkj,zbr,ztbj)");
-		sb.append("values (:id,:jg_id,:nd,:timevalue,:zgywsr,:zgywsr1,:zgywcb,:zgywcb1,:zgywsj,:zgywsj1,:zgwylr,:zgwylr1,:qtywlr,:qtywlr1,:yyfy,:yyfy1,:glfy,:glfy1,");
+		sb.append("values (:id,:jg_id,:use_id,:nd,:timevalue,:zgywsr,:zgywsr1,:zgywcb,:zgywcb1,:zgywsj,:zgywsj1,:zgwylr,:zgwylr1,:qtywlr,:qtywlr1,:yyfy,:yyfy1,:glfy,:glfy1,");
 		sb.append("  :cwfy,:cwfy1,:yylr,:yylr1,:tzsy,:tzsy1,:btsr,:btsr1,:yywsr,:yywsr1,:yywzc,:yywzc1,:lrze,:lrze1,:sds,:sds1,:jlr,:jlr1,");
 		sb.append("  :csczsy,:csczsy1,:zhss,:zhss1,:zcbglr,:zcbglr1,:gjbglr,:gjbglr1,:zwczss,:zwczss1,:qt,:qt1,:dlswdjhs,:dlswdjsr,");
 		sb.append("  :dlswdjsr1,:dlnssbhs,:dlnssbsr,:dlnssbsr1,:dlnsschs,:dlnsscsr,:dlnsscsr1,:dljzjzhs,:dljzjzsr,:dljzjzsr1,:spgwzxhs,");
@@ -57,7 +57,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 	}
 
 
-	public Map<String, Object> getlrb(int page, int pageSize,
+	public Map<String, Object> getlrb(int page, int pageSize,int Jgid,
 			Map<String, Object> where) {
 
 		Condition condition = new Condition();
@@ -73,12 +73,13 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		sb.append(" FROM " + Config.PROJECT_SCHEMA
 				+ "zs_cwbb_lrgd a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=? ORDER BY a.nd DESC ) AS t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
 		params.add(0, pageSize * (page - 1));
+		params.add(Jgid);	
 		params.add(startIndex);
 		params.add(pageSize);
 
@@ -96,7 +97,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		obj.put("total", total);
 		obj.put("pageSize", pageSize);
 		obj.put("current", page);
-
+		obj.put("jg_id", Jgid);
 		return obj;
 	}
 	public Map<String, Object> getLrbById(String id) {
@@ -108,7 +109,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 	public void updateLrb(Map <String,Object> obj) {
 		 StringBuffer sb = new StringBuffer("update "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrgd ");
-		sb.append(" set jg_id=:jg_id,nd=:nd,timevalue=:timevalue,zgywsr=:zgywsr,zgywsr1=:zgywsr1,zgywcb=:zgywcb,zgywcb1=:zgywcb1,zgywsj=:zgywsj,zgywsj1=:zgywsj1,");
+		sb.append(" set jg_id=:jg_id,use_id=:use_id,nd=:nd,timevalue=:timevalue,zgywsr=:zgywsr,zgywsr1=:zgywsr1,zgywcb=:zgywcb,zgywcb1=:zgywcb1,zgywsj=:zgywsj,zgywsj1=:zgywsj1,");
 		sb.append(" zgwylr=:zgwylr,zgwylr1=:zgwylr1,qtywlr=:qtywlr,qtywlr1=:qtywlr1,yyfy=:yyfy,yyfy1=:yyfy1,glfy=:glfy,glfy1=:glfy1,");
 		sb.append(" cwfy=:cwfy,cwfy1=:cwfy1,yylr=:yylr,yylr1=:yylr1,tzsy=:tzsy,tzsy1=:tzsy1,btsr=:btsr,btsr1=:btsr1,yywsr=:yywsr,yywsr1=:yywsr1,");
 		sb.append(" yywzc=:yywzc,yywzc1=:yywzc1,lrze=:lrze,lrze1=:lrze1,sds=:sds,sds1=:sds1,jlr=:jlr,jlr1=:jlr1,");
@@ -124,7 +125,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 	
 	}
 	
-	public Map<String, Object> getLrfpb(int page, int pageSize,
+	public Map<String, Object> getLrfpb(int page, int pageSize,int Jgid,
 			Map<String, Object> where) {
 
 		Condition condition = new Condition();
@@ -138,12 +139,13 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		sb.append(" FROM " + Config.PROJECT_SCHEMA
 				+ "zs_cwbb_lrfp a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=? ORDER BY a.nd DESC ) AS t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
 		params.add(0, pageSize * (page - 1));
+		params.add(Jgid);
 		params.add(startIndex);
 		params.add(pageSize);
 
@@ -161,7 +163,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		obj.put("total", total);
 		obj.put("pageSize", pageSize);
 		obj.put("current", page);
-
+		obj.put("jg_id", Jgid);
 		return obj;
 	}
 	
@@ -177,10 +179,10 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 		obj.put("id", uuid);
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrfp ");
-		sb.append("(id,jg_id,nd,dwfzr,ckfzr,fhr,zbr,jlr,jlrupyear,ncwfplr,ncwfplrupyear,qtzr,qtzrupyear,");	
+		sb.append("(id,jg_id,use_id,nd,dwfzr,ckfzr,fhr,zbr,jlr,jlrupyear,ncwfplr,ncwfplrupyear,qtzr,qtzrupyear,");	
 		sb.append(" kfplr,kfplrupyear,yygj,yygjupyear,jlfljj,jlfljjupyear,cbjj,cbjjupyear,qyfzjj,qyfzjjupyear,");
 		sb.append(" lrghtz,lrghtzupyear,tzzfplr,tzzfplrupyear,yxgl,yxglupyear,ptgl,ptglupyear,zhptgl,zhptglupyear,wfplr,wfplrupyear,ztbj)");
-		sb.append("values (:id,:jg_id,:nd,:dwfzr,:ckfzr,:fhr,:zbr,:jlr,:jlrupyear,:ncwfplr,:ncwfplrupyear,:qtzr,:qtzrupyear,");
+		sb.append("values (:id,:jg_id,:use_id,:nd,:dwfzr,:ckfzr,:fhr,:zbr,:jlr,:jlrupyear,:ncwfplr,:ncwfplrupyear,:qtzr,:qtzrupyear,");
 		sb.append(" :kfplr,:kfplrupyear,:yygj,:yygjupyear,:jlfljj,:jlfljjupyear,:cbjj,:cbjjupyear,:qyfzjj,:qyfzjjupyear,");
 		sb.append(" :lrghtz,:lrghtzupyear,:tzzfplr,:tzzfplrupyear,:yxgl,:yxglupyear,:ptgl,:ptglupyear,");
 		sb.append(" :zhptgl,:zhptglupyear,:wfplr,:wfplrupyear,:ztbj)");
@@ -197,7 +199,7 @@ public class LrbDao extends BaseJdbcDao implements ILrbDao{
 	public void updateLrfpb(Map <String,Object> obj) {
 		 StringBuffer sb = new StringBuffer("update "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_lrfp ");
-		sb.append(" set jg_id=:jg_id,nd=:nd,dwfzr=:dwfzr,ckfzr=:ckfzr,fhr=:fhr,zbr=:zbr,jlr=:jlr,jlrupyear=:jlrupyear,");
+		sb.append(" set jg_id=:jg_id,use_id=:use_id,nd=:nd,dwfzr=:dwfzr,ckfzr=:ckfzr,fhr=:fhr,zbr=:zbr,jlr=:jlr,jlrupyear=:jlrupyear,");
 		sb.append(" ncwfplr=:ncwfplr,ncwfplrupyear=:ncwfplrupyear,qtzr=:qtzr,qtzrupyear=:qtzrupyear,kfplr=:kfplr,");
 		sb.append(" kfplrupyear=:kfplrupyear,yygj=:yygj,yygjupyear=:yygjupyear,jlfljj=:jlfljj,jlfljjupyear=:jlfljjupyear,cbjj=:cbjj,");
 		sb.append(" cbjjupyear=:cbjjupyear,qyfzjj=:qyfzjj,qyfzjjupyear=:qyfzjjupyear,lrghtz=:lrghtz,lrghtzupyear=:lrghtzupyear,tzzfplr=:tzzfplr,");

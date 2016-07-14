@@ -43,7 +43,7 @@ public class AddcwbbService implements IAddcwbbService {
 	}
 	
 	 //现金流量表
-	public Map<String, Object> getXjllb(int page, int pageSize, String where) {
+	public Map<String, Object> getXjllb(int page, int pageSize, int Jgid,String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (where != null) {
 			try {
@@ -55,7 +55,7 @@ public class AddcwbbService implements IAddcwbbService {
 			} catch (Exception e) {
 			}
 		}		
-		Map<String, Object> rs = addcwbbDao.getXjllb(page, pageSize, map);
+		Map<String, Object> rs = addcwbbDao.getXjllb(page, pageSize,Jgid, map);
 		return rs;
 	}
 	public Map<String, Object> getXjllbById(String id) {
@@ -79,7 +79,7 @@ public class AddcwbbService implements IAddcwbbService {
 	}
 	
 	 //资产负债表
-		public Map<String, Object> getZcfzb(int page, int pageSize, String where) {
+		public Map<String, Object> getZcfzb(int page, int pageSize,int Jgid, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -91,7 +91,7 @@ public class AddcwbbService implements IAddcwbbService {
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = addcwbbDao.getZcfzb(page, pageSize, map);
+			Map<String, Object> rs = addcwbbDao.getZcfzb(page, pageSize,Jgid, map);
 			return rs;
 		}
 		public Map<String, Object> getZcfzbById(String id) {
@@ -115,7 +115,7 @@ public class AddcwbbService implements IAddcwbbService {
 		}
 		
 		 //资产负债表
-		public Map<String, Object> getZcmxb(int page, int pageSize, String where) {
+		public Map<String, Object> getZcmxb(int page, int pageSize,int Jgid, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -127,7 +127,7 @@ public class AddcwbbService implements IAddcwbbService {
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = addcwbbDao.getZcmxb(page, pageSize, map);
+			Map<String, Object> rs = addcwbbDao.getZcmxb(page, pageSize,Jgid, map);
 			return rs;
 		}
 		public Map<String, Object> getZcmxbById(String id) {
