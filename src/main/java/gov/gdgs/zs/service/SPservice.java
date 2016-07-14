@@ -29,7 +29,7 @@ public class SPservice {
 		return spDao.cklc(lid);
 	}
 	
-	public Map<String,Object> wspmxcx(int pn,int ps,int uid,int lcid,String where){
+	public Map<String,Object> wspmxcx(int pn,int ps,int uid,int lcid,String cxlx,String where){
 		HashMap<String, Object> qury = new HashMap<String, Object>();
 		if (where != null) {
 			try {
@@ -42,10 +42,10 @@ public class SPservice {
 				e.printStackTrace();
 			}
 		}
-		return spDao.wspmxcx(pn,ps,uid,lcid,qury);
+		return spDao.wspmxcx(pn,ps,uid,lcid,cxlx,qury);
 	}
 	
-	public List<Map<String, Object>> spmxxx(String lcid,int sjid){
+	public Object spmxxx(String lcid,String sjid){
 		return spDao.spmxxx(lcid,sjid);
 	}
 	
