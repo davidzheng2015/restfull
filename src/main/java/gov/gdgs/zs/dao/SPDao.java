@@ -73,11 +73,11 @@ public class SPDao extends BaseDao{
 	}
 	
 	/**
-	 * 机构未审批明细查询
+	 * 机构设立未审批明细查询
 	 * @param pn,ps,uid,lcid,qury
 	 * @return
 	 */
-	public Map<String,Object> jgspcx(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
+	public Map<String,Object> jgslspcx(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
 		Condition condition = new Condition();
 		StringBuffer sb = new StringBuffer();
 			condition.add("e.dwmc", Condition.FUZZY, qury.get("dwmc"));
@@ -85,12 +85,55 @@ public class SPDao extends BaseDao{
 			condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
 			sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
 			sb.append("		e.dwmc, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,e.id as jgid,a.id as lcid,b.lcbz,");
-			sb.append("		case f.yjxx when f.yjxx then f.yjxx else '无' end as yjxx,group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
-			sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,zs_jg e,zs_jgyjxxb f,fw_user_role g,fw_role h,(SELECT @rownum:=?) zs_jg");
+			sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
+			sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,zs_jg e,fw_user_role g,fw_role h,(SELECT @rownum:=?) zs_jg");
 			sb.append("		"+condition.getSql()+" ");
-			sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id and g.USER_ID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 and b.ROLEID=h.ID AND a.LCLXID<>'29' and a.LCLXID=? and e.id=f.id");
+			sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id and g.USER_ID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 and b.ROLEID=h.ID AND a.LCLXID<>'29' and a.LCLXID=? ");
 			sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' and e.ID=c.ZSJG_ID group by e.dwmc order by c.TJSJ desc");
 			sb.append("		    LIMIT ?, ? ");
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add(uid);
+		params.add(lclxid);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String, Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
+		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", ls);
+		if(ls.size()!=0){
+			String lcbzmx = this.jdbcTemplate.queryForObject("select group_concat(concat(a.LCBZ,'.',b.DESCRIPTION)) as lcbzmx from zs_splcbz a,fw_role b where a.LCID=? and a.ROLEID=b.ID order by a.LCBZ",
+					new Object[]{ls.get(0).get("lcid")}, String.class);
+			ob.put("lcbzmx", lcbzmx);
+			ob.put("dqlcbz", ls.get(0).get("dqlcbz"));
+		}
+		Map<String, Object> meta = new HashMap<>();
+		meta.put("pageNum", pn);
+		meta.put("pageSize", ps);
+		meta.put("pageTotal",total);
+		meta.put("pageAll",(total + ps - 1) / ps);
+		ob.put("page", meta);
+		return ob;
+	}
+	/**
+	 * 机构未审批明细查询
+	 * @param pn,ps,uid,lcid,qury
+	 * @return
+	 */
+	public Map<String,Object> jgspcx(int pn,int ps,int uid,int lclxid,Map<String,Object> qury){
+		Condition condition = new Condition();
+		StringBuffer sb = new StringBuffer();
+		condition.add("e.dwmc", Condition.FUZZY, qury.get("dwmc"));
+		condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
+		condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
+		sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
+		sb.append("		e.dwmc, d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,e.id as jgid,a.id as lcid,b.lcbz,");
+		sb.append("		case f.yjxx when f.yjxx then f.yjxx else '无' end as yjxx,group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
+		sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,zs_jg e,zs_jgyjxxb f,fw_user_role g,fw_role h,(SELECT @rownum:=?) zs_jg");
+		sb.append("		"+condition.getSql()+" ");
+		sb.append("		and a.ID=b.LCID AND b.ROLEID=g.role_id and g.USER_ID=? AND d.ID=a.LCLXID AND a.ZTBJ=2 and b.ROLEID=h.ID AND a.LCLXID<>'29' and a.LCLXID=? and e.id=f.id");
+		sb.append("		and c.LCBZID=b.id AND c.ztbj='Y' and e.ID=c.ZSJG_ID group by e.dwmc order by c.TJSJ desc");
+		sb.append("		    LIMIT ?, ? ");
 		ArrayList<Object> params = condition.getParams();
 		params.add(0,(pn-1)*ps);
 		params.add(uid);
@@ -135,18 +178,31 @@ public class SPDao extends BaseDao{
 		case 20:bm="zs_fzybasp";zdm="FZYSWS_ID";break;
 		case 43:bm="zs_cyryzx";bm2="zs_cyry";zdm="CYRY_ID";break;
 		case 44:bm="zs_cyryzzy";bm2="zs_cyry";zdm="CYRY_ID";break;
-		case 5:bm="zs_zyswsbasp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
+		
+		case 46:bm="zs_fzyzzy";bm2="zs_jg l,zs_fzysws";zdm="FZY_ID";zd="l.dwmc,";
 			where=" and c.ZSJG_ID = l.id ";break;
-		case 6:bm="zs_zyswsbgsp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd=",l.dwmc";
+		case 5:bm="zs_zyswsbasp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd="l.dwmc,";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 6:bm="zs_zyswsbgsp";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd="l.dwmc,";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 7:bm="zs_zyswszfzy";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd="l.dwmc,";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 8:bm="zs_zyswszj";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd="l.dwmc,";
+		 	where=" and c.ZSJG_ID = l.id ";break;
+		case 9:bm="zs_zyswssndz";bm2="zs_jg l,zs_zysws";zdm="RY_ID";zd="l.dwmc,";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 10:bm="zs_zyswszx";bm2="zs_jg l,zs_zysws";zdm="ZYSWS_ID";zd="l.dwmc,";
+			where=" and c.ZSJG_ID = l.id ";break;
+		case 12:bm="zs_zcswsnj";bm2="zs_jg l,zs_zysws";zdm="SWS_ID";zd="l.dwmc,";
 			where=" and c.ZSJG_ID = l.id ";break;
 		}
 		condition.add("f.xming", Condition.FUZZY, qury.get("xming"));
 		condition.add("c.tjsj", Condition.GREATER_EQUAL, qury.get("sbsj"));
 		condition.add("c.tjsj", Condition.LESS_EQUAL, qury.get("sbsj2"));
 		sb.append("	SELECT 	SQL_CALC_FOUND_ROWS	@rownum:=@rownum+1 AS 'key',");
-		sb.append("		f.xming,f.sfzh,k.MC as xb, ");
+		sb.append("		f.xming,f.sfzh,k.MC as xb, "+zd+" ");
 		sb.append("		d.MC as wsxm,c.id,c.sjid,DATE_FORMAT(c.tjsj,'%Y-%m-%d') AS tjsj,a.id as lcid,b.lcbz,");
-		sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz"+zd+"");
+		sb.append("		group_concat(concat(b.LCBZ,'.',h.DESCRIPTION)) as dqlcbz");
 		sb.append("		FROM zs_splc a,dm_lclx d,zs_splcbz b,zs_spzx c,fw_user_role g,zs_ryjbxx f,"+bm+" i,"+bm2+" j,");
 		sb.append("		fw_role h,dm_xb k,(SELECT @rownum:=?) zs_jg");
 		sb.append("		"+condition.getSql()+where+"  ");

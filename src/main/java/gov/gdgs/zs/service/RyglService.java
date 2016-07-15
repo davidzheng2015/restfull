@@ -34,6 +34,25 @@ public class RyglService {
 		}
 		return ryglDao.rycx(pn,ps,map);
 	}
+	public Map<String, Object> swsrycx(int pn, int ps,int jgid,String cxlx, String where) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		switch(cxlx){
+		case "zyry":
+			return ryglDao.swszycx(pn,ps,jgid,map);
+		}
+		return null;
+	}
 	
 	public Map<String, Object> kzxx(String xqTab,String gid) {
 		Map<String, Object> sb = new HashMap<>();

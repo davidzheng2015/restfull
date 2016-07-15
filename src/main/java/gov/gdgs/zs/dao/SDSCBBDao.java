@@ -144,7 +144,7 @@ public class SDSCBBDao  extends BaseDao{
 		Condition condition = new Condition();
 		condition.add("d.dwmc", Condition.FUZZY, qury.get("dwmc"));
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select 	sql_calc_found_rows	 @rownum:=@rownum+1 as 'key','"+qury.get("nd")+"' as nd,'未上报' as sbzt,d.dwmc,d.zsbh,c.mc as cs, d.dhhm,d.TXYXMING as txyxm,d.XTYPHONE as txyyddh");
+		sb.append("		select 	sql_calc_found_rows	 @rownum:=@rownum+1 as 'key','"+qury.get("nd")+"' as nd,'未上报' as sbzt,d.dwmc,d.JGZCH as zsbh,c.mc as cs, d.DHUA as dhhm,d.TXYXMING as txyxm,d.XTYPHONE as txyyddh");
 		sb.append("		FROM zs_jg d,dm_cs c,(SELECT @rownum:=?) zs_jg");
 		sb.append("		 "+condition.getSql()+" ");
 		sb.append("		and d.ID NOT IN (");

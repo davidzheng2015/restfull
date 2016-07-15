@@ -47,6 +47,8 @@ public class SPservice {
 			}
 		}
 		switch(cxlx){
+		case "jgsl":
+			return spDao.jgslspcx(pn,ps,uid,lcid,qury);
 		case "jg":
 			return spDao.jgspcx(pn,ps,uid,lcid,qury);
 		case "ry":
