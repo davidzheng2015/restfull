@@ -1,6 +1,7 @@
 package gov.gdgs.zs.api;
 
 import gov.gdgs.zs.service.CheckingService;
+import gov.gdgs.zs.service.RyglService;
 import gov.gdgs.zs.service.SPservice;
 import gov.gdgs.zs.service.SwsService;
 
@@ -40,6 +41,8 @@ public class PubApiController {
 	
 	@Autowired
 	private AuthService authService;
+	@Autowired
+	private RyglService ryglService;
 	
 
 	//机构查询
@@ -68,7 +71,13 @@ public class PubApiController {
 	
 	
 	//非执业备案通过列表
-
+	@RequestMapping(value="/fzybatg" ,method = { RequestMethod.GET })
+	public ResponseEntity<?> fzybatg(@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pagesize", required = true) int pagesize,
+			@RequestParam(value="where", required=false) String where){
+		return new ResponseEntity<>(ryglService.fzybatg(page, pagesize, where),HttpStatus.OK);
+	}
+	
 	//非执业备案进度查询   
 	@RequestMapping(value="/ba/fzysws/{sfzh}",method = RequestMethod.GET)
 		public ResponseEntity<?> getFzyswsBa(@PathVariable String sfzh){
@@ -77,7 +86,7 @@ public class PubApiController {
 		
 	}
 	
-	//执业转执业通过列表
+	//非执业转执业通过列表
 	
 	//执业转非执业进度查询
 	

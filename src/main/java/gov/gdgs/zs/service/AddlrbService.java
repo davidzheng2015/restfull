@@ -43,7 +43,7 @@ public class AddlrbService implements IAddlrbService{
         
 	}
 	 //利润表
-		public Map<String, Object> getlrb(int page, int pageSize, String where) {
+		public Map<String, Object> getlrb(int page, int pageSize,int Jgid, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -55,7 +55,7 @@ public class AddlrbService implements IAddlrbService{
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = lrDao.getlrb(page, pageSize, map);
+			Map<String, Object> rs = lrDao.getlrb(page, pageSize,Jgid, map);
 			return rs;
 		}
 		public Map<String, Object> getlrbById(String id) {
@@ -82,7 +82,7 @@ public class AddlrbService implements IAddlrbService{
 		}
 		
 		 //利润分配表
-		public Map<String, Object> getlrfpb(int page, int pageSize, String where) {
+		public Map<String, Object> getlrfpb(int page, int pageSize,int Jgid, String where) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			if (where != null) {
 				try {
@@ -94,7 +94,7 @@ public class AddlrbService implements IAddlrbService{
 				} catch (Exception e) {
 				}
 			}		
-			Map<String, Object> rs = lrDao.getLrfpb(page, pageSize, map);
+			Map<String, Object> rs = lrDao.getLrfpb(page, pageSize,Jgid, map);
 			return rs;
 		}
 		public Map<String, Object> getlrfpbById(String id) {

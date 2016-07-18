@@ -23,14 +23,14 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		obj.put("id", uuid);
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_xjll ");	
-		sb.append("  ( id,jg_id,kssj,jssj,tjrq,nd,jyhd_xjlr_xslw,jyhd_xjlr_skfh,jyhd_xjlr_qtjy,jyhd_xjlr_xj,jyhd_xjlc_gmlw,jyhd_xjlc_zfzg,jyhd_xjlc_sf,");
+		sb.append("  ( id,jg_id,use_id,kssj,jssj,tjrq,nd,jyhd_xjlr_xslw,jyhd_xjlr_skfh,jyhd_xjlr_qtjy,jyhd_xjlr_xj,jyhd_xjlc_gmlw,jyhd_xjlc_zfzg,jyhd_xjlc_sf,");
 		sb.append(" jyhd_xjlc_qtjy,jyhd_xjlc_xj,jyhd_je,tzhd_xjlr_shtz,tzhd_xjlr_tzsy,tzhd_xjlr_czzc,tzhd_xjlr_qttz,tzhd_xjlr_xj,");
 		sb.append(" tzhd_xjlc_gjzc,tzhd_xjlc_tz,tzhd_xjlc_qttz,tzhd_xjlc_xj,tzhd_je,czhd_xjlr_xstz,czhd_xjlr_jk,czhd_xjlr_qtcz,");
 		sb.append(" czhd_xjlr_xj,czhd_xjlc_chzw,czhd_xjlc_fplr,czhd_xjlc_qtcz,czhd_xjlc_xj,czhd_je,hlbdyx,xjjzzj,bczl_jlr,bczl_jtzcjz,");
 		sb.append(" bczl_gdzczj,bczl_wxzctx,bczl_cqdtfy,bczl_dtfyjs,bczl_ytfyjs,bczl_zcss,bczl_gdzcbf,bczl_cwfy,bczl_tzss,bczl_dysddx,");
 		sb.append(" bczl_chjs,bczl_ysxmjs,bczl_yfxmzj,bczl_qt,bczl_xjllje,bczl_zwzwzb,bczl_yndqzj,bczl_rzzrzc,bczl_xjqmye,");
 		sb.append(" bczl_xjdjwqmye,bczl_xjqcye,bczl_xjdjwqcye,bczl_xjdjwjezj,ztbj)");
-		sb.append("values ( :id,:jg_id,:kssj,:jssj,sysdate(),:nd,:jyhd_xjlr_xslw,:jyhd_xjlr_skfh,:jyhd_xjlr_qtjy,:jyhd_xjlr_xj,:jyhd_xjlc_gmlw,:jyhd_xjlc_zfzg,:jyhd_xjlc_sf,");
+		sb.append("values ( :id,:jg_id,:use_id,:kssj,:jssj,sysdate(),:nd,:jyhd_xjlr_xslw,:jyhd_xjlr_skfh,:jyhd_xjlr_qtjy,:jyhd_xjlr_xj,:jyhd_xjlc_gmlw,:jyhd_xjlc_zfzg,:jyhd_xjlc_sf,");
 		sb.append(" :jyhd_xjlc_qtjy,:jyhd_xjlc_xj,:jyhd_je,:tzhd_xjlr_shtz,:tzhd_xjlr_tzsy,:tzhd_xjlr_czzc,:tzhd_xjlr_qttz,:tzhd_xjlr_xj,");
 		sb.append(" :tzhd_xjlc_gjzc,:tzhd_xjlc_tz,:tzhd_xjlc_qttz,:tzhd_xjlc_xj,:tzhd_je,:czhd_xjlr_xstz,:czhd_xjlr_jk,:czhd_xjlr_qtcz,");
 		sb.append(" :czhd_xjlr_xj,:czhd_xjlc_chzw,:czhd_xjlc_fplr,:czhd_xjlc_qtcz,:czhd_xjlc_xj,:czhd_je,:hlbdyx,:xjjzzj,:bczl_jlr,:bczl_jtzcjz,");
@@ -50,7 +50,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	public void UpdateXjllb(Map <String,Object> obj) {
 		 StringBuffer sb = new StringBuffer("update "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_xjll ");
-		sb.append(" set jg_id=:jg_id,kssj=:kssj,jssj=:jssj,tjrq=sysdate(),nd=:nd,jyhd_xjlr_xslw=:jyhd_xjlr_xslw,jyhd_xjlr_skfh=:jyhd_xjlr_skfh,jyhd_xjlr_qtjy=:jyhd_xjlr_qtjy,");	
+		sb.append(" set jg_id=:jg_id,use_id=:use_id,kssj=:kssj,jssj=:jssj,tjrq=sysdate(),nd=:nd,jyhd_xjlr_xslw=:jyhd_xjlr_xslw,jyhd_xjlr_skfh=:jyhd_xjlr_skfh,jyhd_xjlr_qtjy=:jyhd_xjlr_qtjy,");	
 		sb.append(" jyhd_xjlr_xj=:jyhd_xjlr_xj,jyhd_xjlc_gmlw=:jyhd_xjlc_gmlw,jyhd_xjlc_zfzg=:jyhd_xjlc_zfzg,jyhd_xjlc_sf=:jyhd_xjlc_sf,");
 		sb.append(" jyhd_xjlc_qtjy=:jyhd_xjlc_qtjy,jyhd_xjlc_xj=:jyhd_xjlc_xj,jyhd_je=:jyhd_je,tzhd_xjlr_shtz=:tzhd_xjlr_shtz,");
 		sb.append(" tzhd_xjlr_tzsy=:tzhd_xjlr_tzsy,tzhd_xjlr_czzc=:tzhd_xjlr_czzc,tzhd_xjlr_qttz=:tzhd_xjlr_qttz,tzhd_xjlr_xj=:tzhd_xjlr_xj,");
@@ -69,7 +69,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	
 	}
 	
-	public Map<String, Object> getXjllb(int page, int pageSize,
+	public Map<String, Object> getXjllb(int page, int pageSize,int Jgid,
 			Map<String, Object> where) {
 
 		Condition condition = new Condition();
@@ -84,12 +84,13 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		sb.append(" FROM " + Config.PROJECT_SCHEMA
 				+ "zs_cwbb_xjll a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=? ORDER BY a.nd DESC ) AS t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
 		params.add(0, pageSize * (page - 1));
+		params.add(Jgid);	
 		params.add(startIndex);
 		params.add(pageSize);
 
@@ -123,7 +124,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		obj.put("id", uuid);
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_zcfzgd ");	
-		sb.append("  ( id,jg_id,ztbj,kssj,jssj,tjsj,nd,timevalue,ldzc_hj,ldzc_hbzj,ldzc_dqtz,ldzc_yspj,ldzc_ysgl,ldzc_yslx,ldzc_yszk,ldzc_qtys,ldzc_yfzk,ldzc_ysbt,");	
+		sb.append("  ( id,jg_id,use_id,ztbj,kssj,jssj,tjsj,nd,timevalue,ldzc_hj,ldzc_hbzj,ldzc_dqtz,ldzc_yspj,ldzc_ysgl,ldzc_yslx,ldzc_yszk,ldzc_qtys,ldzc_yfzk,ldzc_ysbt,");	
 		sb.append(" ldzc_ch,ldzc_dtfy,ldzc_dqzj,ldzc_qtldzc,cqtz_gq,cqtz_zq,cqtz_hj,gdzc_yj,gdzc_ljzj,gdzc_jz,gdzc_jzzb,gdzc_je,gdzc_gcwz,gdzc_zjgc,gdzc_ql,gdzc_hj,");
 		sb.append(" wxqt_wxzc,wxqt_cqdt,wxqt_qtcq,wxqt_hj,ydsx_skjx,zczj,ldfz_dqjk,ldfz_yfpj,ldfz_yfzk,ldfz_yszk,ldfz_yfgz,ldfz_yffl,ldfz_yfgl,ldfz_yjsj,");
 		sb.append(" ldfz_qtyj,ldfz_qtyf,ldfz_ytfy,ldfz_yjfz,ldfz_dqfz,ldfz_qtfz,ldfz_hj,cqfz_cqjk,cqfz_yfzq,cqfz_cqyf,cqfz_zxyf,cqfz_zyfxjj,cqfz_qtfz,cqfz_hj,");
@@ -133,7 +134,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		sb.append(" wxqt_wxzc_nc,wxqt_cqdt_nc,wxqt_qtcq_nc,wxqt_hj_nc,ydsx_skjx_nc,zczj_nc,ldfz_dqjk_nc,ldfz_yfpj_nc,ldfz_yfzk_nc,ldfz_yszk_nc,ldfz_yfgz_nc,ldfz_yffl_nc,");
 		sb.append(" ldfz_yfgl_nc,ldfz_yjsj_nc,ldfz_qtyj_nc,ldfz_qtyf_nc,ldfz_ytfy_nc,ldfz_yjfz_nc,ldfz_dqfz_nc,ldfz_qtfz_nc,ldfz_hj_nc,cqfz_cqjk_nc,cqfz_yfzq_nc,cqfz_cqyf_nc,cqfz_zxyf_nc,");
 		sb.append(" cqfz_zyfxjj_nc,cqfz_qtfz_nc,cqfz_hj_nc,dysx_dyskdx_nc,dysx_fzhj_nc,syzqy_sszbje_nc,syzqy_yhtz_nc,syzqy_sszb_nc,syzqy_zbgj_nc,syzqy_yygj_nc,syzqy_wfplr_nc,syzqy_hj_nc,fzsyzqy_hj_nc)");
-		sb.append("values ( :id,:jg_id,:ztbj,:kssj,:jssj,sysdate(),:nd,:timevalue,:ldzc_hj,:ldzc_hbzj,:ldzc_dqtz,:ldzc_yspj,:ldzc_ysgl,:ldzc_yslx,:ldzc_yszk,:ldzc_qtys,:ldzc_yfzk,:ldzc_ysbt,");	
+		sb.append("values ( :id,:jg_id,:use_id,:ztbj,:kssj,:jssj,sysdate(),:nd,:timevalue,:ldzc_hj,:ldzc_hbzj,:ldzc_dqtz,:ldzc_yspj,:ldzc_ysgl,:ldzc_yslx,:ldzc_yszk,:ldzc_qtys,:ldzc_yfzk,:ldzc_ysbt,");	
 		sb.append(" :ldzc_ch,:ldzc_dtfy,:ldzc_dqzj,:ldzc_qtldzc,:cqtz_gq,:cqtz_zq,:cqtz_hj,:gdzc_yj,:gdzc_ljzj,:gdzc_jz,:gdzc_jzzb,:gdzc_je,:gdzc_gcwz,:gdzc_zjgc,:gdzc_ql,:gdzc_hj,");
 		sb.append(" :wxqt_wxzc,:wxqt_cqdt,:wxqt_qtcq,:wxqt_hj,:ydsx_skjx,:zczj,:ldfz_dqjk,:ldfz_yfpj,:ldfz_yfzk,:ldfz_yszk,:ldfz_yfgz,:ldfz_yffl,:ldfz_yfgl,:ldfz_yjsj,");
 		sb.append(" :ldfz_qtyj,:ldfz_qtyf,:ldfz_ytfy,:ldfz_yjfz,:ldfz_dqfz,:ldfz_qtfz,:ldfz_hj,:cqfz_cqjk,:cqfz_yfzq,:cqfz_cqyf,:cqfz_zxyf,:cqfz_zyfxjj,:cqfz_qtfz,:cqfz_hj,");
@@ -156,7 +157,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	public void UpdateZcfzb(Map <String,Object> obj) {
 		 StringBuffer sb = new StringBuffer("update "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_zcfzgd ");
-		sb.append(" set jg_id=:jg_id,ztbj=:ztbj,kssj=:kssj,jssj=:jssj,tjsj=sysdate(),nd=:nd,timevalue=:timevalue,ldzc_hj=:ldzc_hj,ldzc_hbzj=:ldzc_hbzj,ldzc_dqtz=:ldzc_dqtz,");		
+		sb.append(" set jg_id=:jg_id,use_id=:use_id,ztbj=:ztbj,kssj=:kssj,jssj=:jssj,tjsj=sysdate(),nd=:nd,timevalue=:timevalue,ldzc_hj=:ldzc_hj,ldzc_hbzj=:ldzc_hbzj,ldzc_dqtz=:ldzc_dqtz,");		
 		sb.append(" ldzc_yspj=:ldzc_yspj,ldzc_ysgl=:ldzc_ysgl,ldzc_yslx=:ldzc_yslx,ldzc_yszk=:ldzc_yszk,ldzc_qtys=:ldzc_qtys,ldzc_yfzk=:ldzc_yfzk,ldzc_ysbt=:ldzc_ysbt,");
 		sb.append(" ldzc_ch=:ldzc_ch,ldzc_dtfy=:ldzc_dtfy,ldzc_dqzj=:ldzc_dqzj,ldzc_qtldzc=:ldzc_qtldzc,cqtz_gq=:cqtz_gq,cqtz_zq=:cqtz_zq,cqtz_hj=:cqtz_hj,");
 		sb.append(" gdzc_yj=:gdzc_yj,gdzc_ljzj=:gdzc_ljzj,gdzc_jz=:gdzc_jz,gdzc_jzzb=:gdzc_jzzb,gdzc_je=:gdzc_je,gdzc_gcwz=:gdzc_gcwz,gdzc_zjgc=:gdzc_zjgc,gdzc_ql=:gdzc_ql,gdzc_hj=:gdzc_hj,");
@@ -182,7 +183,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	
 	}
 	
-	public Map<String, Object> getZcfzb(int page, int pageSize,
+	public Map<String, Object> getZcfzb(int page, int pageSize,int Jgid,
 			Map<String, Object> where) {
 
 		Condition condition = new Condition();
@@ -198,12 +199,13 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		sb.append(" FROM " + Config.PROJECT_SCHEMA
 				+ "zs_cwbb_zcfzgd a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=? ORDER BY a.nd DESC ) AS t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
 		params.add(0, pageSize * (page - 1));
+		params.add(Jgid);
 		params.add(startIndex);
 		params.add(pageSize);
 
@@ -237,12 +239,12 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		obj.put("id", uuid);
 		final StringBuffer sb = new StringBuffer("insert into "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_zcmx ");	
-		sb.append("  ( id,jg_id,ztbj,kssj,jssj,tjrq,nd,zyywcb1,zyywcb,zyywsjfj1,zyywsjfj,gzfy1,gzfy,qtywzc1,qtywzc,flf1,flf,");
+		sb.append("  ( id,jg_id,use_id,ztbj,kssj,jssj,tjrq,nd,zyywcb1,zyywcb,zyywsjfj1,zyywsjfj,gzfy1,gzfy,qtywzc1,qtywzc,flf1,flf,");
 		sb.append(" glfy1,glfy,jyf1,jyf,glfy_gzfy1,glfy_gzfy,ghjf1,ghjf,glfy_flf1,glfy_flf,shtc1,shtc,glfy_ywzdf1,glfy_ywzdf,");
 		sb.append(" bgf1,bgf,glfy_bgf1,glfy_bgf,clf1,clf,glfy_qtsj1,glfy_qtsj,hf1,hf,glfy_qcfy1,glfy_qcfy,pxzlf1,pxzlf,glfy_zyfxjj1,glfy_zyfxjj,");
 		sb.append(" hwf1,hwf,glfy_zyzrbx1,glfy_zyzrbx,zpf1,zpf,glfy_clf1,glfy_clf,zj1,zj,glfy_qtfy1,glfy_qtfy,zfgjj1,zfgjj,cwfy1,cwfy,");
 		sb.append(" gwzxf1,gwzxf,yywzc1,yywzc,qt1,qt,zczj1,zczj,sz,agkj,zb)");
-		sb.append("values ( :id,:jg_id,:ztbj,:kssj,:jssj,sysdate(),:nd,:zyywcb1,:zyywcb,:zyywsjfj1,:zyywsjfj,:gzfy1,:gzfy,:qtywzc1,:qtywzc,:flf1,:flf,");	
+		sb.append("values ( :id,:jg_id,:use_id,:ztbj,:kssj,:jssj,sysdate(),:nd,:zyywcb1,:zyywcb,:zyywsjfj1,:zyywsjfj,:gzfy1,:gzfy,:qtywzc1,:qtywzc,:flf1,:flf,");	
 		sb.append(" :glfy1,:glfy,:jyf1,:jyf,:glfy_gzfy1,:glfy_gzfy,:ghjf1,:ghjf,:glfy_flf1,:glfy_flf,:shtc1,:shtc,:glfy_ywzdf1,:glfy_ywzdf,");
 		sb.append(" :bgf1,:bgf,:glfy_bgf1,:glfy_bgf,:clf1,:clf,:glfy_qtsj1,:glfy_qtsj,:hf1,:hf,:glfy_qcfy1,:glfy_qcfy,:pxzlf1,:pxzlf,:glfy_zyfxjj1,:glfy_zyfxjj,");
 		sb.append(" :hwf1,:hwf,:glfy_zyzrbx1,:glfy_zyzrbx,:zpf1,:zpf,:glfy_clf1,:glfy_clf,:zj1,:zj,:glfy_qtfy1,:glfy_qtfy,:zfgjj1,:zfgjj,:cwfy1,:cwfy,");
@@ -260,7 +262,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	public void UpdateZcmxb(Map <String,Object> obj) {
 		 StringBuffer sb = new StringBuffer("update "
 				+ Config.PROJECT_SCHEMA + "zs_cwbb_zcmx ");
-		sb.append(" set jg_id=:jg_id,ztbj=:ztbj,kssj=:kssj,jssj=:jssj,tjrq=sysdate(),nd=:nd,zyywcb1=:zyywcb1,zyywcb=:zyywcb,zyywsjfj1=:zyywsjfj1,zyywsjfj=:zyywsjfj,");		
+		sb.append(" set jg_id=:jg_id,use_id=:use_id,ztbj=:ztbj,kssj=:kssj,jssj=:jssj,tjrq=sysdate(),nd=:nd,zyywcb1=:zyywcb1,zyywcb=:zyywcb,zyywsjfj1=:zyywsjfj1,zyywsjfj=:zyywsjfj,");		
 		sb.append(" gzfy1=:gzfy1,gzfy=:gzfy,qtywzc1=:qtywzc1,qtywzc=:qtywzc,flf1=:flf1,flf=:flf,glfy1=:glfy1,glfy=:glfy,jyf1=:jyf1,jyf=:jyf,glfy_gzfy1=:glfy_gzfy1,");
 		sb.append(" glfy_gzfy=:glfy_gzfy,ghjf1=:ghjf1,ghjf=:ghjf,glfy_flf1=:glfy_flf1,glfy_flf=:glfy_flf,shtc1=:shtc1,shtc=:shtc,glfy_ywzdf1=:glfy_ywzdf1,glfy_ywzdf=:glfy_ywzdf,");
 		sb.append(" bgf1=:bgf1,bgf=:bgf,glfy_bgf1=:glfy_bgf1,glfy_bgf=:glfy_bgf,clf1=:clf1,clf=:clf,glfy_qtsj1=:glfy_qtsj1,glfy_qtsj=:glfy_qtsj,hf1=:hf1,hf=:hf,");
@@ -274,7 +276,7 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 	
 	}
 	
-	public Map<String, Object> getZcmxb(int page, int pageSize,
+	public Map<String, Object> getZcmxb(int page, int pageSize,int Jgid,
 			Map<String, Object> where) {
 
 		Condition condition = new Condition();
@@ -288,12 +290,13 @@ public class AddcwbbDao extends BaseJdbcDao implements IAddcwbbDao{
 		sb.append(" FROM " + Config.PROJECT_SCHEMA
 				+ "zs_cwbb_zcmx a,zs_jg b,(SELECT @rownum:=?) temp");
 		sb.append(condition.getSql());// 相当元 where b.DWMC like '%%'
-		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=68 ORDER BY a.nd DESC ) AS t");
+		sb.append(" AND a.JG_ID=b.ID  and a.JG_ID=? ORDER BY a.nd DESC ) AS t");
 		sb.append("    LIMIT ?, ? ");
 		// 装嵌传值数组
 		int startIndex = pageSize * (page - 1);
 		ArrayList<Object> params = condition.getParams();
 		params.add(0, pageSize * (page - 1));
+		params.add(Jgid);
 		params.add(startIndex);
 		params.add(pageSize);
 
