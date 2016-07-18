@@ -17,6 +17,7 @@ import java.util.Map;
 
 
 
+
 import org.hashids.Hashids;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -584,6 +585,35 @@ public class RyglDao extends BaseDao{
 				return map;
 				}
 	});
+		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", ls);
+		Map<String, Object> meta = new HashMap<>();
+		meta.put("pageNum", pn);
+		meta.put("pageSize", ps);
+		meta.put("pageTotal",total);
+		meta.put("pageAll",(total + ps - 1) / ps);
+		ob.put("page", meta);
+		
+		return ob;
+	}
+	//非执业备案通过列表
+	public Map<String,Object> fzybatg(int pn,int ps,Map<String,Object> qury) {
+		Condition condition = new Condition();
+		condition.add("c.XMING", Condition.FUZZY, qury.get("XMING"));
+		condition.add("b.ZYZGZSBH", Condition.EQUAL, qury.get("ZYZGZSBH"));
+		StringBuffer sb = new StringBuffer();
+		sb.append("		SELECT sql_calc_found_rows	 @rownum:=@rownum+1 c.XMING,f.mc as XB,b.ZYZGZSBH,b.FZYZCZSBH,d.TJSJ,e.SPSJ");
+		sb.append("		FROM zs_fzybasp a,zs_fzysws b,zs_ryjbxx c,zs_spzx d,zs_spxx e,dm_xb f,(SELECT @rownum:=?)");
+		sb.append("		 "+condition.getSql()+" ");
+		sb.append("		and a.FZYSWS_ID=b.ID AND b.RY_ID=c.ID AND a.ID=d.SJID AND d.ID=e.SPID AND a.SPZT_DM=2 and e.ISPASS='Y' and b.FZYZT_DM=1");
+		sb.append("		and f.ID=c.XB_DM order by e.SPSJ desc");
+		sb.append("		    LIMIT ?, ? ");
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
 		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
 		Map<String,Object> ob = new HashMap<>();
 		ob.put("data", ls);
