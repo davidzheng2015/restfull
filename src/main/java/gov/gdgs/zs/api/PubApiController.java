@@ -83,15 +83,30 @@ public class PubApiController {
 		public ResponseEntity<?> getFzyswsBa(@PathVariable String sfzh){
 		Map<String,Object> rm = spService.getFzyswsBa(sfzh);
 		return  ResponseEntity.ok(rm);
-		
 	}
 	
-	//非执业转执业通过列表
+	//执业转非执业通过列表
+	@RequestMapping(value="/zyzfzytg" ,method = { RequestMethod.GET })
+	public ResponseEntity<?> fzyzzytg(@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pagesize", required = true) int pagesize,
+			@RequestParam(value="where", required=false) String where){
+		return new ResponseEntity<>(ryglService.fzyzzytg(page, pagesize, where),HttpStatus.OK);
+	}
 	
-	//执业转非执业进度查询
-	
+	//非执业转籍查询
+	@RequestMapping(value="/fzyzj/zjcx/{sfzh}",method = RequestMethod.GET)
+	public ResponseEntity<?> fzyzjcx(@PathVariable String sfzh){
+	return  ResponseEntity.ok(ryglService.fzyzjcx(sfzh));
+	}
 	//非执业转籍申请
-	
+	@RequestMapping(value = "/fzyzj/zjsq", method = RequestMethod.POST)
+	public ResponseEntity<?> fzyzjcx (@RequestBody Map<String, Object> obj) throws Exception{
+		spService.spsq(obj,"fzyswszjsq");
+		ResponseMessage rm = new ResponseMessage(
+				ResponseMessage.Type.success, "转籍申请提交成功");
+		return new ResponseEntity<>(rm,HttpStatus.CREATED);
+	}
+	//执业转非执业进度查询
 	//报备号码查询
 	
 	
