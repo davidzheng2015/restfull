@@ -18,6 +18,8 @@ import java.util.Map;
 
 
 
+
+
 import org.hashids.Hashids;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -623,7 +625,57 @@ public class RyglDao extends BaseDao{
 		meta.put("pageTotal",total);
 		meta.put("pageAll",(total + ps - 1) / ps);
 		ob.put("page", meta);
-		
 		return ob;
 	}
+	//执业转非执业通过列表
+	public Map<String,Object> fzyzzytg(int pn,int ps,Map<String,Object> qury) {
+		Condition condition = new Condition();
+		condition.add("c.XMING", Condition.FUZZY, qury.get("XMING"));
+		condition.add("b.ZYZGZSBH", Condition.EQUAL, qury.get("ZYZGZSBH"));
+		StringBuffer sb = new StringBuffer();
+		sb.append("		SELECT sql_calc_found_rows @rownum:=@rownum+1 as 'key', c.XMING,d.MC AS XB,");
+		sb.append("	b.ZYZGZSBH,b.FZYZCZSBH,b.ZZDW,date_format(a.TBRQ,'%Y-%m-%d') as TBRQ,date_format(a.SGLZXYJRQ,'%Y-%m-%d') as SGLZXYJRQ");
+		sb.append("		FROM zs_zyswszfzy a,zs_fzysws b,zs_ryjbxx c,dm_xb d,(select @rownum:=?) zs_ry");
+		sb.append("		 "+condition.getSql()+" ");
+		sb.append("		and a.FZYSWS_ID=b.ID AND b.RY_ID=c.ID AND a.SPZT_DM='2' and d.ID=c.XB_DM");
+		sb.append("		    LIMIT ?, ? ");
+		ArrayList<Object> params = condition.getParams();
+		params.add(0,(pn-1)*ps);
+		params.add((pn-1)*ps);
+		params.add(ps);
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),params.toArray());
+		int total = this.jdbcTemplate.queryForObject("SELECT FOUND_ROWS()", int.class);
+		Map<String,Object> ob = new HashMap<>();
+		ob.put("data", ls);
+		Map<String, Object> meta = new HashMap<>();
+		meta.put("pageNum", pn);
+		meta.put("pageSize", ps);
+		meta.put("pageTotal",total);
+		meta.put("pageAll",(total + ps - 1) / ps);
+		ob.put("page", meta);
+		return ob;
+	}
+	//非执业税务师转籍
+	public Object fzyzjcx(String sfzh) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("		SELECT c.XMING,'跨省转籍审批中' AS SPZT,'0' as JGLX ");
+		sb.append("	FROM zs_fzyswszj a,zs_fzysws b,zs_ryjbxx c,dm_xb d ");
+		sb.append("	WHERE a.FZY_ID=b.ID AND b.RY_ID=c.ID AND d.ID=c.XB_DM AND a.RYSPZT='0' and b.FZYZT_DM='1' and c.SFZH=? ");
+		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(),sfzh);
+		if(ls.size()!=0){
+			return ls.get(0);
+		}else{
+			StringBuffer sb2 = new StringBuffer();
+			sb2.append("		SELECT b.XMING,c.MC AS XB,a.ID as FID,b.CS_DM as CS,'1' as JGLX");
+			sb2.append("			FROM zs_fzysws a,zs_ryjbxx b,dm_xb c");
+			sb2.append("			WHERE a.RY_ID=b.ID AND b.XB_DM=c.ID AND a.FZYZT_DM='1' AND a.RYSPGCZT_DM='1'");
+			sb2.append("			and b.SFZH=?");
+			List<Map<String, Object>> ls2 = this.jdbcTemplate.queryForList(sb2.toString(),sfzh);
+			if(ls2.size()!=0){
+				return ls2.get(0);
+			}
+		}
+		return false;
+	}
 }
+

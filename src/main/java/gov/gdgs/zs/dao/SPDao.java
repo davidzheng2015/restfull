@@ -419,13 +419,14 @@ public class SPDao extends BaseDao{
 			String key = it.next().toString();  
 			listValue.add(spxm.get(key));  
 		};
-		String sql ="insert into zs_jgbgspb (JG_ID,SPZT_DM,BGRQ,TXR_ID,JGBGLSB_ID) values(?,'1',sysdate(),?,?)";
+		String uuid = new Common().newUUID();
+		String sql ="insert into zs_jgbgspb (ID,JG_ID,SPZT_DM,BGRQ,TXR_ID,JGBGLSB_ID) values(?,?,'1',sysdate(),?,?)";
 		String sql2 ="insert into zs_jgbgxxb (MC,JZHI,XZHI,GXSJ,JGBGSPB_ID) values(?,?,?,sysdate(),?)";
 		String sql3 ="insert into zs_jgbglsb (DWMC,CS_DM,JGXZ_DM,DZHI,ZCZJ,ZCDZ,YYZZHM,SWSZSCLSJ) values(?,?,?,?,?,?,?,?)";
 		Number rs1 = this.insertAndGetKeyByJdbc(sql3,listValue.toArray(),new String[] {"ID"});//插入临时表，获取自动生成id
-		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{jgid,id,rs1},new String[] {"ID"});//插入业务表，获取自动生成id
+		this.jdbcTemplate.update(sql, new Object[]{uuid,jgid,id,rs1});//插入业务表
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
-		spsq.put("sid", rs);
+		spsq.put("sid", uuid);
 		//判断是否分所
 		if(this.jdbcTemplate.queryForObject("select JGXZ_DM from zs_jg where id =?",new Object[]{jgid},int.class)!=3){
 			spsq.put("lclx", "402881831be2e6af011be3ab8b84000c");
@@ -435,7 +436,7 @@ public class SPDao extends BaseDao{
 		spsq.put("jgid", jgid);
 		swsSPqq(spsq);//生成审批表记录
 		for(Map<String, Object> rec:forupdate){//插入变更项目信息
-			this.jdbcTemplate.update(sql2,new Object[]{rec.get("mc"),rec.get("jzhi"),rec.get("xzhi"),rs});
+			this.jdbcTemplate.update(sql2,new Object[]{rec.get("mc"),rec.get("jzhi"),rec.get("xzhi"),uuid});
 		}
 	}
 	 
@@ -469,10 +470,27 @@ public class SPDao extends BaseDao{
 		swsSPqq(spsq);
 	}
 	 /**
-	  * 事务所注销审批申请
+	  * 非执业转籍申请
 	  * @param sqxm
 	  * @throws Exception
 	  */
+	public void fzyzjsq(Map<String, Object> sqxm) throws Exception{
+		String sql ="insert into zs_fzyswszj (ID,FZY_ID,ZJYY,ZJYYRQ,TBRQ,RYSPZT) values(?,?,?,?,sysdate(),'0')";
+		String uuid = new Common().newUUID();
+		this.jdbcTemplate.update(sql, new Object[]{uuid,sqxm.get("FID"),sqxm.get("ZJYY"),sqxm.get("ZJYYRQ")});
+		this.jdbcTemplate.update("update zs_fzysws a set a.RYSPGCZT_DM='6' where a.id=?",sqxm.get("FID"));
+		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
+		spsq.put("sid", uuid);
+		spsq.put("lclx", "402881831be2e6af011be3c6d5f70040");
+		spsq.put("csdm", sqxm.get("CS"));
+		swsSPqq(spsq);
+	}
+	
+	/**
+	 * 事务所注销审批申请
+	 * @param sqxm
+	 * @throws Exception
+	 */
 	public void swszxsq(Map<String, Object> sqxm) throws Exception{
 		String sql ="insert into zs_jgzx (ZXYY_ID,JG_ID,BZ,SPZT) values(?,?,?,'1')";
 		Number rs = this.insertAndGetKeyByJdbc(sql, new Object[]{sqxm.get("zxyy"),sqxm.get("jgid"),sqxm.get("zxsm")},new String[] {"ID"});
