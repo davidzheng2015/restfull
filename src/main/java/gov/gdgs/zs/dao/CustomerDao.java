@@ -1,5 +1,6 @@
 package gov.gdgs.zs.dao;
 
+import gov.gdgs.zs.untils.Common;
 import gov.gdgs.zs.untils.Condition;
 
 import java.util.ArrayList;
@@ -66,10 +67,11 @@ public class CustomerDao extends BaseJdbcDao{
 	}
 
 	public void addCustomer(Map<String, Object> obj) {
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append(" insert into zs_customer ");
-		sb.append(" (jg_id,dwmc,dwdz,lxr,lxdh,nsrsbh,nsrsbhdf,adddate,nsrxz) ");
-		sb.append(" values (:JG_ID,:DWMC,:DWDZ,:LXR,:LXDH,:NSRSBH,:NSRSBHDF,:ADDDATE,:NSRSZ)");
+		sb.append(" (id,jg_id,dwmc,dwdz,lxr,lxdh,nsrsbh,nsrsbhdf,adddate,nsrxz) ");
+		sb.append(" values (:ID,:JG_ID,:DWMC,:DWDZ,:LXR,:LXDH,:NSRSBH,:NSRSBHDF,:ADDDATE,:NSRXZ)");
 		
 		this.namedParameterJdbcTemplate.update(sb.toString(), obj);
 		

@@ -1,6 +1,7 @@
 package gov.gdgs.zs.service;
 
 import gov.gdgs.zs.dao.CustomerDao;
+import gov.gdgs.zs.untils.Common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class CustomerService {
 	}
 
 	public void addCustomer(Map<String, Object> obj) {
+		String uuid = Common.newUUID();
+		obj.put("ID", uuid);
+		obj.put("JG_ID", HashIdUtil.decode((String)obj.get("JG_ID")));
+		obj.put("ADDDATE", Common.getCurrentTime2MysqlDateTime());
 		customerDao.addCustomer(obj);
 	}
 
