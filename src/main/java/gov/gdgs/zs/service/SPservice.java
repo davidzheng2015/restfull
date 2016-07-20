@@ -104,6 +104,8 @@ public class SPservice {
 			this.spDao.swshbsq(sqxm);break;
 		case"fzyswsbasq"://非执业备案申请
 			this.spDao.fzyswsba(sqxm);break;
+		case"fzyswszjsq"://非执业转籍申请
+			this.spDao.fzyzjsq(sqxm);break;
 		}
 	}
 	/**
