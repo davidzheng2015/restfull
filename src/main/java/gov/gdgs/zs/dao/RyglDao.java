@@ -605,7 +605,9 @@ public class RyglDao extends BaseDao{
 		condition.add("c.XMING", Condition.FUZZY, qury.get("XMING"));
 		condition.add("b.ZYZGZSBH", Condition.EQUAL, qury.get("ZYZGZSBH"));
 		StringBuffer sb = new StringBuffer();
-		sb.append("		SELECT sql_calc_found_rows	 @rownum:=@rownum+1 'key', c.XMING,f.mc as XB,b.ZYZGZSBH,b.FZYZCZSBH,d.TJSJ,e.SPSJ");
+		sb.append("		SELECT sql_calc_found_rows	 @rownum:=@rownum+1 'key', c.XMING,f.mc as XB,b.ZYZGZSBH,b.ZZDW,b.FZYZCZSBH,");
+		sb.append(" DATE_FORMAT(d.TJSJ,'%Y-%m-%d') as TJSJ, ");
+		sb.append(" DATE_FORMAT(e.SPSJ,'%Y-%m-%d') as SPSJ ");
 		sb.append("		FROM zs_fzybasp a,zs_fzysws b,zs_ryjbxx c,zs_spzx d,zs_spxx e,dm_xb f,(SELECT @rownum:=?) tmp");
 		sb.append("		 "+condition.getSql()+" ");
 		sb.append("		and a.FZYSWS_ID=b.ID AND b.RY_ID=c.ID AND a.ID=d.SJID AND d.ID=e.SPID AND a.SPZT_DM=2 and e.ISPASS='Y' and b.FZYZT_DM=1");

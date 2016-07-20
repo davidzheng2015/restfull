@@ -30,11 +30,11 @@ import com.gdky.restfull.service.AuthService;
 @RequestMapping(value = "/pub/api")
 public class PubApiController {
 	
-	@Resource
-	SwsService swsService;
+	@Autowired
+	private SwsService swsService;
 	
 	@Autowired
-	CheckingService checkingService;
+	private CheckingService checkingService;
 	
 	@Autowired
 	private SPservice spService;
