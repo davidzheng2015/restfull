@@ -29,4 +29,37 @@ public class GzApiService {
 		return obj;
 	}
 
+	public Map<String, Object> getSwsjg(String year, String month, String day,
+			String hour) {
+		HashMap<String,Object> obj = new HashMap<String,Object>();
+		List<Map<String,Object>> ls = gzApiDao.getSwsjg();
+		obj.put("code", 200);
+		obj.put("total", ls.size());
+		obj.put("data", ls);	
+		
+		return obj;
+	}
+
+	public Map<String, Object> getYwba(String year, String month, String day,
+			String hour) {
+		HashMap<String,Object> obj = new HashMap<String,Object>();
+		List<Map<String,Object>> ls = gzApiDao.getYwba();
+		obj.put("code", 200);
+		obj.put("total", ls.size());
+		obj.put("data", ls);	
+		
+		return obj;
+	}
+
+	public Map<String, Object> getZsxy(String year, String month, String day,
+			String hour) {
+		HashMap<String,Object> obj = new HashMap<String,Object>();
+		List<Map<String,Object>> ls = gzApiDao.getZsxy();
+		obj.put("code", 200);
+		obj.put("total", ls.size());
+		obj.put("data", ls);	
+		
+		return obj;
+	}
+
 }
