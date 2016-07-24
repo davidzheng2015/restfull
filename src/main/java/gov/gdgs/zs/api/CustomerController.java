@@ -64,11 +64,11 @@ public class CustomerController {
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/customers/{hashId}", method = RequestMethod.PUT)
-	public  ResponseEntity<Map<String,Object>> updateCustomer(@PathVariable String hashId){ 
+	@RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+	public  ResponseEntity<?> updateCustomer(@PathVariable String id,@RequestBody Map<String,Object> obj){ 
 
-		Map<String,Object> obj = customService.updateCustomer();
-		return new ResponseEntity<>(obj,HttpStatus.OK);
+		customService.updateCustomer(id,obj);
+		return new ResponseEntity<>(ResponseMessage.success("修改成功"),HttpStatus.OK);
 	}
 	
 	/**
@@ -76,10 +76,10 @@ public class CustomerController {
 	 * @para
 	 *
 	 */
-	@RequestMapping(value = "/customers/{hashId}", method = RequestMethod.DELETE)
-	public  ResponseEntity<?> delCustomer(@PathVariable String hashId){ 
+	@RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
+	public  ResponseEntity<?> delCustomer(@PathVariable String id){ 
 
-		Map<String,Object> obj = customService.delCustomer();
-		return new ResponseEntity<>(obj,HttpStatus.OK);
+		customService.delCustomer(id);
+		return new ResponseEntity<>(ResponseMessage.success("修改成功"),HttpStatus.OK);
 	}
 }

@@ -47,14 +47,12 @@ public class CustomerService {
 		customerDao.addCustomer(obj);
 	}
 
-	public Map<String, Object> updateCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateCustomer(String id, Map<String,Object> obj) {
+		customerDao.updateCustomer(id,obj);
 	}
 
-	public Map<String, Object> delCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void delCustomer(String id) {
+		customerDao.delCustomer(id);
 	}
 
 }

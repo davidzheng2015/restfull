@@ -77,4 +77,20 @@ public class CustomerDao extends BaseJdbcDao{
 		
 	}
 
+	public void updateCustomer(String id, Map<String, Object> obj) {
+		obj.put("ID", id);
+		StringBuffer sb = new StringBuffer();
+		sb.append(" update zs_customer set dwmc=:DWMC,dwdz=:DWDZ,LXR=:LXR,NSRSBH=:NSRSBH, ");
+		sb.append(" NSRSBHDF=:NSRSBHDF,NSRXZ=:NSRXZ ");
+		sb.append(" where id=:ID");
+		this.namedParameterJdbcTemplate.update(sb.toString(), obj);
+		
+		
+	}
+
+	public void delCustomer(String id) {
+		String sql = "delete from zs_customer where id = ?";
+		this.jdbcTemplate.update(sql, new Object[] { id });		
+	}
+
 }
