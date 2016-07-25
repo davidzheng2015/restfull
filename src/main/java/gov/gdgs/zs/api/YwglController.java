@@ -51,6 +51,7 @@ public class YwglController {
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 	
+	//客户端用业务报备查询
 	@RequestMapping(value="/jg/{hashId}/yw",method = RequestMethod.GET)
 	public ResponseEntity<?> getYwbbByJg(
 			@PathVariable("hashId") String hashId,
