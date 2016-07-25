@@ -1,5 +1,6 @@
 package gov.gdgs.zs.dao;
 
+import gov.gdgs.zs.untils.Common;
 import gov.gdgs.zs.untils.Condition;
 
 import java.util.ArrayList;
@@ -63,6 +64,33 @@ public class CustomerDao extends BaseJdbcDao{
 		obj.put("current", page);
 
 		return obj;
+	}
+
+	public void addCustomer(Map<String, Object> obj) {
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(" insert into zs_customer ");
+		sb.append(" (id,jg_id,dwmc,dwdz,lxr,lxdh,nsrsbh,nsrsbhdf,adddate,nsrxz) ");
+		sb.append(" values (:ID,:JG_ID,:DWMC,:DWDZ,:LXR,:LXDH,:NSRSBH,:NSRSBHDF,:ADDDATE,:NSRXZ)");
+		
+		this.namedParameterJdbcTemplate.update(sb.toString(), obj);
+		
+	}
+
+	public void updateCustomer(String id, Map<String, Object> obj) {
+		obj.put("ID", id);
+		StringBuffer sb = new StringBuffer();
+		sb.append(" update zs_customer set dwmc=:DWMC,dwdz=:DWDZ,LXR=:LXR,NSRSBH=:NSRSBH, ");
+		sb.append(" NSRSBHDF=:NSRSBHDF,NSRXZ=:NSRXZ ");
+		sb.append(" where id=:ID");
+		this.namedParameterJdbcTemplate.update(sb.toString(), obj);
+		
+		
+	}
+
+	public void delCustomer(String id) {
+		String sql = "delete from zs_customer where id = ?";
+		this.jdbcTemplate.update(sql, new Object[] { id });		
 	}
 
 }

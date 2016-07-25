@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Objects;
+
 /**
  * 查询条件拼接工具，主要用于生成where...and..此段条件查询语句
  * 用法: 首先创建一个Condition对象，new Condition();
@@ -96,7 +98,7 @@ public class Condition {
 
 	//拼接查询条件
 	public Condition add(String colName, String type, Object param) {
-		if (param != null) {
+		if (!Objects.equal(param, "") && !Objects.equal(param, null)) {
 			if (EQUAL.equals(type)) {
 				sb.append(" AND ").append(colName).append(" = ? ");
 				this.params.add(param);

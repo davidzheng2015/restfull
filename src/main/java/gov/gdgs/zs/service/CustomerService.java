@@ -1,6 +1,7 @@
 package gov.gdgs.zs.service;
 
 import gov.gdgs.zs.dao.CustomerDao;
+import gov.gdgs.zs.untils.Common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,19 +39,20 @@ public class CustomerService {
 		return customerDao.getCustomers(page,pageSize,jid,map);
 	}
 
-	public Map<String, Object> AddCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addCustomer(Map<String, Object> obj) {
+		String uuid = Common.newUUID();
+		obj.put("ID", uuid);
+		obj.put("JG_ID", HashIdUtil.decode((String)obj.get("JG_ID")));
+		obj.put("ADDDATE", Common.getCurrentTime2MysqlDateTime());
+		customerDao.addCustomer(obj);
 	}
 
-	public Map<String, Object> updateCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateCustomer(String id, Map<String,Object> obj) {
+		customerDao.updateCustomer(id,obj);
 	}
 
-	public Map<String, Object> delCustomer() {
-		// TODO Auto-generated method stub
-		return null;
+	public void delCustomer(String id) {
+		customerDao.delCustomer(id);
 	}
 
 }
