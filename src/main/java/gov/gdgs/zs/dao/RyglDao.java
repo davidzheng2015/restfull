@@ -192,7 +192,7 @@ public class RyglDao extends BaseDao{
 		sb.append("	a.cze,");	
 		sb.append("	case a.fqr_dm when 1 then \"是\"  when 2 then \"否\" else null end as fqr,");	
 		sb.append("	c.rydazt,");	
-		sb.append("	c.xpian");	
+		sb.append("	c.xpian,c.XB_DM,c.XL_DM,c.CS_DM,c.MZ_DM,c.ZZMM_DM,a.ZW_DM,a.czr_dm,a.fqr_dm");	
 		sb.append("	from ");	
 		sb.append("	zs_zysws a,zs_jg b ,zs_ryjbxx c ,");	
 		sb.append("	dm_xb d,dm_xl e,dm_cs f,dm_mz g,dm_zzmm h,dm_zw i,(select @rownum:=0) zs_sws");	
