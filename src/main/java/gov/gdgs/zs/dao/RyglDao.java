@@ -511,16 +511,16 @@ public class RyglDao extends BaseDao{
 	public Map<String, Object> swszycx(int pn,int ps,int jgid,Map<String, Object> qury){
 		final String url=Config.URL_PROJECT;
 		Condition condition = new Condition();
-		condition.add("a.xming", Condition.FUZZY, qury.get("xm"));
+		condition.add("b.xming", Condition.FUZZY, qury.get("xm"));
 		condition.add("a.RYSPGCZT_DM", Condition.EQUAL, qury.get("ryzt"));
-		condition.add("a.sfzh", Condition.FUZZY_LEFT, qury.get("sfzh"));
-		condition.add("a.CS_DM", Condition.EQUAL, qury.get("cs"));
-		condition.add("a.xb_DM", Condition.EQUAL, qury.get("xb"));
-		condition.add("a.xl_dm", Condition.EQUAL, qury.get("xl"));
+		condition.add("b.sfzh", Condition.FUZZY_LEFT, qury.get("sfzh"));
+		condition.add("b.CS_DM", Condition.EQUAL, qury.get("cs"));
+		condition.add("b.xb_DM", Condition.EQUAL, qury.get("xb"));
+		condition.add("b.xl_dm", Condition.EQUAL, qury.get("xl"));
 		StringBuffer sb = new StringBuffer();
-		sb.append("		select SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 as 'key', b.id,b.xming,d.mc as xb,b.sfzh,a.zyzsbh,e.mc as cs,f.mc as xl,g.mc as zw,c.mc as ryzt, ");
+		sb.append("		select SQL_CALC_FOUND_ROWS @rownum:=@rownum+1 as 'key',a.id as zyswsid, b.id,b.xming,d.mc as xb,b.sfzh,a.zyzsbh,e.mc as cs,f.mc as xl,g.mc as zw,c.mc as ryzt, ");
 		sb.append("		a.ryspgczt_dm from zs_zysws a,zs_ryjbxx b,dm_ryspgczt c,dm_xb d,dm_cs e,dm_xl f,dm_zw g,(select @rownum:=?) zs_ry  ");
-		sb.append("		"+condition.getSql()+" ");
+		sb.append(condition.getSql());
 		sb.append("		and  a.JG_ID=? and b.ID=a.ry_id and c.ID=a.RYSPGCZT_DM and ZYZT_DM in (1,2,3)");
 		sb.append("		and b.XB_DM=d.ID and b.CS_DM=e.ID and f.ID=b.XL_DM and a.ZW_DM=g.ID");
 		if(qury.containsKey("sorder")){
@@ -584,6 +584,7 @@ public class RyglDao extends BaseDao{
 				map.put("ryzt", rs.getObject("ryzt"));
 				map.put("xl", rs.getObject("xl"));
 				map.put("ryztdm", rs.getObject("ryspgczt_dm"));
+				map.put("zyswsid", hashids.encode(rs.getLong("zyswsid")));
 				return map;
 				}
 	});
