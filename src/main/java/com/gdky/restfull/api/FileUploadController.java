@@ -45,7 +45,8 @@ public class FileUploadController {
                 Files.write(file.getBytes(), to);
                 return new ResponseEntity<>(rm, HttpStatus.CREATED);
             } catch (Exception e) {
-            	rm = new ResponseMessage(ResponseMessage.Type.danger, "400", "上传失败");
+            	e.printStackTrace();
+            	rm = new ResponseMessage(ResponseMessage.Type.danger, "400", "上传失败:"+e.getMessage());
                 return new ResponseEntity<>(rm,HttpStatus.BAD_REQUEST);
             }
         } else {
