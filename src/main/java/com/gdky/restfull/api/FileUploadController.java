@@ -38,13 +38,19 @@ public class FileUploadController {
         if (!file.isEmpty()) {
             String name = file.getOriginalFilename();
             String ext = FilenameUtils.getExtension(name);
-            String path =Constants.UPLOAD_LOCATION+Hashing.crc32().hashBytes(file.getBytes())+"."+ext; 
-            File to = new File(path);
+            String path =Constants.UPLOAD_LOCATION; 
+            File uploadDir = new File(path);
+            if (!uploadDir.exists()){
+            	uploadDir.mkdir();
+            }            
+            String filename = Constants.UPLOAD_LOCATION+Hashing.crc32().hashBytes(file.getBytes())+"."+ext;
+            File to = new File(filename);
             ResponseMessage rm = new ResponseMessage(ResponseMessage.Type.success, "201", path);
             try {
                 Files.write(file.getBytes(), to);
                 return new ResponseEntity<>(rm, HttpStatus.CREATED);
             } catch (Exception e) {
+            	System.out.println(System.getProperty("user.dir"));
             	e.printStackTrace();
             	rm = new ResponseMessage(ResponseMessage.Type.danger, "400", "上传失败:"+e.getMessage());
                 return new ResponseEntity<>(rm,HttpStatus.BAD_REQUEST);
