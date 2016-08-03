@@ -40,4 +40,21 @@ public class XttjbbService {
 		return xttjbbDao.getXttjbb(page,pageSize,map);
 	}
 
+	public Map<String, Object> getHyryqktj(int page, int pageSize, String where) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(where != null){
+			try{
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return xttjbbDao.getHyryqktj(page,pageSize,map);
+	}
+
 }

@@ -1,26 +1,23 @@
 package gov.gdgs.zs.service;
 
+import gov.gdgs.zs.dao.XtywbbDao;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import gov.gdgs.zs.dao.HyryqktDao;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-@Transactional
-public class HyryqktjService {
+public class XtywbbService {
 	@Resource
-	private HyryqktDao hyryqktDao;
+	private XtywbbDao xtywbbDao;
 
-	public Map<String, Object> getHyryqktj(int page, int pageSize, String where) {
-		// TODO Auto-generated method stub
+	public Map<String, Object> getNdjysrtj(int page, int pageSize, String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if(where != null){
 			try{
@@ -29,11 +26,11 @@ public class HyryqktjService {
 				map = mapper.readValue(where,
 						new TypeReference<Map<String, Object>>() {
 						});
-			}catch(Exception e){
+			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
-		return hyryqktDao.getHyryqktj(page,pageSize,map);
+		return xtywbbDao.getNdjysrtj(page, pageSize, map);
 	}
 	
 	

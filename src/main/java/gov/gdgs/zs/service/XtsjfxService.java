@@ -37,4 +37,20 @@ public class XtsjfxService {
 		Map<String, Object> rs = xtsjfxDao.getJgnjsjfxb(page, pageSize, map);
 		return rs;
 	}
+
+	public Map<String, Object> getRynjsjfxb(int page, int pageSize, String where) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(where != null){
+			try{
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return xtsjfxDao.getRynjsjfxb(page, pageSize, map);
+	}
 }
