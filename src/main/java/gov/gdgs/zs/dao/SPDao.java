@@ -495,7 +495,7 @@ public class SPDao extends BaseDao{
 			this.jdbcTemplate.update(sql3,new Object[]{rs2,rec.get("QZNY"),rec.get("XXXX"),rec.get("ZMR")});
 		}
 		String suid = new Common().newUUID();
-		this.jdbcTemplate.update("insert into zs_fzybasp (ID,FZYSWS_ID,SPZT_DM,SPSJ) values(?,?,'1',sysdate())",new Object[]{suid,rs2});
+		this.jdbcTemplate.update("insert into zs_fzybasp (ID,FZYSWS_ID,SPZT_DM,SPRQ) values(?,?,'1',sysdate())",new Object[]{suid,rs2});
 		Map<String,Object> spsq=new HashMap<>();//设置生成审批表方法参数
 		spsq.put("sid", suid);
 		spsq.put("lclx", "402881831be2e6af011be3c184d2003a");
