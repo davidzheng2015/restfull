@@ -48,7 +48,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<multipart-config>
-        	<location>c:\work</location>
+        	<location></location>
         	<max-file-size>5242880</max-file-size><!--5MB-->
         	<max-request-size>20971520</max-request-size><!--20MB-->
         	<file-size-threshold>0</file-size-threshold>
