@@ -102,6 +102,14 @@ public class SPservice {
 			this.spDao.swszxsq(sqxm);break;
 		case"jghbsq"://机构合并申请
 			this.spDao.swshbsq(sqxm);break;
+		case "zyswsbgsq"://执业变更申请
+			this.spDao.zyswsbgsq(sqxm);break;
+		case"zyzjsq"://执业转籍申请
+			this.spDao.zyzjsq(sqxm);break;
+		case"zyzfzysq"://执业注销申请
+			this.spDao.zyzfzysq(sqxm);break;
+		case"zyzxsq"://执业注销申请
+			this.spDao.zyzxsq(sqxm);break;
 		case"fzyswsbasq"://非执业备案申请
 			this.spDao.fzyswsba(sqxm);break;
 		case"fzyswszjsq"://非执业转籍申请

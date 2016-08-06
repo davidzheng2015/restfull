@@ -23,6 +23,8 @@ public class CheckingService {
 			return chDao.checkZXing((int)hashids.decode(jgid)[0]);
 		case "jghb":
 			return chDao.checkHBing((int)hashids.decode(jgid)[0]);
+		case "zysp":
+			return chDao.checkZYSPing((int)hashids.decode(jgid)[0]);
 		}
 		return true;
 	}

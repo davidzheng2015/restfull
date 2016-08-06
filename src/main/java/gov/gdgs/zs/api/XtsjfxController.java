@@ -35,4 +35,11 @@ public class XtsjfxController {
 	 		return new ResponseEntity<>(xtsjfxService.getJgnjsjfxb(page, pageSize, where),HttpStatus.OK); 
 	 	} 
 
+	 @RequestMapping(value = "/rynjsjfxb", method = RequestMethod.GET)
+	 public  ResponseEntity<Map<String,Object>> getRynjsjfxb( 
+	 			@RequestParam(value = "page", required = true) int page, 
+	 			@RequestParam(value = "pageSize", required = true) int pageSize, 
+	 			@RequestParam(value="where", required=false) String where){
+		 return new ResponseEntity<>(xtsjfxService.getRynjsjfxb(page, pageSize, where),HttpStatus.OK);
+	 }
 }
