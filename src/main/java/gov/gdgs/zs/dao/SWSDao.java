@@ -23,7 +23,7 @@ public class SWSDao extends BaseDao{
 	 * @throws Exception 
 	 */
 	public Map<String,Object> swscx(int pn,int ps,Map<String,Object> qury) {
-		final String url=Config.URL_PROJECT;
+		final String url=Config.URL_PROJECT+"/swsxx";
 		Condition condition = new Condition();
 		condition.add("a.dwmc", Condition.FUZZY, qury.get("dwmc"));
 		condition.add("a.JGZCH", Condition.EQUAL, qury.get("zsbh"));
