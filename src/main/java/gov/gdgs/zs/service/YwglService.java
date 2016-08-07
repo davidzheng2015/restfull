@@ -60,9 +60,9 @@ public class YwglService {
 		return obj;
 	}
 
-	public Map<String, Object> getZyswsByJg(String hashId) {
+	public Map<String, Object> getYwbbMiscByJg(String hashId) {
 		Long id = HashIdUtil.decode(hashId);
-		List<Map<String,Object>> zysws = ywglDao.getZyswsByJg(id);
+		List<Map<String,Object>> zysws = ywglDao.getYwbbMiscByJg(id);
 		Map<String,Object> jgxx = swsDao.swsxx(id.intValue());
 		
 		HashMap<String,Object> obj = new HashMap<String,Object>();

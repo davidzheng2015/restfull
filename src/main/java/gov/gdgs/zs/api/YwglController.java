@@ -64,9 +64,9 @@ public class YwglController {
 	
 	//客户端用机构关联执业税务师和机构信息
 	@RequestMapping(value="/ywbbmisc/{jgHashid}",method = RequestMethod.GET)
-	public ResponseEntity<?> getZyswsByJg(
+	public ResponseEntity<?> getYwbbMiscByJg(
 			@PathVariable("jgHashid") String jgHashid){
-		Map<String,Object> obj = ywglService.getZyswsByJg(jgHashid);
+		Map<String,Object> obj = ywglService.getYwbbMiscByJg(jgHashid);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
 	}
 

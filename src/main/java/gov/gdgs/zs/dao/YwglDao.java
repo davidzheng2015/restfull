@@ -117,9 +117,9 @@ public class YwglDao extends BaseJdbcDao {
 		return null;
 	}
 
-	public List<Map<String,Object>> getZyswsByJg(Long id) {
+	public List<Map<String,Object>> getYwbbMiscByJg(Long id) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(" select r.XMING ");
+		sb.append(" select r.XMING,z.ID as ZYSWS_ID ");
 		sb.append(" from zs_jg j,zs_ryjbxx r,zs_zysws z ");
 		sb.append(" where j.id = z.JG_ID ");
 		sb.append(" and z.RY_ID = r.ID ");
