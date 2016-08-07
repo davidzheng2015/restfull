@@ -32,7 +32,7 @@ public class SWSCXController {
 
 	}
 
-	@RequestMapping(value="/{swsxqTab:^[A-Za-z]+$}/{swjgId}", method = { RequestMethod.GET} )
+	@RequestMapping(value="/swsxx/{swsxqTab:^[A-Za-z]+$}/{swjgId}", method = { RequestMethod.GET} )
 	public ResponseEntity<Map<String, Object>> swsxx(
 			@PathVariable(value = "swsxqTab") String xqTab,
 			@PathVariable(value = "swjgId") String gid) {
