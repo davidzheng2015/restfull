@@ -111,4 +111,10 @@ public class YwglDao extends BaseJdbcDao {
 		return rs;
 	}
 
+	public Map<String, Object> getYwbbByJg(Long id, int page, int pageSize,
+			String where) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdky.restfull.exception.InvalidRequestException;
 import com.gdky.restfull.exception.ResourceNotFoundException;
+import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
 public class YwglService {
@@ -47,12 +48,15 @@ public class YwglService {
 	}
 
 	public Map<String, Object> getYwbbById(String hash) {
-		Hashids hashids = new Hashids(Config.HASHID_SALT,Config.HASHID_LEN);
-		long[] id = hashids.decode(hash);
-		if(id.length<1){
-			throw new ResourceNotFoundException(hash);
-		}
-		Map<String,Object> obj = ywglDao.getYwbbById(id[0]);
+		Long id = HashIdUtil.decode(hash);
+		Map<String,Object> obj = ywglDao.getYwbbById(id);
+		return obj;
+	}
+
+	public Map<String, Object> getYwbbByJg(String hashId, int page,
+			int pageSize, String where) {
+		Long id = HashIdUtil.decode(hashId);
+		Map<String,Object> obj = ywglDao.getYwbbByJg(id,page,pageSize,where);
 		return obj;
 	}
 

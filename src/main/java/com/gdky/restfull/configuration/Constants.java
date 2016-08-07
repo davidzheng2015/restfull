@@ -26,5 +26,7 @@ public final class Constants {
 
 	public static final int HASHID_LEN = 6;
 	
-	public  static final String UPLOAD_LOCATION="/work/";
+	//public  static final String UPLOAD_LOCATION="/upload"; //win
+	
+	public  static final String UPLOAD_LOCATION="/usr/local/upload"; //linux
 }
