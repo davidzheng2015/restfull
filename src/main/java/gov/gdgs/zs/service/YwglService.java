@@ -1,21 +1,18 @@
 package gov.gdgs.zs.service;
 
-import gov.gdgs.zs.configuration.Config;
+import gov.gdgs.zs.dao.SWSDao;
 import gov.gdgs.zs.dao.YwglDao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.hashids.Hashids;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdky.restfull.exception.InvalidRequestException;
-import com.gdky.restfull.exception.ResourceNotFoundException;
 import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
@@ -23,6 +20,9 @@ public class YwglService {
 
 	@Resource
 	private YwglDao ywglDao;
+	
+	@Resource
+	private SWSDao swsDao;
 
 	public Map<String, Object> getYwbb(int page, int pageSize, String where) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -57,6 +57,17 @@ public class YwglService {
 			int pageSize, String where) {
 		Long id = HashIdUtil.decode(hashId);
 		Map<String,Object> obj = ywglDao.getYwbbByJg(id,page,pageSize,where);
+		return obj;
+	}
+
+	public Map<String, Object> getYwbbMiscByJg(String hashId) {
+		Long id = HashIdUtil.decode(hashId);
+		List<Map<String,Object>> zysws = ywglDao.getYwbbMiscByJg(id);
+		Map<String,Object> jgxx = swsDao.swsxx(id.intValue());
+		
+		HashMap<String,Object> obj = new HashMap<String,Object>();
+		obj.put("zysws",zysws);
+		obj.put("jgxx", jgxx);
 		return obj;
 	}
 
