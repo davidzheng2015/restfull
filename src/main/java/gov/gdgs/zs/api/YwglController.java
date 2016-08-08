@@ -11,6 +11,7 @@ import gov.gdgs.zs.service.YwglService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,6 +69,14 @@ public class YwglController {
 			@PathVariable("jgHashid") String jgHashid){
 		Map<String,Object> obj = ywglService.getYwbbMiscByJg(jgHashid);
 		return new ResponseEntity<>(obj,HttpStatus.OK);
+	}
+	//客户端提交业务报备信息
+	@RequestMapping(value = "/ywbb", method = RequestMethod.POST)
+	public  ResponseEntity<Map<String,Object>> addYwbb(
+			@RequestBody Map<String,Object> values){ 
+
+		Map<String,Object> obj = ywglService.addYwbb(values);
+		return new ResponseEntity<>(obj,HttpStatus.CREATED);
 	}
 
 }

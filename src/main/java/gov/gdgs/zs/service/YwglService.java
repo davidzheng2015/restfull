@@ -71,4 +71,9 @@ public class YwglService {
 		return obj;
 	}
 
+	public Map<String, Object> addYwbb(Map<String, Object> values) {
+		System.out.println(values.toString());
+		return null;
+	}
+
 }
