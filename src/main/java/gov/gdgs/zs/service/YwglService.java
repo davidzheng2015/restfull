@@ -72,8 +72,19 @@ public class YwglService {
 	}
 
 	public Map<String, Object> addYwbb(Map<String, Object> values) {
+		// TODO 比对协议文号唯一性
+		
+		// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交
+
+		// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
+		
+		// TODO 所得税汇算清缴鉴证，查账征收，企业收入<=100万,协议金额最少值<M*0.003*0.7,不能提交
+		
+		// TODO 所得税汇算清缴鉴证，查账征收，企业收入>100w & <=500w，
 		System.out.println(values.toString());
 		return null;
 	}
+
+
 
 }
