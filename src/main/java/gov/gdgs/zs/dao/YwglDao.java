@@ -46,11 +46,11 @@ public class YwglDao extends BaseJdbcDao {
 		sb.append("            t.bbrq, ");
 		sb.append("            t.yzm ");
 		sb.append("    FROM ");
-		sb.append("        zs_ywbb t, dm_cs ds, dm_ywlx dl, ");
+		sb.append("        zs_ywbb_old t, dm_cs ds, dm_ywlx dl, ");
 		// <=== 查询条件集合
 		sb.append(" ( "
 				+ condition.getSelectSql(Config.PROJECT_SCHEMA
-						+ "zs_ywbb", "id"));
+						+ "zs_ywbb_old", "id"));
 		sb.append("    ORDER BY bbrq DESC ");
 		sb.append("    LIMIT ? , ?) sub ");
 		// ===> 插入查询条件集合结束
@@ -92,7 +92,7 @@ public class YwglDao extends BaseJdbcDao {
 		});
 
 		// 获取符合条件的记录数
-		String countSql = condition.getCountSql("id", "zs_ywbb");
+		String countSql = condition.getCountSql("id", "zs_ywbb_old");
 		int total = jdbcTemplate.queryForObject(countSql, condition.getParams()
 				.toArray(), Integer.class);
 		
@@ -106,7 +106,7 @@ public class YwglDao extends BaseJdbcDao {
 	}
 
 	public Map<String, Object> getYwbbById(long id) {
-		String sql = "select * from "+Config.PROJECT_SCHEMA+"zs_ywbb where id = ?";
+		String sql = "select * from "+Config.PROJECT_SCHEMA+"zs_ywbb_old where id = ?";
 		Map<String,Object> rs = jdbcTemplate.queryForMap(sql, id);
 		return rs;
 	}
@@ -114,7 +114,7 @@ public class YwglDao extends BaseJdbcDao {
 	public Map<String, Object> getYwbbByJg(Long id, int page, int pageSize,
 			Map<String,Object> where) {
 		
-		String  sql = "select * from zs_ywbb where jg_id=? and yxbz = 1 order by zbrq desc";
+		String  sql = "select * from zs_ywbb_old where jg_id=? and yxbz = 1 order by zbrq desc";
 
 		List<Map<String,Object>> ls = jdbcTemplate.queryForList(sql,
 				new Object[]{id});
