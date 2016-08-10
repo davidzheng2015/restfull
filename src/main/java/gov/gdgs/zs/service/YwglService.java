@@ -2,7 +2,11 @@ package gov.gdgs.zs.service;
 
 import gov.gdgs.zs.dao.SWSDao;
 import gov.gdgs.zs.dao.YwglDao;
+import gov.gdgs.zs.untils.Common;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +14,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdky.restfull.exception.YwbbExcepiton;
 import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
+@Transactional
 public class YwglService {
 
 	@Resource
@@ -56,7 +63,19 @@ public class YwglService {
 	public Map<String, Object> getYwbbByJg(String hashId, int page,
 			int pageSize, String where) {
 		Long id = HashIdUtil.decode(hashId);
-		Map<String,Object> obj = ywglDao.getYwbbByJg(id,page,pageSize,where);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (where != null) {
+			try {
+				where = java.net.URLDecoder.decode(where, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(where,
+						new TypeReference<Map<String, Object>>() {
+						});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String,Object> obj = ywglDao.getYwbbByJg(id,page,pageSize,map);
 		return obj;
 	}
 
@@ -72,13 +91,104 @@ public class YwglService {
 	}
 
 	public Map<String, Object> addYwbb(Map<String, Object> values) {
-		// TODO 比对协议文号唯一性
+		Map<String,Object> xy = (Map<String,Object>)values.get("dataXY");
+		Map<String,Object> yw = (Map<String,Object>)values.get("dataYW");
+		Map<String,Object> jg = (Map<String,Object>)values.get("dataJG");
+		Map<String,Object> customer = (Map<String,Object>)values.get("customer");
+		String type = (String) values.get("type");
 		
+		//整理业务记录
+		HashMap<String,Object> o = new HashMap<String,Object>();
+		Calendar cal = Calendar.getInstance();  
+		int now_y = cal.get(Calendar.YEAR);//得到年份
+		int now_m = cal.get(Calendar.MONTH)+1;//得到月份
+		int now_d = cal.get(Calendar.DATE);//得到月份中今天的号数
+		int now_h = cal.get(Calendar.HOUR_OF_DAY);//得到一天中现在的时间，24小时制
+		int now_mm = cal.get(Calendar.MINUTE);//得到分钟数
+		int now_s = cal.get(Calendar.SECOND);//得到秒数
+		
+		String currentTime = Common.getCurrentTime2MysqlDateTime();
+		
+		String ND = String.valueOf(now_y);
+		o.put("ND",ND);
+		o.put("BBRQ",currentTime);
+		o.put("BGWH", yw.get("BGWH"));
+		o.put("BGRQ", yw.get("BGRQ"));
+		o.put("SFJE", yw.get("SFJE"));
+		o.put("JG_ID", customer.get("JG_ID"));
+		o.put("SWSMC", jg.get("dwmc"));
+		o.put("SWSSWDJZH", jg.get("swdjhm"));
+		o.put("WTDW", customer.get("DWMC"));
+		o.put("WTDWNSRSBH", customer.get("NSRSBH"));
+		o.put("XYH", xy.get("XYH"));
+		o.put("YJFH", yw.get("YJFH"));
+		o.put("RJFH", yw.get("RJFH"));
+		o.put("SJFH", yw.get("SJFH"));
+		
+		//处理签名税务师
+		List<Map<String,Object>> qmswsList = (List<Map<String,Object>>) yw.get("QMSWS");
+		String QMSWSID = (String)qmswsList.get(0).get("key") +","+(String)qmswsList.get(1).get("key") ;
+		String QZSWS = (String)qmswsList.get(0).get("label") +","+(String)qmswsList.get(1).get("label") ;
+		o.put("QZSWS", QZSWS);
+		o.put("QMSWSID", QMSWSID);
+		o.put("TXDZ", jg.get("dzhi"));
+		o.put("SWSDZYJ", jg.get("dzyj"));
+		o.put("SWSWZ", jg.get("wangzhi"));
+		o.put("YWLX_DM", xy.get("YWLX_DM"));
+		o.put("JTXM", yw.get("JTXM"));
+		o.put("ZBRQ", currentTime);
+		
+		//处理项目所属时期
+		List<String> sssq = (List<String>)xy.get("SSSQ");
+		o.put("SENDTIME", sssq.get(1));
+		o.put("SSTARTTIME", sssq.get(0));
+		o.put("NSRXZ", yw.get("NSRXZ"));
+		o.put("HY_ID", yw.get("HY_ID"));
+		o.put("ZSFS_DM", yw.get("ZSFS_DM"));
+		o.put("ISWS", yw.get("ISWS"));
+		o.put("SB_DM", yw.get("SB_DM"));
+		o.put("CS_DM", yw.get("CS_DM"));
+		o.put("QX_DM", yw.get("QX_DM"));
+		o.put("WTDWXZ_DM", yw.get("WTDWXZ_DM"));
+		o.put("WTDWNSRSBHDF", customer.get("NSRSBH"));
+		o.put("WTDWLXR", customer.get("LXR"));
+		o.put("WTDWLXDH", customer.get("LXDH"));
+		o.put("WTDXLXDZ", customer.get("LXDZ"));
+		o.put("XYJE", xy.get("XYJE"));
+		o.put("CUSTOMER_ID", customer.get("ID"));
+		
+		/*判断直接提交还是保存*/
+		if (type.equals("save")){
+			o.put("ZT", 0);
+			ywglDao.addYwbb(o);
+		}else if (type.equals("commit")){
+			Integer qysr = (Integer) o.get("SFJE");
+			Integer xyje = (Integer) o.get("XYJE");
+			// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交
+			if(qysr > 1000000 && xyje < 2100){
+				throw new YwbbExcepiton("企业营业收入>100万元，协议收费金额需大于2100");
+			}
+			// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
+			if (xyje <1500){
+				o.put("ZT", 3);
+				ywglDao.addYwbb(o);
+			}
+			return null;
+		}
+		/*拒绝提交类*/
+		// TODO 比对协议文号唯一性
 		// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交
-
-		// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
 		
 		// TODO 所得税汇算清缴鉴证，查账征收，企业收入<=100万,协议金额最少值<M*0.003*0.7,不能提交
+		
+		/* 需要审批类*/
+		// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
+		
+		
+
+		
+		
+		
 		
 		// TODO 所得税汇算清缴鉴证，查账征收，企业收入>100w & <=500w，
 		System.out.println(values.toString());

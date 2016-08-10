@@ -1,5 +1,6 @@
 package gov.gdgs.zs.untils;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Common {
@@ -16,6 +17,14 @@ public class Common {
 		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		String currentTime = sdf.format(dt);
+		return currentTime;
+	}
+	public static String getTime2MysqlDateTime(Date date){
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(date);
 		return currentTime;
 	}
 }

@@ -28,6 +28,7 @@ import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.exception.InvalidRequestException;
 import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
 import com.gdky.restfull.exception.ResourceNotFoundException;
+import com.gdky.restfull.exception.YwbbExcepiton;
 
 /**
  * Called when an exception occurs during request processing. Transforms
@@ -157,6 +158,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(new ResponseMessage(
 				ResponseMessage.Type.warning, exMessage),
 				HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(value = { YwbbExcepiton.class })
+	@ResponseBody
+	public ResponseEntity<?> handleYwbbExcepiton(
+			YwbbExcepiton ex) {
+
+		log.error(ex.getMessage());
+		String exMessage = ex.getMessage();
+
+		return new ResponseEntity<>(new ResponseMessage(
+				ResponseMessage.Type.warning, exMessage),
+				HttpStatus.BAD_REQUEST);
 	}
 
 

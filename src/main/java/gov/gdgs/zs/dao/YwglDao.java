@@ -112,9 +112,16 @@ public class YwglDao extends BaseJdbcDao {
 	}
 
 	public Map<String, Object> getYwbbByJg(Long id, int page, int pageSize,
-			String where) {
-		// TODO Auto-generated method stub
-		return null;
+			Map<String,Object> where) {
+		
+		String  sql = "select * from zs_ywbb where jg_id=? and yxbz = 1 order by zbrq desc";
+
+		List<Map<String,Object>> ls = jdbcTemplate.queryForList(sql,
+				new Object[]{id});
+		
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("data", ls);
+		return obj;
 	}
 
 	public List<Map<String,Object>> getYwbbMiscByJg(Long id) {
@@ -127,6 +134,20 @@ public class YwglDao extends BaseJdbcDao {
 		sb.append(" and z.YXBZ=1 ");
 		List<Map<String,Object>> ls = this.jdbcTemplate.queryForList(sb.toString(), new Object[]{id});
 		return ls;
+	}
+
+	public void addYwbb(HashMap<String, Object> o) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" insert into zs_ywbb ");
+		sb.append(" (ND,BBRQ,BGWH,BGRQ,SFJE,JG_ID,SWSMC,SWSSWDJZH,WTDW,WTDWNSRSBH,XYH,YJFH,RJFH,SJFH, ");
+		sb.append(" QZSWS,QMSWSID,TXDZ,SWSDZYJ,SWSWZ,YWLX_DM,JTXM,ZBRQ, ");
+		sb.append(" SENDTIME,SSTARTTIME,NSRXZ,HY_ID,ZSFS_DM,ISWS,SB_DM,CS_DM,QX_DM, ");
+		sb.append(" WTDWXZ_DM,WTDWNSRSBHDF,WTDWLXR,WTDWLXDH,WTDXLXDZ,XYJE,CUSTOMER_ID,ZT) ");
+		sb.append(" values(:ND,:BBRQ,:BGWH,:BGRQ,:SFJE,:JG_ID,:SWSMC,:SWSSWDJZH,:WTDW,:WTDWNSRSBH,:XYH,:YJFH,:RJFH,:SJFH, ");
+		sb.append(" :QZSWS,:QMSWSID,:TXDZ,:SWSDZYJ,:SWSWZ,:YWLX_DM,:JTXM,:ZBRQ, ");
+		sb.append(" :SENDTIME,:SSTARTTIME,:NSRXZ,:HY_ID,:ZSFS_DM,:ISWS,:SB_DM,:CS_DM,:QX_DM, ");
+		sb.append(" :WTDWXZ_DM,:WTDWNSRSBHDF,:WTDWLXR,:WTDWLXDH,:WTDXLXDZ,:XYJE,:CUSTOMER_ID,:ZT) ");
+		this.namedParameterJdbcTemplate.update(sb.toString(), o);		
 	}
 
 }
