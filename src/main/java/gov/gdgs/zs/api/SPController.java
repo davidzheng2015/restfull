@@ -130,7 +130,13 @@ public class SPController {
 		User user =  accountService.getUserFromHeaderToken(request);
 		return new ResponseEntity<>(spPservice.sptj(sptj,spid, user.getId(), user.getNames()),HttpStatus.OK);
 	}
-	
+	/**
+	 * 上级驳回意见
+	 * @param spid
+	 * @param lcbz
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/spapi/sjbhyj/{spid}/{lcbz}", method = RequestMethod.GET)
 	public ResponseEntity<?> sjbhyj(@PathVariable(value = "spid") String spid,
 			@PathVariable(value = "lcbz") int lcbz) throws Exception{

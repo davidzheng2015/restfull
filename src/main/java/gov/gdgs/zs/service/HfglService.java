@@ -1,6 +1,5 @@
 package gov.gdgs.zs.service;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,8 +65,13 @@ public class HfglService {
 		}
 		return hfglDao.fytj( map);
 	}
+	
 	public Object upLoadJFSC(MultipartFile file,int uid) throws Exception {
 		return hfglDao.upLoadJFSC(file,uid);
+	}
+	
+	public Object ttgefp(String jlid,Map<String, Object> fptj,String name) throws Exception {
+		return hfglDao.ttgefp(jlid,fptj,name);
 	}
 
 }
