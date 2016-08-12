@@ -4,6 +4,7 @@ import gov.gdgs.zs.dao.SWSDao;
 import gov.gdgs.zs.dao.YwglDao;
 import gov.gdgs.zs.untils.Common;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -90,7 +91,7 @@ public class YwglService {
 		return obj;
 	}
 
-	public Map<String, Object> addYwbb(Map<String, Object> values) {
+	public Map<String, Object> addYwbb(Map<String, Object> values)  {
 		Map<String,Object> xy = (Map<String,Object>)values.get("dataXY");
 		Map<String,Object> yw = (Map<String,Object>)values.get("dataYW");
 		Map<String,Object> jg = (Map<String,Object>)values.get("dataJG");
@@ -113,7 +114,7 @@ public class YwglService {
 		o.put("ND",ND);
 		o.put("BBRQ",currentTime);
 		o.put("BGWH", yw.get("BGWH"));
-		o.put("BGRQ", yw.get("BGRQ"));
+		o.put("BGRQ", Common.getTime2MysqlDateTime((String)yw.get("BGRQ")));
 		o.put("SFJE", yw.get("SFJE"));
 		o.put("JG_ID", customer.get("JG_ID"));
 		o.put("SWSMC", jg.get("dwmc"));
@@ -140,8 +141,8 @@ public class YwglService {
 		
 		//处理项目所属时期
 		List<String> sssq = (List<String>)xy.get("SSSQ");
-		o.put("SENDTIME", sssq.get(1));
-		o.put("SSTARTTIME", sssq.get(0));
+		o.put("SENDTIME", Common.getTime2MysqlDateTime(sssq.get(1)));
+		o.put("SSTARTTIME", Common.getTime2MysqlDateTime(sssq.get(0)));
 		o.put("NSRXZ", yw.get("NSRXZ"));
 		o.put("HY_ID", yw.get("HY_ID"));
 		o.put("ZSFS_DM", yw.get("ZSFS_DM"));
@@ -159,9 +160,11 @@ public class YwglService {
 		
 		/*判断直接提交还是保存*/
 		if (type.equals("save")){
+			//保存
 			o.put("ZT", 0);
 			ywglDao.addYwbb(o);
 		}else if (type.equals("commit")){
+			//直接报备
 			Integer qysr = (Integer) o.get("SFJE");
 			Integer xyje = (Integer) o.get("XYJE");
 			// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交

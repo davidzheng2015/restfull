@@ -114,7 +114,7 @@ public class YwglDao extends BaseJdbcDao {
 	public Map<String, Object> getYwbbByJg(Long id, int page, int pageSize,
 			Map<String,Object> where) {
 		
-		String  sql = "select * from zs_ywbb_old where jg_id=? and yxbz = 1 order by zbrq desc";
+		String  sql = "select * from zs_ywbb where jg_id=? and yxbz = 1 order by zbrq desc";
 
 		List<Map<String,Object>> ls = jdbcTemplate.queryForList(sql,
 				new Object[]{id});

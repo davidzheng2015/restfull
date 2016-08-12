@@ -1,30 +1,46 @@
 package gov.gdgs.zs.untils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class Common {
-	//生成UUID
-	public static String newUUID (){
-		String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+	// 生成UUID
+	public static String newUUID() {
+		String uuid = UUID.randomUUID().toString().replace("-", "")
+				.toUpperCase();
 		return uuid;
 	}
-	//获取目前时间的Mysql DateTime格式
-	public static String getCurrentTime2MysqlDateTime(){
+
+	// 获取目前时间的Mysql DateTime格式
+	public static String getCurrentTime2MysqlDateTime() {
 		java.util.Date dt = new java.util.Date();
 
-		java.text.SimpleDateFormat sdf = 
-		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss");
 
 		String currentTime = sdf.format(dt);
 		return currentTime;
 	}
-	public static String getTime2MysqlDateTime(Date date){
 
-		java.text.SimpleDateFormat sdf = 
-		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static String getTime2MysqlDateTime(String date) {
 
-		String currentTime = sdf.format(date);
-		return currentTime;
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat utcFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.CHINA);
+		
+		utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String time = "";
+		try {
+			Date d = utcFormat.parse(date);
+			time = sdf.format(d);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return time;
 	}
 }
