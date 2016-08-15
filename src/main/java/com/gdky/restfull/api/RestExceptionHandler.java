@@ -28,7 +28,7 @@ import com.gdky.restfull.entity.ResponseMessage;
 import com.gdky.restfull.exception.InvalidRequestException;
 import com.gdky.restfull.exception.ResourceAlreadyExistsExcepiton;
 import com.gdky.restfull.exception.ResourceNotFoundException;
-import com.gdky.restfull.exception.YwbbExcepiton;
+import com.gdky.restfull.exception.YwbbException;
 
 /**
  * Called when an exception occurs during request processing. Transforms
@@ -160,17 +160,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				HttpStatus.UNAUTHORIZED);
 	}
 	
-	@ExceptionHandler(value = { YwbbExcepiton.class })
+	/*
+	 * 处理业务报备的异常 
+	 */
+	@ExceptionHandler(value = { YwbbException.class })
 	@ResponseBody
 	public ResponseEntity<?> handleYwbbExcepiton(
-			YwbbExcepiton ex) {
+			YwbbException ex) {
 
 		log.error(ex.getMessage());
 		String exMessage = ex.getMessage();
 
 		return new ResponseEntity<>(new ResponseMessage(
 				ResponseMessage.Type.warning, exMessage),
-				HttpStatus.BAD_REQUEST);
+				HttpStatus.FORBIDDEN);
 	}
 
 

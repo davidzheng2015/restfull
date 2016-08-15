@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdky.restfull.exception.YwbbExcepiton;
+import com.gdky.restfull.exception.YwbbException;
 import com.gdky.restfull.utils.HashIdUtil;
 
 @Service
@@ -109,7 +109,6 @@ public class YwglService {
 		int now_s = cal.get(Calendar.SECOND);//得到秒数
 		
 		String currentTime = Common.getCurrentTime2MysqlDateTime();
-		
 		String ND = String.valueOf(now_y);
 		o.put("ND",ND);
 		o.put("BBRQ",currentTime);
@@ -125,8 +124,6 @@ public class YwglService {
 		o.put("YJFH", yw.get("YJFH"));
 		o.put("RJFH", yw.get("RJFH"));
 		o.put("SJFH", yw.get("SJFH"));
-		
-		//处理签名税务师
 		List<Map<String,Object>> qmswsList = (List<Map<String,Object>>) yw.get("QMSWS");
 		String QMSWSID = (String)qmswsList.get(0).get("key") +","+(String)qmswsList.get(1).get("key") ;
 		String QZSWS = (String)qmswsList.get(0).get("label") +","+(String)qmswsList.get(1).get("label") ;
@@ -138,8 +135,6 @@ public class YwglService {
 		o.put("YWLX_DM", xy.get("YWLX_DM"));
 		o.put("JTXM", yw.get("JTXM"));
 		o.put("ZBRQ", currentTime);
-		
-		//处理项目所属时期
 		List<String> sssq = (List<String>)xy.get("SSSQ");
 		o.put("SENDTIME", Common.getTime2MysqlDateTime(sssq.get(1)));
 		o.put("SSTARTTIME", Common.getTime2MysqlDateTime(sssq.get(0)));
@@ -157,44 +152,36 @@ public class YwglService {
 		o.put("WTDXLXDZ", customer.get("LXDZ"));
 		o.put("XYJE", xy.get("XYJE"));
 		o.put("CUSTOMER_ID", customer.get("ID"));
-		
+		if(yw.get("TZVALUE1")!=null){
+			o.put("TZVALUE1", yw.get("TZVALUE1"));
+		}else{
+			o.put("TZVALUE1", null);
+		}
+		if(yw.get("TJVALUE2")!=null){
+			o.put("TJVALUE2", yw.get("TJVALUE2"));
+		}else{
+			o.put("TJVALUE2", null);
+		}
+
+
+		/*判断是否有报备上报资质 */
+		/*判断协议号是否唯一*/
+		int xyhNum = ywglDao.getXyhNum((String)o.get("XYH"));
+		if (xyhNum > 0){
+			throw new YwbbException("协议文号已存在");
+		}
 		/*判断直接提交还是保存*/
-		if (type.equals("save")){
-			//保存
+		if (type.equals("save")){ //保存
+			
 			o.put("ZT", 0);
 			ywglDao.addYwbb(o);
-		}else if (type.equals("commit")){
-			//直接报备
-			Integer qysr = (Integer) o.get("SFJE");
-			Integer xyje = (Integer) o.get("XYJE");
-			// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交
-			if(qysr > 1000000 && xyje < 2100){
-				throw new YwbbExcepiton("企业营业收入>100万元，协议收费金额需大于2100");
-			}
-			// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
-			if (xyje <1500){
+		}else if (type.equals("commit")){ //直接报备
+			//生成报备号码
+			String bbhm = String.valueOf(now_y)+Common.addZero(now_m, 2)+String.valueOf(cal.getTimeInMillis());
+			System.out.println(bbhm);
 				o.put("ZT", 3);
 				ywglDao.addYwbb(o);
-			}
-			return null;
 		}
-		/*拒绝提交类*/
-		// TODO 比对协议文号唯一性
-		// TODO 项目类型所得税汇算清缴鉴证，核定征收，企业营业收入>100万元，协议收费金额<2100，不能提交
-		
-		// TODO 所得税汇算清缴鉴证，查账征收，企业收入<=100万,协议金额最少值<M*0.003*0.7,不能提交
-		
-		/* 需要审批类*/
-		// TODO 所得税汇算清缴鉴证，查账征收，协议金额<1500，需要审批，反馈需审批提示
-		
-		
-
-		
-		
-		
-		
-		// TODO 所得税汇算清缴鉴证，查账征收，企业收入>100w & <=500w，
-		System.out.println(values.toString());
 		return null;
 	}
 

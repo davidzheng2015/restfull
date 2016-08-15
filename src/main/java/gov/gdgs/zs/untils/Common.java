@@ -43,4 +43,13 @@ public class Common {
 
 		return time;
 	}
+	// 数字补零兼转换字符串 
+    public static String addZero(int num,int len){  
+        StringBuffer s = new StringBuffer() ;  
+        s.append(num) ;  
+        while(s.length()<len){   // 如果长度不足，则继续补0  
+            s.insert(0,"0") ;   // 在第一个位置处补0  
+        }  
+        return s.toString() ;  
+    }  
 }

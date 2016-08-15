@@ -1,6 +1,6 @@
 package com.gdky.restfull.exception;
 
-public class YwbbExcepiton extends RuntimeException{
+public class YwbbException extends RuntimeException{
 
 	/**
 	 * 
@@ -8,7 +8,7 @@ public class YwbbExcepiton extends RuntimeException{
 	private static final long serialVersionUID = 1L;
 	private String message;
 	
-	public YwbbExcepiton(String message) {
+	public YwbbException(String message) {
         this.message = message;
     }	
 
